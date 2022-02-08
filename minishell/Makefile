@@ -1,7 +1,9 @@
 NAME := minishell
 LIBFT_NAME = libft.a
 
-SRCS =  ./sources/test.c
+SRCS =  ./sources/minishell.c \
+		./sources/utils/utils0.c \
+		./sources/builtins/builtins0.c
 
 OBJS = ${SRCS:.c=.o}
 

@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 22:22:31 by jsanfeli         ###   ########.fr       */
+/*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
+/*   Updated: 2022/02/08 22:24:06 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_SHELL_H
-# define MINI_SHELL_H
+#include "../../minishell.h"
 
-//Header files
-# include <stdlib.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include "libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_cmds
+void freemat(char **mat)
 {
-	char	**args;
-}	t_cmds;
+	int i;
 
-void	freemat(char **mat);
-void	checkforexit(char *line);
-
-#endif
+	i = -1;
+	while(mat[++i])
+		free(mat[i]);
+	free(mat);
+}

@@ -1,33 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 22:22:31 by jsanfeli         ###   ########.fr       */
+/*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
+/*   Updated: 2022/02/08 22:34:33 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_SHELL_H
-# define MINI_SHELL_H
+#include "../minishell.h"
 
-//Header files
-# include <stdlib.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include "libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_cmds
+void checkeverything(char *line, char **envp)
 {
-	char	**args;
-}	t_cmds;
+	checkforexit(line);
+}
 
-void	freemat(char **mat);
-void	checkforexit(char *line);
+void leaks(void)
+{
+	system("leaks minishell");
+}
 
-#endif
+int main(int argc, const char **argv, char **envp)
+{
+	char *line;
+
+	//atexit(leaks);
+	argv = NULL;
+	if(argc != 1)
+		exit(0);
+	while(1)
+	{
+		line = readline("minishell> ");
+		add_history(line);
+		checkeverything(line, envp);
+	}
+	return 0;
+}
