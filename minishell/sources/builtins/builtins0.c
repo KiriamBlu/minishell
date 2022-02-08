@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins0.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 22:33:30 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:47:42 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,11 @@ void checkforexit(char *line)
 				printf("minishell: exit: %s: numeric argument required\n", pcsline[1]);
 		exit(ft_atoi(pcsline[1]));
 	}
+
+
+
+
+
+
+	
 }
