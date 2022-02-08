@@ -6,15 +6,24 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 22:34:33 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/08 23:52:15 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void checkeverything(char *line, char **envp)
+void checkeverything(char *line, char **envp, t_minib *minilst)
 {
-	checkforexit(line);
+	char	**auxline;
+
+	auxline = ft_split(line, ' ');
+	checkforexit(auxline);
+	//checkforcd(auxline, envp, minilst)
+	if(ft_strcmp(&line[0], "pwd") == 3)
+	{
+		printf("%s\n", minilst->pwd);
+		return ;
+	}
 }
 
 void leaks(void)
@@ -24,6 +33,7 @@ void leaks(void)
 
 int main(int argc, const char **argv, char **envp)
 {
+	t_minib	minilst;
 	char *line;
 
 	//atexit(leaks);
@@ -32,9 +42,11 @@ int main(int argc, const char **argv, char **envp)
 		exit(0);
 	while(1)
 	{
+		minilst.pwd = getcwd(NULL, 0);
+		minilst.envp = envp;
 		line = readline("minishell> ");
 		add_history(line);
-		checkeverything(line, envp);
+		checkeverything(line, envp, &minilst);
 	}
 	return 0;
 }

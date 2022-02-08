@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 22:22:31 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/08 23:33:08 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_cmds
+typedef struct s_minib
 {
-	char	**args;
-}	t_cmds;
+	char	**envp;
+	char	*pwd;
+}	t_minib;
 
 void	freemat(char **mat);
-void	checkforexit(char *line);
+void	checkforexit(char **line);
+int		find_env(char *name, char **env);
+void	checkforcd(char *str, char **envp, t_minib *minilst);
+void	rebuild_pwd(void);
 
 #endif
