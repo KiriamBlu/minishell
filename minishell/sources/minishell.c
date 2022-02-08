@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 23:52:15 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/09 00:01:20 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void checkeverything(char *line, char **envp, t_minib *minilst)
 		printf("%s\n", minilst->pwd);
 		return ;
 	}
+	ft_parshe(line);
 }
 
 void leaks(void)

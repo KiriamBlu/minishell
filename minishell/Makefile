@@ -3,7 +3,8 @@ LIBFT_NAME = libft.a
 
 SRCS =  ./sources/minishell.c \
 		./sources/utils/utils0.c \
-		./sources/builtins/builtins0.c
+		./sources/builtins/builtins0.c \
+		./sources/parshe/parshe0.c
 
 OBJS = ${SRCS:.c=.o}
 
