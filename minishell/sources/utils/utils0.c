@@ -6,17 +6,23 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/08 23:33:02 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/09 00:22:09 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	rebuild_pwd(void)
+size_t	ft_maxlen(const char *s1, const char *s2)
 {
-	char	*pwd;
+	size_t	len1;
+	size_t	len2;
 
-	//pwd = getpwd(NULL, 0);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	if (len1 >= len2)
+		return (len1);
+	else
+		return (len2);
 }
 
 int	find_env(char *name, char **env)

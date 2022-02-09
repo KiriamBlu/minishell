@@ -3,28 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/09 00:01:20 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/09 01:51:13 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void checkeverything(char *line, char **envp, t_minib *minilst)
+void checkeverything(char *line, t_minib *minilst)
 {
 	char	**auxline;
 
 	auxline = ft_split(line, ' ');
 	checkforexit(auxline);
 	//checkforcd(auxline, envp, minilst)
-	if(ft_strcmp(&line[0], "pwd") == 3)
+	checkforenv(auxline, minilst->envp);
+	if (ft_strcmp(auxline[0], "pwd") == 3)
 	{
+		if (auxline[1])
+		{
+			printf("minishell: too many arguments\n");
+			return ;
+		}
 		printf("%s\n", minilst->pwd);
 		return ;
 	}
-	ft_parshe(line);
+	//ft_parshe(line);
 }
 
 void leaks(void)
@@ -47,7 +53,7 @@ int main(int argc, const char **argv, char **envp)
 		minilst.envp = envp;
 		line = readline("minishell> ");
 		add_history(line);
-		checkeverything(line, envp, &minilst);
+		checkeverything(line, &minilst);
 	}
 	return 0;
 }

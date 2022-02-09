@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/09 00:00:03 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/09 01:44:45 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ typedef struct s_cmds
 void	freemat(char **mat);
 void	checkforexit(char **line);
 int		find_env(char *name, char **env);
-void	checkforcd(char *str, char **envp, t_minib *minilst);
+void	checkforcd(char **line, char **envp, t_minib *minilst);
 void	rebuild_pwd(void);
 int		ft_comsize(char *line);
 void	ft_parshe(char *line);
+size_t	ft_maxlen(const char *s1, const char *s2);
+void	checkforenv(char **line, char **envp);
 
 #endif
