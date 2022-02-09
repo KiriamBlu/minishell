@@ -34,7 +34,8 @@ SRCS	=	ft_bzero.c \
 			ft_putnbr_fd.c \
 			ft_putstr_fd.c \
 			ft_strmapi.c \
-			ft_striteri.c
+			ft_striteri.c \
+			ft_splitmod.c
 
 SRCS_B	=	ft_lstnew.c \
 			ft_lstadd_back.c \

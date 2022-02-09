@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/08 23:58:51 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/09 01:54:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@ int	ft_comsize(char *line)
 {
 	int	i;
 	int	a;
+	int	k;
 
 	i = -1;
 	a = 0;
-	while (line[++i] == ';')
-		a++;
-	if (a > 0)
-		return (a);
+	k = 0;
 	i = -1;
-	while (line[++i] == '|')
-		a++;
-	if (a == 0)
-		a++;
+	while (line[++i])
+	{
+		if (line[i] == '"')
+			while (line[i] != '"')
+				i++;
+		if (line[i] == '|')
+			a++;
+	}
 	return (a);
 }
 
@@ -41,10 +43,13 @@ void	ft_parshe(char *line)
 	j = ft_comsize(line);
 	j++;
 	comands = malloc(sizeof(t_cmds) * j);
-	if (ft_strnstr(line, ";", ft_strlen(line)) != 0)
-		cmd = ft_split(line, ';');
+	if ((ft_strchr(line, '|')) != NULL)
+		cmd = ft_splitmod(line, '|');
 	else
-		cmd = ft_split(line, '|');
+	{
+		cmd = malloc(sizeof(char *) * 1);
+		cmd[0] = ft_strdup(line);
+	}
 	i = -1;
 	while (cmd[++i])
 		printf("%s\n", cmd[i]);
