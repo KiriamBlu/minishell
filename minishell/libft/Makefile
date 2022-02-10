@@ -55,7 +55,7 @@ CFLAGS	= -Wall -Werror -Wextra
 
 CC 		= gcc
 
-all: ${NAME}
+all: ${NAME} bonus
 
 ${NAME}: ${OBJS}
 	${CC} ${CFLAGS} -c ${SRCS}

@@ -6,13 +6,13 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/10 14:49:47 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/10 20:06:49 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char **getdonexp(char **envp, t_minib *minilst)
+char **getdonexp(char **envp, int i)
 {
 	char	**aux;
 	int		j;
@@ -20,7 +20,7 @@ char **getdonexp(char **envp, t_minib *minilst)
 	int		count;
 
 
-	aux = malloc(sizeof(char *) * minilst->envindex);
+	aux = malloc(sizeof(char *) * i);
 	k = -1;
 	while(envp[++k])
 	{
@@ -36,7 +36,7 @@ char **getdonexp(char **envp, t_minib *minilst)
 	return(aux);
 }
 
-char **getaddexp(char *add, t_minib *minilst)
+/*char **getaddexp(char *add, t_minib *minilst)
 {
 	int		i;
 	int		j;
@@ -78,4 +78,4 @@ void checkforexport(char **line, t_minib *minilst)
 		return ;
 	}
 	minilst->exp = getaddexp(line[1], minilst);
-}
+}*/

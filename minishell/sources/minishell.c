@@ -6,11 +6,27 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/10 14:51:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/10 20:19:57 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void prepbasics(t_minib *minilst, char **envp)
+{
+	int i;
+	char **aux;
+
+	minilst->pwd = getcwd(NULL, 0);
+	i = 0;
+	while(envp[i])
+		i++;
+	aux = getdonexp(envp, i);
+	minilst->envindex = i;
+	minilst->envp = createarraylst(envp, minilst->envindex);
+	minilst->exp = createarraylst(aux, minilst->envindex);
+	free(aux);
+}
 
 void checkeverything(char *line, t_minib *minilst)
 {
@@ -20,7 +36,7 @@ void checkeverything(char *line, t_minib *minilst)
 	if(!auxline[0])
 		return ;
 	checkforexit(auxline);
-	checkforcd(auxline, minilst->envp, minilst);
+	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
 	if (ft_strcmp(auxline[0], "pwd") == 3)
 	{
@@ -32,30 +48,9 @@ void checkeverything(char *line, t_minib *minilst)
 		printf("%s\n", minilst->pwd);
 		return ;
 	}
-	checkforexport(auxline, minilst);
+	//checkforexport(auxline, minilst);
 	//ft_parshe(line);
 	return ;
-}
-
-void prepbasics(t_minib *minilst, char **envp)
-{
-	int i;
-
-	i = 0;
-	minilst->pwd = getcwd(NULL, 0);
-	while(envp[i])
-		i++;
-	minilst->envindex = i;
-	minilst->envp = malloc(sizeof(char *) * minilst->envindex);
-	i = -1;
-	while(envp[++i])
-		minilst->envp[i] = ft_strdup(envp[i]);
-	minilst->exp = getdonexp(envp, minilst);
-}
-
-void leaks(void)
-{
-	system("leaks minishell");
 }
 
 int main(int argc, const char **argv, char **envp)
@@ -63,7 +58,6 @@ int main(int argc, const char **argv, char **envp)
 	t_minib	minilst;
 	char *line;
 
-	//atexit(leaks);
 	argv = NULL;
 	if(argc != 1)
 		exit(0);

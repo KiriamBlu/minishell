@@ -6,19 +6,34 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/09 05:45:29 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/10 20:19:08 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+void	checkforenv(char **line, t_list *envp)
+{
+	int i;
+
+	i = -1;
+	if (ft_strcmp(line[0], "env") == 3)
+	{
+		if(line[1])
+			return ;
+		printlist(envp);
+	}
+}
+
 void	cd_update_env(int i[2], t_minib *minilst)
 {
 	char *tmp;
-
+ 
+	delpos(minilst->envp, i[1]);
+	putinpos(minilst->envp, i[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, i[0]) + 4));
 	tmp = getcwd(NULL, 0);
-	minilst->envp[i[1]] = ft_strjoin("OLDPWD=", minilst->envp[i[0]] + 4);
-	minilst->envp[i[0]]= ft_strjoin("PWD=", tmp);
+	delpos(minilst->envp, i[0]);
+	putinpos(minilst->envp, i[0], ft_strjoin("PWD=", tmp));
 	free(tmp);
 }
 
@@ -30,7 +45,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 	if (!str)
 	{
 		if (home != -1)
-			s = ft_strdup(minilst->envp[home] + 5);
+			s = ft_strdup(getlineinenv(minilst->envp, home) + 5);
 		else
 			printf("minishell: cd: HOME not set\n");
 	}
@@ -40,36 +55,25 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 }
 
 
-void	checkforcd(char **line, char **envp, t_minib *minilst)
+void	checkforcd(char **line, t_minib *minilst)
 {
 	char	*str;
 	int		i[2];
 
 	if (ft_strcmp(line[0], "cd") != 2)
 		return	;
-	if (find_env("PWD", envp) == -1)
+	if (getposinlst(minilst->envp, "PWD") == -1)
+	{
 		minilst->pwd = getcwd(NULL, 0);
-	i[0] = find_env("PWD", envp);
-	i[1] = find_env("OLDPWD", envp);
-	str = check_pwd(line[1], find_env("HOME", envp), minilst);
+		putinpos(minilst->envp, 16, minilst->pwd);
+	}
+	i[0] = getposinlst(minilst->envp, "PWD");
+	i[1] = getposinlst(minilst->envp, "OLDPWD");
+	str = check_pwd(line[1], getposinlst(minilst->envp, "HOME"), minilst);
 	if(chdir(str) == -1)
 		minilst->pwd = getcwd(NULL, 0);
 	cd_update_env(i, minilst);
 	free(str);
-}
-
-void	checkforenv(char **line, char **envp)
-{
-	int i;
-
-	i = -1;
-	if (ft_strcmp(line[0], "env") == 3)
-	{
-		if(line[1])
-			return ;
-		while(envp[++i])
-			printf("%s\n", envp[i]);
-	}
 }
 
 void checkforexit(char **line)
