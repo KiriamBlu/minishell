@@ -52,6 +52,7 @@ int		getposinlst(t_list *list, char *line);
 char	*getlineinenv(t_list *list, int i);
 t_list	*createarraylst(char **array, int index);
 void	checkforcd(char **line, t_minib *minilst);
+char	**createlstarray(t_list *lst, int index);
 
 //DEBUGGIN TOOLS
 

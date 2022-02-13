@@ -5,7 +5,8 @@ SRCS =  ./sources/minishell.c \
 		./sources/utils/utils0.c \
 		./sources/builtins/builtins0.c \
 		./sources/parshe/parshe0.c \
-		./sources/builtins/builtins1.c
+		./sources/builtins/builtins1.c \
+		./sources/utils/utils1.c
 
 OBJS = ${SRCS:.c=.o}
 

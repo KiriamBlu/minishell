@@ -19,7 +19,6 @@ char **getdonexp(char **envp, int i)
 	int		k;
 	int		count;
 
-
 	aux = malloc(sizeof(char *) * i);
 	k = -1;
 	while(envp[++k])
@@ -62,7 +61,7 @@ char **getdonexp(char **envp, int i)
 	}
 	freemat(minilst->exp);
 	return(aux);
-}
+}*/
 
 void checkforexport(char **line, t_minib *minilst)
 {
@@ -73,9 +72,8 @@ void checkforexport(char **line, t_minib *minilst)
 		return	;
 	if(!line[1])
 	{
-		while(minilst->exp[++i])
-			printf("%s\n", minilst->exp[i]);
+		printlist(minilst->exp);
 		return ;
 	}
-	minilst->exp = getaddexp(line[1], minilst);
-}*/
+	//minilst->exp = getaddexp(line[1], minilst);
+}

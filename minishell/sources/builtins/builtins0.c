@@ -37,7 +37,7 @@ void	cd_update_env(int i[2], t_minib *minilst)
 	free(tmp);
 }
 
-char	*check_pwd(char *str, int home, t_minib *minilst)
+char	*check_pwd(char *str, int home, int opwd, t_minib *minilst)
 {
 	char	*s;
 
@@ -48,6 +48,16 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 			s = ft_strdup(getlineinenv(minilst->envp, home) + 5);
 		else
 			printf("minishell: cd: HOME not set\n");
+	}
+	else if(!ft_strncmp(str, "-", ft_strlen(str)))
+	{
+		if(opwd != -1)
+		{
+			s = ft_strdup(getlineinenv(minilst->envp, opwd) + 7);
+			printf("%s\n", s);
+		}
+		else
+			printf("minishell: cd: OLDPWD not set\n");
 	}
 	else
 		s = ft_strdup(str);
@@ -69,10 +79,14 @@ void	checkforcd(char **line, t_minib *minilst)
 	}
 	i[0] = getposinlst(minilst->envp, "PWD");
 	i[1] = getposinlst(minilst->envp, "OLDPWD");
-	str = check_pwd(line[1], getposinlst(minilst->envp, "HOME"), minilst);
+	str = check_pwd(line[1], getposinlst(minilst->envp, "HOME"), getposinlst(minilst->envp, "OLDPWD"), minilst);
 	if(chdir(str) == -1)
+	{
 		minilst->pwd = getcwd(NULL, 0);
-	cd_update_env(i, minilst);
+		printf("minishell: cd: %s: No such file or directory\n", str);
+	}
+	else
+		cd_update_env(i, minilst);
 	free(str);
 }
 

@@ -45,10 +45,11 @@ void checkeverything(char *line, t_minib *minilst)
 			printf("minishell: too many arguments\n");
 			return ;
 		}
+		minilst->pwd = getcwd(NULL, 0);
 		printf("%s\n", minilst->pwd);
 		return ;
 	}
-	//checkforexport(auxline, minilst);
+	checkforexport(auxline, minilst);
 	//ft_parshe(line);
 	return ;
 }
