@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/10 20:06:49 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/14 15:40:07 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char **getdonexp(char **envp, int i)
 	int		k;
 	int		count;
 
-	aux = malloc(sizeof(char *) * i);
+	aux = malloc(sizeof(char *) * i + 1);
 	k = -1;
 	while(envp[++k])
 	{
