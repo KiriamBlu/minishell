@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/09 01:54:59 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/15 20:09:33 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,26 @@ int	ft_comsize(char *line)
 {
 	int	i;
 	int	a;
-	int	k;
 
-	i = -1;
 	a = 0;
-	k = 0;
-	i = -1;
-	while (line[++i])
+	i = 0;
+	while (line[i])
 	{
 		if (line[i] == '"')
-			while (line[i] != '"')
-				i++;
+		{
+			while (line[++i] != '"')
+				;
+			i++;
+		}
+		else if (line[i] == '\'')
+		{
+			while (line[++i] != '\'')
+				;
+			i++;
+		}
 		if (line[i] == '|')
 			a++;
+		i++;
 	}
 	return (a);
 }
@@ -42,8 +49,8 @@ void	ft_parshe(char *line)
 
 	j = ft_comsize(line);
 	j++;
-	comands = malloc(sizeof(t_cmds) * j);
-	if ((ft_strchr(line, '|')) != NULL)
+	/* comands = malloc(sizeof(t_cmds) * j); */
+	if ((ft_strchr(line, '|')) != NULL && j > 1)
 		cmd = ft_splitmod(line, '|');
 	else
 	{
@@ -53,10 +60,8 @@ void	ft_parshe(char *line)
 	i = -1;
 	while (cmd[++i])
 		printf("%s\n", cmd[i]);
-	i = -1;
-	while (cmd[++i])
-	{
-		comands[i].args = cmd[i];
-		printf("%s\n", comands[i].args);
-	}
+	freemat(cmd);
+	//muchas enttradas repetidas falla;
 }
+
+//"hola" "|" | pepe "|"

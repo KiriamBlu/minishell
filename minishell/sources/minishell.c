@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:23:21 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/15 20:07:56 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void checkeverything(char *line, t_minib *minilst)
 	auxline = ft_split(line, ' ');
 	if(!auxline[0])
 		return ;
+	//ft_parshe(line);
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
@@ -54,7 +55,6 @@ void checkeverything(char *line, t_minib *minilst)
 		return ;
 	}
 	checkforexport(auxline, minilst);
-	//ft_parshe(line);
 	freemat(auxline);
 	return ;
 }
