@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:35:31 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/17 18:10:02 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	cd_update_env(int i[2], t_minib *minilst)
 {
 	char *tmp;
 
-	delpos(minilst->envp, i[1]);
+	delpos(&minilst->envp, i[1]);
 	putinpos(minilst->envp, i[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, i[0]) + 4));
 	tmp = getcwd(NULL, 0);
-	delpos(minilst->envp, i[0]);
+	delpos(&minilst->envp, i[0]);
 	putinpos(minilst->envp, i[0], ft_strjoin("PWD=", tmp));
 	free(tmp);
 }
@@ -85,7 +85,8 @@ void	checkforcd(char **line, t_minib *minilst)
 	str = check_pwd(line[1], getposinlst(minilst->envp, "HOME"), getposinlst(minilst->envp, "OLDPWD"), minilst);
 	if(chdir(str) == -1)
 	{
-		minilst->pwd = getcwd(NULL, 0);
+		if(!minilst->pwd)
+			minilst->pwd = getcwd(NULL, 0);
 		if(str)
 			printf("minishell: cd: %s: No such file or directory\n", str);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 20:07:56 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/17 15:04:45 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void checkeverything(char *line, t_minib *minilst)
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
-	if (ft_strcmp(auxline[0], "pwd") == 3)
+	if (ft_strncmp(auxline[0], "pwd", ft_strlen(auxline[0])) == 0)
 	{
 		if (auxline[1])
 		{
@@ -55,6 +55,7 @@ void checkeverything(char *line, t_minib *minilst)
 		return ;
 	}
 	checkforexport(auxline, minilst);
+	checkforunset(auxline, minilst);
 	freemat(auxline);
 	return ;
 }

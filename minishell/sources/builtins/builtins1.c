@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:14:41 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/17 19:00:15 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char **getdonexp(char **envp, int i)
 			if (ft_strncmp(envp[k], envp[j], ft_strlen(envp[j]) + 1) > 0)
 				count++;
 		}
-		aux[count] = ft_strjoin("declare -x ", envp[k]);
+		aux[count] = ft_strdup(envp[k]);
 	}
 	return(aux);
 }
@@ -42,37 +42,63 @@ void getaddexp(char *add, t_minib *minilst)
 	int i;
 		
 	i = getvariable(add, minilst);
-	if(i == minilst->envindex)
+	printf("%d\n", i);
+	if(i == minilst->envindex + 1)
 	{
-		aux = ft_strchr(getlineinenv(minilst->envp, i), '=');
+		if(ft_strchr(add, '='))
+		{
+			putinpos(minilst->envp, i, ft_strdup(add));
+			putinpos(minilst->exp, i, ft_strdup(add));
+		}
+		else
+			putinpos(minilst->exp, i, ft_strdup(add)); //ESTAS POR AQUI, esto se mete en el sitio correcto
+	}
+	else
+	{
+		/*aux = ft_strchr(getlineinenv(minilst->envp, i), '=');
 		tmp = ft_strdup(ft_strchr(add, '='));
 		if (ft_strcmp(tmp, aux) == 0)
-			return ;
-		else
-		{
-			delpos(minilst->envp, i);
-			putinpos(minilst->envp, i, ft_strdup(add));
-		}
-		free(tmp);
-		free(aux);
+			return ;*/
+		printf("KK\n");
 	}
-	/*else
-	{
-
-	}*/
 }
 
 void checkforexport(char **line, t_minib *minilst)
 {
-	int	i;
-
-	i = -1;
 	if (ft_strncmp(line[0], "export", ft_strlen(line[0])) != 0)
 		return	;
 	if(!line[1])
 	{
-		printlist(minilst->exp);
+		printlistexp(minilst->exp);
 		return ;
 	}
 	getaddexp(line[1], minilst);
+}
+
+void checkforunset(char **line, t_minib *minilst)
+{
+	int i;
+	int j;
+
+	j = 1;
+	if (ft_strncmp(line[0], "unset", ft_strlen(line[0])) != 0)
+		return	;
+	if(!line[1])
+		return ;
+	while(line[j])
+	{
+		i = getposinlst(minilst->envp, line[j]);
+		if(i)
+		{
+			minilst->envindex--;
+			delpos(&minilst->envp, i);
+		}
+		i = getposinlst(minilst->exp, line[j]);
+		if(i)
+		{
+			minilst->expindex--;
+			delpos(&minilst->exp, i);
+		}
+		j++;
+	}
 }

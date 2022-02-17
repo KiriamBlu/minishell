@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:29:45 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/17 18:10:43 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void putinpos(t_list *list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	aux->next = tmp;
 }
 
-void delpos(t_list *list, int pos)
+void delpos(t_list **list, int pos)
 {
 	int i;
 	t_list *aux;
@@ -45,13 +45,13 @@ void delpos(t_list *list, int pos)
 	i = 1;
 	if(pos == 1)
 	{
-		fuckeveryting(list);
+		*list = fuckeveryting(*list);
 		return ;
 	}
 	while(++i < pos)
-		list = list->next;
-	aux = list->next;
-	list->next = list->next->next;
+		*list = (*list)->next;
+	aux = (*list)->next;
+	(*list)->next = (*list)->next->next;
 	aux->next = NULL;
 	free(aux->content);
 	free(aux);

@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:16:22 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/17 15:26:31 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ void	printlist(t_list *list)
 	j = ft_lstsize(list);
 	while(i < j)
 	{
+		printf("%s\n", (char *)list->content);
+		list = list->next;
+		i++;
+	}
+}
+void	printlistexp(t_list *list)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = ft_lstsize(list);
+	while(i < j)
+	{
+		printf("declare -x ");
 		printf("%s\n", (char *)list->content);
 		list = list->next;
 		i++;
@@ -79,21 +94,23 @@ int getvariable(char *add, t_minib *minilst)
 	char *caux;
 	int i;
 	
-	i = 0;
+	i = 1;
+	if(!ft_strchr(add, '='))
+		return(minilst->envindex + 1);
 	tmp = ft_strdup(ft_strchr(add, '='));
 	aux = ft_substr(add, 0 , ft_strlen(add) - ft_strlen(tmp));
 	eaux = ft_strdup(getlineinenv(minilst->envp, i));
 	baux = ft_strdup(ft_strchr(eaux, '='));
 	caux = ft_substr(eaux, 0 , ft_strlen(eaux) - ft_strlen(baux));
-	while(strcmp(caux, aux) != 0 && i < minilst->envindex)
+	while(strcmp(caux, aux) != 0 && i <= minilst->envindex)
 	{
-		i++;
 		free(eaux);
 		free(baux);
 		free(caux);
 		eaux = ft_strdup(getlineinenv(minilst->envp, i));
 		baux = ft_strdup(ft_strchr(eaux, '='));
 		caux = ft_substr(eaux, 0 , ft_strlen(eaux) - ft_strlen(baux));
+		i++;
 	}
 	free(eaux);
 	free(baux);
