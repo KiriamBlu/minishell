@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/15 20:09:33 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/17 19:04:16 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ int	ft_comsize(char *line)
 
 void	ft_parshe(char *line)
 {
-	t_cmds	*comands;
 	int		i;
 	int		j;
 	char	**cmd;
 
 	j = ft_comsize(line);
 	j++;
-	/* comands = malloc(sizeof(t_cmds) * j); */
 	if ((ft_strchr(line, '|')) != NULL && j > 1)
 		cmd = ft_splitmod(line, '|');
 	else
@@ -61,7 +59,6 @@ void	ft_parshe(char *line)
 	while (cmd[++i])
 		printf("%s\n", cmd[i]);
 	freemat(cmd);
-	//muchas enttradas repetidas falla;
 }
 
 //"hola" "|" | pepe "|"

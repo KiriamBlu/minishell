@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:06:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/15 19:41:39 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/17 19:03:47 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,11 @@ char	**ft_splitmod(char *s, char c)
 			split[index][i++] = s[aux++];
 		}
 		while (s[aux] == c && s[aux] != '\0')
+		{
+			if (s[aux + 1] == ' ')
+				aux++;
 			aux++;
+		}
 		split[index][i] = '\0';
 		i = 0;
 		index++;

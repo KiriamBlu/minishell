@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 15:04:45 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/17 19:07:32 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ void prepbasics(t_minib *minilst, char **envp)
 	minilst->expindex = i;
 	freemat(aux);
 }
+
+char	*expansion(t_list *list, char *line)
+{
+	char *aux;
+	
+	free(line);;
+	return(aux);
+}
+
 
 void checkeverything(char *line, t_minib *minilst)
 {
