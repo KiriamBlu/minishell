@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 18:10:02 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 16:54:07 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,20 @@ void	checkforenv(char **line, t_list *envp)
 
 void	cd_update_env(int i[2], t_minib *minilst)
 {
-	char *tmp;
+	char	*tmp;
+	int		j[2];
 
 	delpos(&minilst->envp, i[1]);
-	putinpos(minilst->envp, i[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, i[0]) + 4));
+	putinpos(&minilst->envp, i[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, i[0]) + 4));
 	tmp = getcwd(NULL, 0);
 	delpos(&minilst->envp, i[0]);
-	putinpos(minilst->envp, i[0], ft_strjoin("PWD=", tmp));
+	putinpos(&minilst->envp, i[0], ft_strjoin("PWD=", tmp));
+	j[0] = getposinlst(minilst->exp, "PWD");
+	j[1] = getposinlst(minilst->exp, "OLDPWD");
+	delpos(&minilst->exp, j[1]);
+	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0] - 1) + 4)); //SI PETA ES POR EL (J[0] - 1)
+	delpos(&minilst->exp, j[0]);
+	putinpos(&minilst->exp, j[0], ft_strjoin("PWD=", tmp));
 	free(tmp);
 }
 
@@ -78,7 +85,7 @@ void	checkforcd(char **line, t_minib *minilst)
 	if (getposinlst(minilst->envp, "PWD") == -1)
 	{
 		minilst->pwd = getcwd(NULL, 0);
-		putinpos(minilst->envp, 16, minilst->pwd);
+		putinpos(&minilst->envp, 16, minilst->pwd);
 	}
 	i[0] = getposinlst(minilst->envp, "PWD");
 	i[1] = getposinlst(minilst->envp, "OLDPWD");

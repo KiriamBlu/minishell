@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 18:08:38 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 15:30:18 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,43 @@ typedef struct s_minib
 	char	*pwd;
 }	t_minib;
 
-void	printlist(t_list *list);
+//MINISHELLSTRUCTURE
+
+char	**getdonexp(char **envp, int i);
 void	prepbasics(t_minib *minilst, char **envp);
+
+//BUILTINS
+
 void	checkforexit(char **line, t_minib *minilst);
-void	ft_parshe(char *line);
 void	checkforenv(char **line, t_list *envp);
 void	checkforexport(char **line, t_minib *minilst);
-char	**getdonexp(char **envp, int i);
-void	freemat(char **mat);
-void	putinpos(t_list *list, int pos, void *newcontent);
-void	delpos(t_list **list, int pos);
-int		getposinlst(t_list *list, char *line);
-char	*getlineinenv(t_list *list, int i);
-t_list	*createarraylst(char **array);
 void	checkforcd(char **line, t_minib *minilst);
-char	**createlstarray(t_list *lst, int index);
-int		getvariable(char *add, t_minib *minilst);
-void	freeeverything(t_minib *minilst);
 void	*fuckeveryting(t_list *list);
 void	checkforunset(char **line, t_minib *minilst);
-void	printlistexp(t_list *list);
+
+//LEXER
+
+void	ft_parshe(char *line);
+
+//UTILS
+
+int		getgoodpositionexp(t_list *list, char *add);
+void	freeeverything(t_minib *minilst);
+char	**createlstarray(t_list *lst, int index);
+void	freemat(char **mat);
+void	putinpos(t_list **list, int pos, void *newcontent);
+void	delpos(t_list **list, int pos);
+int 	isinexp(t_list *list, char *line);
+char	*getlineinenv(t_list *list, int i);
+t_list	*createarraylst(char **array);
+int		getvariable(char *add, t_minib *minilst);
+int		itsinenv(char *add, t_list *list);
+int		getposinlst(t_list *list, char *line);
+char	*getnamevariable(char *add);
 
 //DEBUGGIN TOOLS
 
 void	printlist(t_list *list);
+void	printlistexp(t_list *list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 15:26:31 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 16:41:52 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ char *getlineinenv(t_list *list, int i)
 {
 	int j;
 
-	j = -1;
-	while(++j < i - 1)
+	j = 0;
+	while(++j < i)
 		list = list->next;
 	return(list->content);
 }

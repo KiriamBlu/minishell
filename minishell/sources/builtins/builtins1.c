@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 19:00:15 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 17:07:34 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,22 @@ void getaddexp(char *add, t_minib *minilst)
 	char *tmp;
 	char *aux;
 	int i;
-		
+
+
 	i = getvariable(add, minilst);
-	printf("%d\n", i);
-	if(i == minilst->envindex + 1)
+	if(itsinenv(add, minilst->exp) != -1)
 	{
 		if(ft_strchr(add, '='))
 		{
-			putinpos(minilst->envp, i, ft_strdup(add));
-			putinpos(minilst->exp, i, ft_strdup(add));
+			putinpos(&minilst->envp, i, ft_strdup(add));
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
 		}
 		else
-			putinpos(minilst->exp, i, ft_strdup(add)); //ESTAS POR AQUI, esto se mete en el sitio correcto
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
 	}
 	else
 	{
-		/*aux = ft_strchr(getlineinenv(minilst->envp, i), '=');
-		tmp = ft_strdup(ft_strchr(add, '='));
-		if (ft_strcmp(tmp, aux) == 0)
-			return ;*/
-		printf("KK\n");
+		printf("kk\n");
 	}
 }
 
