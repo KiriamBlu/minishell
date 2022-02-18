@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:52:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:24:36 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	void *kk;
 	t_list *tmp;
 
-	i = 1;
-	if (pos == 1)
+	i = 0;
+	if (pos == 0)
 	{
 		ft_lstadd_front(list, ft_lstnew(newcontent));
 		return ;
@@ -51,8 +51,8 @@ void delpos(t_list **list, int pos)
 	t_list *aux;
 	void *kk;
 
-	i = 1;
-	if(pos == 1)
+	i = 0;
+	if(pos == 0)
 	{
 		*list = fuckeveryting(*list);
 		return ;
@@ -92,7 +92,7 @@ int	getposinlst(t_list *list, char *line)
 	char *tmp;
 
 	j = ft_lstsize(list);
-	i = 1;
+	i = 0;
 	while(i < j)
 	{
 		tmp = getnamevariable(list->content);

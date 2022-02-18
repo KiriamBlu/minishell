@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:54:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:18:47 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	cd_update_env(int i[2], t_minib *minilst)
 	j[0] = getposinlst(minilst->exp, "PWD");
 	j[1] = getposinlst(minilst->exp, "OLDPWD");
 	delpos(&minilst->exp, j[1]);
-	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0] - 1) + 4)); //SI PETA ES POR EL (J[0] - 1)
+	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0]) + 4));
 	delpos(&minilst->exp, j[0]);
 	putinpos(&minilst->exp, j[0], ft_strjoin("PWD=", tmp));
 	free(tmp);

@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:41:52 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:21:56 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int getvariable(char *add, t_minib *minilst)
 	char *caux;
 	int i;
 	
-	i = 1;
+	i = 0;
 	if(!ft_strchr(add, '='))
 		return(minilst->envindex + 1);
 	tmp = ft_strdup(ft_strchr(add, '='));
