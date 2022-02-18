@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 15:30:18 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 18:07:32 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	checkforunset(char **line, t_minib *minilst);
 
 //LEXER
 
-void	ft_parshe(char *line);
+char	**lexer(t_list *list, char *line);
+char	**ft_prepare(char *line);
 
 //UTILS
 

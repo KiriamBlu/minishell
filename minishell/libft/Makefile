@@ -52,7 +52,7 @@ OBJS	= $(SRCS:.c=.o)
 
 OBJS_B	= $(SRCS_B:.c=.o)
 
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -g
 
 CC 		= gcc
 

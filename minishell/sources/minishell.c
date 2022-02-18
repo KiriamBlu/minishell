@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/17 19:07:32 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/18 18:16:49 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
-char	*expansion(t_list *list, char *line)
-{
-	char *aux;
-	
-	free(line);;
-	return(aux);
-}
-
-
 void checkeverything(char *line, t_minib *minilst)
 {
 	char	**auxline;
@@ -45,7 +36,7 @@ void checkeverything(char *line, t_minib *minilst)
 	auxline = ft_split(line, ' ');
 	if(!auxline[0])
 		return ;
-	//ft_parshe(line);
+	//lexer(minilst->envp, line);
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);

@@ -4,10 +4,11 @@ LIBFT_NAME = libft.a
 SRCS =  ./sources/minishell.c \
 		./sources/utils/utils0.c \
 		./sources/builtins/builtins0.c \
-		./sources/parshe/parshe0.c \
+		./sources/lexer/lexer1.c  \
 		./sources/builtins/builtins1.c \
 		./sources/utils/utils1.c \
-		./sources/utils/utils2.c
+		./sources/utils/utils2.c \
+		./sources/lexer/lexer0.c 
 
 OBJS = ${SRCS:.c=.o}
 
@@ -17,7 +18,7 @@ EXE_DIR = ./
 
 CC := cc
 GCC := gcc
-CFLAGS := -Wall -Wextra #-Werror
+CFLAGS := -Wall -Wextra -g #-Werror
 MV := mv -f
 RM := rm -f
 

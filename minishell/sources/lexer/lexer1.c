@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parshe0.c                                          :+:      :+:    :+:   */
+/*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/17 19:04:16 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/17 19:22:10 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_comsize(char *line)
 	return (a);
 }
 
-void	ft_parshe(char *line)
+char	**ft_prepare(char *line)
 {
 	int		i;
 	int		j;
@@ -58,6 +58,7 @@ void	ft_parshe(char *line)
 	i = -1;
 	while (cmd[++i])
 		printf("%s\n", cmd[i]);
+	return (cmd);
 	freemat(cmd);
 }
 

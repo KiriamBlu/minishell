@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 17:07:34 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 18:23:36 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ void checkforunset(char **line, t_minib *minilst)
 	while(line[j])
 	{
 		i = getposinlst(minilst->envp, line[j]);
-		if(i)
+		if(i != -1)
 		{
 			minilst->envindex--;
 			delpos(&minilst->envp, i);
 		}
 		i = getposinlst(minilst->exp, line[j]);
-		if(i)
+		if(i != -1)
 		{
 			minilst->expindex--;
 			delpos(&minilst->exp, i);
