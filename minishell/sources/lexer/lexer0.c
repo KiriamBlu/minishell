@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/18 19:22:57 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 15:58:14 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	**ft_expandenv(char **aux, t_list *list)
 	return (expand);
 }
 
-char	*ft_newline(char *line, char **aux)
+/* char	*ft_newline(char *line, char **aux)
 {
 	int		i;
 	char	*newline;
@@ -124,13 +124,13 @@ char	*ft_newline(char *line, char **aux)
 	i = -1;
 	if 
 }
-
+ */
 char	**lexer(t_list *list, char *line)
 {
 	char	**aux;
 	char	*dollar;
 	int		i;
-	char	newline;
+	char	*newline;
 
 	dollar = ft_expenv(list, line);
 	if (!dollar)
@@ -142,12 +142,10 @@ char	**lexer(t_list *list, char *line)
 	aux = ft_split(dollar, '$');
 	aux = ft_expandenv(aux, list);
 	i = -1;
-	newline = ft_calloc(sizeof(char *) * 17);
-	newline = ft_newline(line, aux);
+	newline = ft_calloc(sizeof(char *), 17);
+	/* newline = ft_newline(line, aux); */
 	while (aux[++i])
 		printf("%s\n", aux[i]);
 	//aux = ft_prepare(expand);
 	return (0);
 }
-
-//arg = ft_strjoin(arg, ft_substr(ft_strchr(getlineinenv(list, getposinlst(list, arg)), '='), 1, ft_strlen(ft_strchr(getlineinenv(list, getposinlst(list, arg)), '='))));
