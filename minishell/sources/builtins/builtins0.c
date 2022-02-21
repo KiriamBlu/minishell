@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins0.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 19:49:25 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:46:39 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void checkforexit(char **line, t_minib *minilst)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(line[0], "exit", ft_strlen(line[0])) == 0)
+	if (ft_strcmp(line[0], "exit") == 4)
 	{
 		printf("exit\n");
 		if (!line[1])

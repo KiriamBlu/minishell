@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 20:23:46 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:58:33 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ void checkeverything(char *line, t_minib *minilst)
 {
 	char	**auxline;
 
-	auxline = ft_split(line, ' ');
-	if(!auxline[0])
-		return ;
-	lexer(minilst->envp, line);
+	auxline = lexer(minilst->envp, line);
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);

@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 19:09:36 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:57:27 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void freemat(char **mat)
+void	freemat(char **mat)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while(mat[++i])
+	while (mat[++i])
 		free(mat[i]);
 	free(mat);
 }

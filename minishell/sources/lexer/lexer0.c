@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/21 19:16:00 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 21:51:13 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,10 @@ char	*ft_position(t_list *list, char *aux)
 
 	i = 0;
 	i = getposinlst(list, aux);
-	printf("%d\n", i);
 	tmp = ft_calloc(sizeof(char), 1);
 	if (i < 0)
 		return (tmp);
-	tmp = getlineinenv(list, i);
+	tmp = getlineinenv(list, i + 1);
 	return (tmp);
 }
 
@@ -109,12 +108,7 @@ char	**ft_expandenv(char **aux, t_list *list)
 		temp = ft_calloc(sizeof(char), 1);
 		temp = ft_position(list, aux[i]);
 		expand[i] = ft_strdup(temp);
-		free(temp);
 	}
-	i = -1;
-	while (expand[++i])
-		printf("%s\n", expand[i]);
-	freemat(aux);
 	return (expand);
 }
 
@@ -144,7 +138,7 @@ char	*ft_newline(char *line, char **aux)
 			{
 				if (line[i] == '$')
 				{
-					while (aux[a][++j] != '=')
+					while (aux[a][++j] != '=' && line[i] != '\0')
 						i++;
 					while (aux[a][++j])
 						newline = ft_strjoinmod(newline, aux[a][j]);
@@ -157,7 +151,8 @@ char	*ft_newline(char *line, char **aux)
 		}
 		if (line[i] == '$')
 		{
-			while (aux[a][++j] != '=')
+			i++;
+			while (aux[a][++j] != '=' && line[i] != '\0')
 				i++;
 			while (aux[a][++j])
 				newline = ft_strjoinmod(newline, aux[a][j]);
@@ -166,7 +161,6 @@ char	*ft_newline(char *line, char **aux)
 		}
 		newline = ft_strjoinmod(newline, line[i]);
 	}
-	printf("%s\n", newline);
 	return (newline);
 }
 
@@ -183,14 +177,10 @@ char	**lexer(t_list *list, char *line)
 		aux = ft_prepare(line);
 		return (aux);
 	}
-	aux = NULL;
 	aux = ft_split(dollar, '$');
 	aux = ft_expandenv(aux, list);
 	i = -1;
-	newline = ft_calloc(sizeof(char *), 17);
 	newline = ft_newline(line, aux);
-	while (aux[++i])
-		printf("%s\n", aux[i]);
-	//aux = ft_prepare(expand);
-	return (0);
+	aux = ft_prepare(newline);
+	return (aux);
 }

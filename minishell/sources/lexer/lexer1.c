@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/17 19:22:10 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 20:48:41 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	ft_comsize(char *line)
 
 char	**ft_prepare(char *line)
 {
-	int		i;
 	int		j;
 	char	**cmd;
 
@@ -55,11 +54,7 @@ char	**ft_prepare(char *line)
 		cmd = malloc(sizeof(char *) * 1);
 		cmd[0] = ft_strdup(line);
 	}
-	i = -1;
-	while (cmd[++i])
-		printf("%s\n", cmd[i]);
 	return (cmd);
-	freemat(cmd);
 }
 
 //"hola" "|" | pepe "|"
