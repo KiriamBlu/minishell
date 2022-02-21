@@ -22,6 +22,18 @@ void freemat(char **mat)
 	free(mat);
 }
 
+void checkfrontandback(t_list **list, int pos, void *newcontent)
+{
+	void *k;
+
+	k = *list;
+	if(pos == 0)
+		ft_lstadd_front(list, ft_lstnew(newcontent));
+	else
+		ft_lstadd_back(list, ft_lstnew(newcontent));
+	*list = k;
+}
+
 void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 {
 	int i;
@@ -30,10 +42,11 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	t_list *tmp;
 
 	i = 0;
-	if (pos == 0)
+	if(pos == 0 || pos == ft_lstsize(*list))
 	{
-		ft_lstadd_front(list, ft_lstnew(newcontent));
-		return ;
+		printf("entro\n");
+		checkfrontandback(list, pos, newcontent);
+		return  ;
 	}
 	kk = *list;
 	while(++i < pos)

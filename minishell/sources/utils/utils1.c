@@ -96,7 +96,7 @@ int getvariable(char *add, t_minib *minilst)
 	
 	i = 0;
 	if(!ft_strchr(add, '='))
-		return(minilst->envindex + 1);
+		return(minilst->envindex);
 	tmp = ft_strdup(ft_strchr(add, '='));
 	aux = ft_substr(add, 0 , ft_strlen(add) - ft_strlen(tmp));
 	eaux = ft_strdup(getlineinenv(minilst->envp, i));
@@ -115,5 +115,5 @@ int getvariable(char *add, t_minib *minilst)
 	free(eaux);
 	free(baux);
 	free(caux);
-	return(i);
+	return(i - 1);
 }

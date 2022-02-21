@@ -47,8 +47,9 @@ void getaddexp(char *add, t_minib *minilst)
 	{
 		if(ft_strchr(add, '='))
 		{
-			putinpos(&minilst->envp, i, ft_strdup(add));
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
+			printf("%d\n", i);
+			putinpos(&minilst->envp, i, ft_strdup(add)); //PONER COMILLAS DESPUES DEL IGUAL
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));//PONER COMILLAS DESPUES DEL IGUAL
 		}
 		else
 			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
