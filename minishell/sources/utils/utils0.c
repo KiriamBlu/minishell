@@ -1,4 +1,3 @@
-
 #include "../../minishell.h"
 
 void	freemat(char **mat)
