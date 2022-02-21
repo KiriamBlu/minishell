@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 19:09:33 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 22:08:13 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char **createlstarray(t_list *lst, int index)
 	return (aux);
 }
 
-int getvariable(char *add, t_minib *minilst)
+int getvariable(char *add, t_list *list)
 {
 	char *aux;
 	char *caux;
@@ -94,21 +94,21 @@ int getvariable(char *add, t_minib *minilst)
 	int i;
 	
 	i = 1;
-	listsize = ft_lstsize(minilst->envp);
+	listsize = ft_lstsize(list);
 	if(!ft_strchr(add, '='))
-		return(minilst->envindex);
-	kk = minilst->envp;
+		return(listsize + 1);
+	kk = list;
 	aux = getnamevariable(add);
-	caux = getnamevariable(minilst->envp->content);
+	caux = getnamevariable(list->content);
 	while(strcmp(caux, aux) != 0 && i < listsize)
 	{
 		free(caux);
-		minilst->envp = minilst->envp->next;
-		caux = getnamevariable(minilst->envp->content);
+		list = list->next;
+		caux = getnamevariable(list->content);
 		i++;
 	}
 	free(caux);
 	free(aux);
-	minilst->envp = kk;
+	list = kk;
 	return(i);
 }
