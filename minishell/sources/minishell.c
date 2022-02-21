@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 20:23:46 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:59:49 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void checkeverything(char *line, t_minib *minilst)
 	auxline = ft_split(line, ' ');
 	if(!auxline[0])
 		return ;
-	lexer(minilst->envp, line);
+	//lexer(minilst->envp, line);
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
-	if (ft_strncmp(auxline[0], "pwd", ft_strlen(auxline[0])) == 0)
+	if (strcmp(auxline[0], "pwd") == 0)
 	{
 		free(minilst->pwd);
 		minilst->pwd = getcwd(NULL, 0);

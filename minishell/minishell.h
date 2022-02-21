@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 18:07:32 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 21:34:48 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	delpos(t_list **list, int pos);
 int 	isinexp(t_list *list, char *line);
 char	*getlineinenv(t_list *list, int i);
 t_list	*createarraylst(char **array);
-int		getvariable(char *add, t_minib *minilst);
+int		getvariable(char *add, t_list *list);
 int		itsinenv(char *add, t_list *list);
 int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);

@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 19:09:36 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:14:05 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ void delpos(t_list **list, int pos)
 	t_list *aux;
 	void *kk;
 
-	i = 0;
 	if(pos == 0)
 	{
 		*list = fuckeveryting(*list);
 		return ;
 	}
+	i = 0;
 	kk = *list;
 	while(++i < pos)
 		*list = (*list)->next;
