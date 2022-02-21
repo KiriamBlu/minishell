@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 15:18:03 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:24:36 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	t_list *tmp;
 
 	i = 0;
-	printf("%d\n", ft_lstsize(*list));
 	if(pos == 0 || pos == ft_lstsize(*list))
 	{
 		printf("entro\n");
