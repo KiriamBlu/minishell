@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 18:23:36 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 15:07:02 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void getaddexp(char *add, t_minib *minilst)
 	{
 		if(ft_strchr(add, '='))
 		{
-			putinpos(&minilst->envp, i, ft_strdup(add));
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
+			printf("%d\n", i);
+			putinpos(&minilst->envp, i, ft_strdup(add)); //PONER COMILLAS DESPUES DEL IGUAL
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));//PONER COMILLAS DESPUES DEL IGUAL
 		}
 		else
 			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));

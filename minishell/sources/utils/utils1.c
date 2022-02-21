@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:41:52 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 15:17:25 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int getvariable(char *add, t_minib *minilst)
 	char *caux;
 	int i;
 	
-	i = 1;
+	i = 0;
 	if(!ft_strchr(add, '='))
-		return(minilst->envindex + 1);
+		return(minilst->envindex);
 	tmp = ft_strdup(ft_strchr(add, '='));
 	aux = ft_substr(add, 0 , ft_strlen(add) - ft_strlen(tmp));
 	eaux = ft_strdup(getlineinenv(minilst->envp, i));
@@ -115,5 +115,5 @@ int getvariable(char *add, t_minib *minilst)
 	free(eaux);
 	free(baux);
 	free(caux);
-	return(i);
+	return(i - 1);
 }
