@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 19:23:46 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 19:09:42 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ int getgoodpositionexp(t_list *list, char *add)
 	while(j < i)
 	{
 		if(strcmp(add, list->content) < 0)
-		{
-			printf("%d\n", j);
 			return(j);
-		}
 		list = list->next;
 		j++;
 	}
@@ -78,4 +75,11 @@ int		itsinenv(char *add, t_list *list)
 	}
 	free(tmp);
 	return(1);
+}
+
+void	freeeverything(t_minib *minilst)
+{
+	ft_lstclear(minilst->envp, free);
+	ft_lstclear(minilst->exp, free);
+	free(minilst->pwd);
 }

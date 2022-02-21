@@ -41,13 +41,11 @@ void getaddexp(char *add, t_minib *minilst)
 	char *aux;
 	int i;
 
-
 	i = getvariable(add, minilst);
 	if(itsinenv(add, minilst->exp) != -1)
 	{
 		if(ft_strchr(add, '='))
 		{
-			printf("%d\n", i);
 			putinpos(&minilst->envp, i, ft_strdup(add)); //PONER COMILLAS DESPUES DEL IGUAL
 			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));//PONER COMILLAS DESPUES DEL IGUAL
 		}
@@ -60,6 +58,22 @@ void getaddexp(char *add, t_minib *minilst)
 	}
 }
 
+int checkadd(char *add)
+{
+	char *aux;
+	int i;
+
+	i = 0;
+	aux = getnamevariable(add);
+	while(aux[i])
+	{
+		if(ft_isalpha(aux[i]) == 0 && aux[i] != '_')
+			return(-1);
+		i++;
+	}
+	return(0);
+}
+
 void checkforexport(char **line, t_minib *minilst)
 {
 	if (ft_strncmp(line[0], "export", ft_strlen(line[0])) != 0)
@@ -68,6 +82,11 @@ void checkforexport(char **line, t_minib *minilst)
 	{
 		printlistexp(minilst->exp);
 		return ;
+	}
+	if(checkadd(line[1]) == -1)
+	{
+		printf("minishell: export: %s: not a valid identifier\n", line[1]);
+		return;
 	}
 	getaddexp(line[1], minilst);
 }
