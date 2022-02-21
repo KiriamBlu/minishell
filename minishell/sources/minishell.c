@@ -36,7 +36,7 @@ void checkeverything(char *line, t_minib *minilst)
 	auxline = ft_split(line, ' ');
 	if(!auxline[0])
 		return ;
-	//lexer(minilst->envp, line);
+	lexer(minilst->envp, line);
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
