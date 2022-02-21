@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 15:18:03 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 19:09:36 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void checkfrontandback(t_list **list, int pos, void *newcontent)
 	if(pos == 0)
 		ft_lstadd_front(list, ft_lstnew(newcontent));
 	else
+	{
 		ft_lstadd_back(list, ft_lstnew(newcontent));
-	*list = k;
+		*list = k;
+	}
 }
 
 void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
@@ -41,14 +43,13 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	void *kk;
 	t_list *tmp;
 
-	i = 0;
-	printf("%d\n", ft_lstsize(*list));
-	if(pos == 0 || pos == ft_lstsize(*list))
+	i = ft_lstsize(*list);
+	if(pos == 0 || pos == i)
 	{
-		printf("entro\n");
 		checkfrontandback(list, pos, newcontent);
 		return  ;
 	}
+	i = 0;
 	kk = *list;
 	while(++i < pos)
 		*list = (*list)->next;
@@ -122,9 +123,3 @@ int	getposinlst(t_list *list, char *line)
 	return(-1);
 }
 
-void	freeeverything(t_minib *minilst)
-{
-	ft_lstclear(minilst->envp, free);
-	ft_lstclear(minilst->exp, free);
-	free(minilst->pwd);
-}
