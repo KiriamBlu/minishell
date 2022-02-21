@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/21 15:58:14 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 19:16:00 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 char	*ft_strjoinmod(char *line, char c)
 {
-	char *tmp;
-	int i = 0, j = 0;
+	char	*tmp;
+	int		i = 0;
+	int		j = 0;
+
 	if (!line)
 	{
-		tmp = (char*)malloc(2);
+		tmp = (char *)malloc(2);
 		tmp[0] = c;
 		tmp[1] = 0;
 	}
 	else
 	{
-		while(line[i])
+		while (line[i])
 			i++;
-		tmp = (char*)malloc(i + 2);
-		while(j < i)
+		tmp = (char *)malloc(i + 2);
+		while (j < i)
 		{
 			tmp[j] = line[j];
 			j++;
 		}
 		tmp[j] = c;
-		tmp[j+1] = 0;
+		tmp[j + 1] = 0;
 		free(line);
 	}
 	return (tmp);
@@ -116,15 +118,58 @@ char	**ft_expandenv(char **aux, t_list *list)
 	return (expand);
 }
 
-/* char	*ft_newline(char *line, char **aux)
+char	*ft_newline(char *line, char **aux)
 {
 	int		i;
 	char	*newline;
+	int		a;
+	int		j;
 
+	newline = ft_calloc(sizeof(char *), 17);
 	i = -1;
-	if 
+	a = 0;
+	j = -1;
+	while (line[++i])
+	{
+		if (line[i] == '\'')
+		{
+			newline = ft_strjoinmod(newline, line[i]);
+			while (line[++i] != '\'')
+				newline = ft_strjoinmod(newline, line[i]);
+			newline = ft_strjoinmod(newline, line[i]);
+		}
+		if (line[i] == '"')
+		{
+			while (line[++i] != '"')
+			{
+				if (line[i] == '$')
+				{
+					while (aux[a][++j] != '=')
+						i++;
+					while (aux[a][++j])
+						newline = ft_strjoinmod(newline, aux[a][j]);
+					j = 0;
+					a++;
+				}
+				newline = ft_strjoinmod(newline, line[i]);
+			}
+			i++;
+		}
+		if (line[i] == '$')
+		{
+			while (aux[a][++j] != '=')
+				i++;
+			while (aux[a][++j])
+				newline = ft_strjoinmod(newline, aux[a][j]);
+				j = 0;
+				a++;
+		}
+		newline = ft_strjoinmod(newline, line[i]);
+	}
+	printf("%s\n", newline);
+	return (newline);
 }
- */
+
 char	**lexer(t_list *list, char *line)
 {
 	char	**aux;
@@ -143,7 +188,7 @@ char	**lexer(t_list *list, char *line)
 	aux = ft_expandenv(aux, list);
 	i = -1;
 	newline = ft_calloc(sizeof(char *), 17);
-	/* newline = ft_newline(line, aux); */
+	newline = ft_newline(line, aux);
 	while (aux[++i])
 		printf("%s\n", aux[i]);
 	//aux = ft_prepare(expand);

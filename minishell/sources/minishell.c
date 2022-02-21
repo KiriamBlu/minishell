@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 18:45:43 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 19:45:34 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ void checkeverything(char *line, t_minib *minilst)
 	checkforenv(auxline, minilst->envp);
 	if (ft_strncmp(auxline[0], "pwd", ft_strlen(auxline[0])) == 0)
 	{
-		if (auxline[1])
-		{
-			printf("minishell: too many arguments\n");
-			freemat(auxline);
-			return ;
-		}
 		free(minilst->pwd);
 		minilst->pwd = getcwd(NULL, 0);
 		printf("%s\n", minilst->pwd);
