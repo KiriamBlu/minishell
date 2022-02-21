@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:54:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 22:00:07 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	checkforenv(char **line, t_list *envp)
 	int i;
 
 	i = -1;
-	if (ft_strncmp(line[0], "env", ft_strlen(line[0])) == 0)
+	if (strcmp("env", line[0]) == 0)
 	{
 		if(line[1])
 		{
@@ -41,7 +41,7 @@ void	cd_update_env(int i[2], t_minib *minilst)
 	j[0] = getposinlst(minilst->exp, "PWD");
 	j[1] = getposinlst(minilst->exp, "OLDPWD");
 	delpos(&minilst->exp, j[1]);
-	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0] - 1) + 4)); //SI PETA ES POR EL (J[0] - 1)
+	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0]) + 4));
 	delpos(&minilst->exp, j[0]);
 	putinpos(&minilst->exp, j[0], ft_strjoin("PWD=", tmp));
 	free(tmp);
@@ -80,9 +80,9 @@ void	checkforcd(char **line, t_minib *minilst)
 	char	*str;
 	int		i[2];
 
-	if (ft_strncmp(line[0], "cd", ft_strlen(line[0])) != 0)
+	if (strcmp("cd", line[0]) != 0)
 		return	;
-	if (getposinlst(minilst->envp, "PWD") == -1)
+	if (getposinlst(minilst->envp, "PWD") != -1)
 	{
 		minilst->pwd = getcwd(NULL, 0);
 		putinpos(&minilst->envp, 16, minilst->pwd);
@@ -107,7 +107,7 @@ void checkforexit(char **line, t_minib *minilst)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(line[0], "exit", ft_strlen(line[0])) == 0)
+	if (strcmp(line[0], "exit") == 0)
 	{
 		printf("exit\n");
 		if (!line[1])

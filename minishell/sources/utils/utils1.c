@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 16:41:52 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 22:08:13 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,35 +85,30 @@ char **createlstarray(t_list *lst, int index)
 	return (aux);
 }
 
-int getvariable(char *add, t_minib *minilst)
+int getvariable(char *add, t_list *list)
 {
-	char *tmp;
 	char *aux;
-	char *eaux;
-	char *baux;
 	char *caux;
+	void *kk;
+	int	listsize;
 	int i;
 	
 	i = 1;
+	listsize = ft_lstsize(list);
 	if(!ft_strchr(add, '='))
-		return(minilst->envindex + 1);
-	tmp = ft_strdup(ft_strchr(add, '='));
-	aux = ft_substr(add, 0 , ft_strlen(add) - ft_strlen(tmp));
-	eaux = ft_strdup(getlineinenv(minilst->envp, i));
-	baux = ft_strdup(ft_strchr(eaux, '='));
-	caux = ft_substr(eaux, 0 , ft_strlen(eaux) - ft_strlen(baux));
-	while(strcmp(caux, aux) != 0 && i <= minilst->envindex)
+		return(listsize + 1);
+	kk = list;
+	aux = getnamevariable(add);
+	caux = getnamevariable(list->content);
+	while(strcmp(caux, aux) != 0 && i < listsize)
 	{
-		free(eaux);
-		free(baux);
 		free(caux);
-		eaux = ft_strdup(getlineinenv(minilst->envp, i));
-		baux = ft_strdup(ft_strchr(eaux, '='));
-		caux = ft_substr(eaux, 0 , ft_strlen(eaux) - ft_strlen(baux));
+		list = list->next;
+		caux = getnamevariable(list->content);
 		i++;
 	}
-	free(eaux);
-	free(baux);
 	free(caux);
+	free(aux);
+	list = kk;
 	return(i);
 }

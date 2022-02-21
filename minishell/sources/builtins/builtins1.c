@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 18:23:36 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 22:12:32 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,34 +41,64 @@ void getaddexp(char *add, t_minib *minilst)
 	char *aux;
 	int i;
 
-
-	i = getvariable(add, minilst);
+	i = getvariable(add, minilst->envp);
 	if(itsinenv(add, minilst->exp) != -1)
 	{
 		if(ft_strchr(add, '='))
 		{
-			putinpos(&minilst->envp, i, ft_strdup(add));
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
+			putinpos(&minilst->envp, ft_lstsize(minilst->envp), ft_strdup(add));
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));//PONER COMILLAS DESPUES DEL IGUAL
 		}
 		else
 			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
 	}
 	else
 	{
-		printf("kk\n");
+		tmp = getnamevariable(add);
+		if(itsinenv(add, minilst->envp) == -1)
+			delpos(&minilst->envp, i - 1);
+		putinpos(&minilst->envp, i - 1, ft_strdup(add));
+		i = getposinlst(minilst->exp, tmp);
+		delpos(&minilst->exp, i);
+		putinpos(&minilst->exp, i, ft_strdup(add));
 	}
+}
+
+int checkadd(char *add)
+{
+	char *aux;
+	int i;
+
+	i = 0;
+	aux = getnamevariable(add);
+	while(aux[i])
+	{
+		if(ft_isalpha(aux[i]) == 0 && aux[i] != '_')
+			return(-1);
+		i++;
+	}
+	return(0);
 }
 
 void checkforexport(char **line, t_minib *minilst)
 {
-	if (ft_strncmp(line[0], "export", ft_strlen(line[0])) != 0)
+	int i;
+
+	i = 0;
+	if (strcmp(line[0], "export") != 0)
 		return	;
 	if(!line[1])
 	{
 		printlistexp(minilst->exp);
 		return ;
 	}
-	getaddexp(line[1], minilst);
+	if(checkadd(line[1]) == -1)
+	{
+		printf("minishell: export: %s: not a valid identifier\n", line[1]);
+		return;
+	}
+	while(line[++i])
+		getaddexp(line[i], minilst);
 }
 
 void checkforunset(char **line, t_minib *minilst)
@@ -77,7 +107,7 @@ void checkforunset(char **line, t_minib *minilst)
 	int j;
 
 	j = 1;
-	if (ft_strncmp(line[0], "unset", ft_strlen(line[0])) != 0)
+	if (strcmp(line[0], "unset") != 0)
 		return	;
 	if(!line[1])
 		return ;

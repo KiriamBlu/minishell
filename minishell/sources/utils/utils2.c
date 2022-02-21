@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/18 17:18:42 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/21 22:09:01 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,27 @@ int getgoodpositionexp(t_list *list, char *add)
 {
 	int i;
 	int j;
+	char *aux;
+	char *tmp;
 
-	j = 1;
+	j = 0;
 	i = ft_lstsize(list);
+	aux = getnamevariable(add);
 	while(j < i)
 	{
-		if(strcmp(add, list->content) < 0)
+		tmp = getnamevariable(list->content);
+		if(strcmp(aux, tmp) < 0)
+		{
+			free(aux);
+			free(tmp);
 			return(j);
+		}
+		free(tmp);
 		list = list->next;
 		j++;
 	}
-	return(i + 1);
+	free(aux);
+	return(j);
 }
 
 char	*getnamevariable(char *add)
@@ -57,8 +67,10 @@ int		itsinenv(char *add, t_list *list)
 	int j;
 	char *str;
 	char *tmp;
+	void *kk;
 
 	j = 0;
+	kk = list;
 	i = ft_lstsize(list);
 	tmp = getnamevariable(add);
 	while(j < i)
@@ -67,6 +79,8 @@ int		itsinenv(char *add, t_list *list)
 		if(!strcmp(str, tmp))
 		{
 			free(tmp);
+			free(str);
+			list = kk;
 			return(-1);
 		}
 		free(str);
@@ -74,5 +88,13 @@ int		itsinenv(char *add, t_list *list)
 		j++;
 	}
 	free(tmp);
+	list = kk;
 	return(1);
+}
+
+void	freeeverything(t_minib *minilst)
+{
+	ft_lstclear(minilst->envp, free);
+	ft_lstclear(minilst->exp, free);
+	free(minilst->pwd);
 }
