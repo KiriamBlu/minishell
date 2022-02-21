@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 12:39:15 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 21:58:33 by jporta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -37,7 +26,7 @@ void checkeverything(char *line, t_minib *minilst)
 	checkforexit(auxline, minilst);
 	checkforcd(auxline, minilst);
 	checkforenv(auxline, minilst->envp);
-	if (ft_strncmp(auxline[0], "pwd", ft_strlen(auxline[0])) == 0)
+	if (strcmp(auxline[0], "pwd") == 0)
 	{
 		free(minilst->pwd);
 		minilst->pwd = getcwd(NULL, 0);

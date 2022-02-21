@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/21 21:51:13 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/21 22:23:37 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,3 +184,6 @@ char	**lexer(t_list *list, char *line)
 	aux = ft_prepare(newline);
 	return (aux);
 }
+
+
+//hola

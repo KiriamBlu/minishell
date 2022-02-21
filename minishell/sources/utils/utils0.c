@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils0.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 21:57:27 by jporta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -66,12 +55,12 @@ void delpos(t_list **list, int pos)
 	t_list *aux;
 	void *kk;
 
-	i = 0;
 	if(pos == 0)
 	{
 		*list = fuckeveryting(*list);
 		return ;
 	}
+	i = 0;
 	kk = *list;
 	while(++i < pos)
 		*list = (*list)->next;

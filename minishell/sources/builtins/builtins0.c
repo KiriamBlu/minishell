@@ -6,7 +6,11 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/02/21 21:46:39 by jporta           ###   ########.fr       */
+=======
+/*   Updated: 2022/02/21 22:00:07 by jsanfeli         ###   ########.fr       */
+>>>>>>> 446cf0e82daa6bff03cf9f7276ad2353e1b094d4
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +21,7 @@ void	checkforenv(char **line, t_list *envp)
 	int i;
 
 	i = -1;
-	if (ft_strncmp(line[0], "env", ft_strlen(line[0])) == 0)
+	if (strcmp("env", line[0]) == 0)
 	{
 		if(line[1])
 		{
@@ -80,9 +84,9 @@ void	checkforcd(char **line, t_minib *minilst)
 	char	*str;
 	int		i[2];
 
-	if (ft_strncmp(line[0], "cd", ft_strlen(line[0])) != 0)
+	if (strcmp("cd", line[0]) != 0)
 		return	;
-	if (getposinlst(minilst->envp, "PWD") == -1)
+	if (getposinlst(minilst->envp, "PWD") != -1)
 	{
 		minilst->pwd = getcwd(NULL, 0);
 		putinpos(&minilst->envp, 16, minilst->pwd);
@@ -107,7 +111,8 @@ void checkforexit(char **line, t_minib *minilst)
 	int		i;
 
 	i = 0;
-	if (ft_strcmp(line[0], "exit") == 4)
+
+	if (strcmp(line[0], "exit") == 0)
 	{
 		printf("exit\n");
 		if (!line[1])
