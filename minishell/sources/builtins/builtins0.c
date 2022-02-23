@@ -100,6 +100,7 @@ void checkforexit(char **line, t_minib *minilst)
 	if (strcmp(line[0], "exit") == 0)
 	{
 		printf("exit\n");
+		freemat(line);
 		if (!line[1])
 		{
 			freeeverything(minilst);
