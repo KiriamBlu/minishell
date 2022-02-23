@@ -18,6 +18,19 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
+char	**prepline(char *line, t_minib *minilst)
+{
+	char	**auxline;
+	char	**newline;
+
+	newline = lexer(minilst->envp, line);
+	printf("%s\n", newline[0]);
+	printf("%s\n", newline[1]);
+	auxline = ft_split(newline[0], ' ');
+	freemat(newline);
+	return(auxline);
+}
+
 int checkforspaces(char *line)
 {
 	int i;
@@ -35,9 +48,7 @@ void checkeverything(char *line, t_minib *minilst)
 
 	if (ft_strlen(line) != 0 && checkforspaces(line) != 0)
 	{
-		//auxline = lexer(minilst->envp, line);
-		//freemat(auxline);
-		auxline = ft_split(line, ' ');
+		auxline = prepline(line, minilst);
 		checkforexit(auxline, minilst);
 		checkforcd(auxline, minilst);
 		checkforenv(auxline, minilst->envp);

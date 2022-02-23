@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/23 14:16:21 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/23 19:54:57 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int		getvariable(char *add, t_list *list);
 int		itsinenv(char *add, t_list *list);
 int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);
+int		checkadd(char *add);
 
 //DEBUGGIN TOOLS
 
