@@ -18,25 +18,41 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
+int checkforspaces(char *line)
+{
+	int i;
+
+	i = -1;
+	while(line[++i])
+		if(line[i] != ' ')
+			return(1);
+	return(0);
+}
+
 void checkeverything(char *line, t_minib *minilst)
 {
 	char	**auxline;
 
-	auxline = lexer(minilst->envp, line);
-	checkforexit(auxline, minilst);
-	checkforcd(auxline, minilst);
-	checkforenv(auxline, minilst->envp);
-	if (strcmp(auxline[0], "pwd") == 0)
+	if (ft_strlen(line) != 0 && checkforspaces(line) != 0)
 	{
-		free(minilst->pwd);
-		minilst->pwd = getcwd(NULL, 0);
-		printf("%s\n", minilst->pwd);
+		//auxline = lexer(minilst->envp, line);
+		//freemat(auxline);
+		auxline = ft_split(line, ' ');
+		checkforexit(auxline, minilst);
+		checkforcd(auxline, minilst);
+		checkforenv(auxline, minilst->envp);
+		if(strcmp(auxline[0], "leaks") == 0)
+			system("leaks minishell");
+		if (strcmp(auxline[0], "pwd") == 0)
+		{
+			free(minilst->pwd);
+			minilst->pwd = getcwd(NULL, 0);
+			printf("%s\n", minilst->pwd);
+		}
+		checkforexport(auxline, minilst);
+		checkforunset(auxline, minilst);
 		freemat(auxline);
-		return ;
 	}
-	checkforexport(auxline, minilst);
-	checkforunset(auxline, minilst);
-	freemat(auxline);
 	return ;
 }
 

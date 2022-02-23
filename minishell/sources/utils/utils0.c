@@ -106,9 +106,9 @@ int	getposinlst(t_list *list, char *line)
 			return(i);
 		}
 		list = list->next;
+		free(tmp);
 		i++;
 	}
-	free(tmp);
 	return(-1);
 }
 
