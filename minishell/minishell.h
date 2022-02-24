@@ -11,6 +11,13 @@
 # include <readline/history.h>
 
 
+typedef struct s_lexer
+{
+	char	*line;
+	char	**dolar;
+	char	**expandenv;
+
+} t_lexer;
 
 typedef struct s_cmds 
 {
@@ -22,12 +29,16 @@ typedef struct s_cmds
 typedef struct s_minib
 {
 	t_cmds	*cmds;
+	t_lexer	*lexer;
 	t_list	*envp;
 	t_list	*exp;
 	int		envindex;
 	int		expindex;
 	char	*pwd;
 }	t_minib;
+
+
+
 
 //MINISHELLSTRUCTURE
 
@@ -46,9 +57,9 @@ void	checkforecho(char **line, t_minib *minilst);
 
 //LEXER
 
-char	**lexer(t_list *list, char *line);
 char	**ft_prepare(char *line);
 void	morfeo(t_cmds *com, char **line);
+char	**lexer(t_list *list, char *line, t_lexer *lexer);
 
 //UTILS
 
@@ -67,6 +78,7 @@ int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);
 int		checkadd(char *add);
 int		num_matrix(char **matrix);
+int		count_c(char *str, char c); //cuenta pipes validos
 
 //DEBUGGIN TOOLS
 

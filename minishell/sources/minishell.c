@@ -21,8 +21,15 @@ void prepbasics(t_minib *minilst, char **envp)
 void	prepline(char *line, t_minib *minilst)
 {
 	char	**newline;
+	int		i;
 
-	newline = lexer(minilst->envp, line);
+	newline = lexer(minilst->envp, line, minilst->lexer);
+	i = 0;
+	while (newline[i])
+	{
+		printf("%s\n", newline[i]);
+		i++;
+	}
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	morfeo(minilst->cmds, newline);
 	freemat(newline);
@@ -46,7 +53,7 @@ void	checkeverything(char *line, t_minib *minilst)
 	if (ft_strlen(line) != 0 && checkforspaces(line) != 0)
 	{
 		prepline(line, minilst);
-		/* checkforexit(auxline, minilst);
+		checkforexit(auxline, minilst);
 		checkforcd(auxline, minilst);
 		checkforenv(auxline, minilst->envp);
 		checkforecho(auxline, minilst);
@@ -59,7 +66,7 @@ void	checkeverything(char *line, t_minib *minilst)
 			printf("%s\n", minilst->pwd);
 		}
 		checkforexport(auxline, minilst);
-		checkforunset(auxline, minilst); */
+		checkforunset(auxline, minilst);
 	}
 	return ;
 }

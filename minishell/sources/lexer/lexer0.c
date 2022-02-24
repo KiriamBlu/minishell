@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/24 15:57:52 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/24 19:13:24 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ char	*ft_expenv(t_list *list, char *line)
 				;
 		else if (line[i] == '"')
 		{
-			while (line[++i] != '"')
+			while (line[++i] != '"' )
 			{
-				if (line[i] == '$')
+				if (line[i] == '$' && line[i + 1] != '$')
 				{
 					arg = ft_strjoinmod(arg, line[i]);
 					while (ft_isalnum(line[++i]) != 0 || line[i] == '$')
@@ -98,13 +98,14 @@ char	**ft_expandenv(char **aux, t_list *list)
 	a = 0;
 	while (aux[++i])
 		a++;
-	i = -1;
-	expand = ft_calloc(sizeof(char *), a);
-	while (aux[++i])
+	i = 0;
+	expand = ft_calloc(sizeof(char *), a + 1);
+	while (aux[i])
 	{
 		temp = ft_position(list, aux[i]);
 		expand[i] = ft_strdup(temp);
-		//free(temp);
+		free(temp);
+		i++;
 	}
 	return (expand);
 }
@@ -131,11 +132,13 @@ char	*ft_newline(char *line, char **aux)
 		}
 		else if (line[i] == '"')
 		{
+			newline = ft_strjoinmod(newline, line[i]);
 			while (line[++i] != '"')
 			{
-				if (line[i] == '$' && line[i + 1])
+				if (line[i] == '$' && aux[a][j] != ' ')
 				{
-					while (aux[a][++j] != '=' && line[i] != '\0')
+					while (aux[a][++j] != '=' && line[i] != '\0'
+						&& aux[a][j] != ' ')
 						i++;
 					while (aux[a][++j])
 						newline = ft_strjoinmod(newline, aux[a][j]);
@@ -148,7 +151,7 @@ char	*ft_newline(char *line, char **aux)
 					newline = ft_strjoinmod(newline, line[i]);
 			}
 		}
-		else if (line[i] == '$')
+		else if (line[i] == '$' && aux[a][j] != ' ')
 		{
 			while (aux[a][++j] != '=' && line[i] != '\0')
 				i++;
@@ -165,7 +168,7 @@ char	*ft_newline(char *line, char **aux)
 	return (newline);
 }
 
-char	**lexer(t_list *list, char *line)
+char	**lexer(t_list *list, char *line, t_lexer *lexer)
 {
 	char	**aux;
 	char	*dollar;
@@ -178,6 +181,7 @@ char	**lexer(t_list *list, char *line)
 		aux = ft_prepare(line);
 		return (aux);
 	}
+	printf("hola\n");
 	aux = ft_split(dollar, '$');
 	tmp = ft_expandenv(aux, list);
 	freemat(aux);
