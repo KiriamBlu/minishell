@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 21:34:48 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/24 12:37:30 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,17 @@
 # include <readline/history.h>
 
 
+
 typedef struct s_cmds 
 {
+	char	*cmd;
 	char	*args;
 	int		type;
 }	t_cmds;
 
 typedef struct s_minib
 {
+	t_cmds	*cmds;
 	t_list	*envp;
 	t_list	*exp;
 	int		envindex;
@@ -51,6 +54,7 @@ void	checkforexport(char **line, t_minib *minilst);
 void	checkforcd(char **line, t_minib *minilst);
 void	*fuckeveryting(t_list *list);
 void	checkforunset(char **line, t_minib *minilst);
+void	checkforecho(char **line, t_minib *minilst);
 
 //LEXER
 

@@ -8,7 +8,8 @@ SRCS =  ./sources/minishell.c \
 		./sources/builtins/builtins1.c \
 		./sources/utils/utils1.c \
 		./sources/utils/utils2.c \
-		./sources/lexer/lexer0.c 
+		./sources/lexer/lexer0.c \
+		./sources/builtins/builtins2.c
 
 OBJS = ${SRCS:.c=.o}
 

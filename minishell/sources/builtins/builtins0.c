@@ -1,18 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtins0.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 22:20:03 by jsanfeli          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/02/21 21:46:39 by jporta           ###   ########.fr       */
-=======
-/*   Updated: 2022/02/21 22:00:07 by jsanfeli         ###   ########.fr       */
->>>>>>> 446cf0e82daa6bff03cf9f7276ad2353e1b094d4
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -115,6 +100,7 @@ void checkforexit(char **line, t_minib *minilst)
 	if (strcmp(line[0], "exit") == 0)
 	{
 		printf("exit\n");
+		freemat(line);
 		if (!line[1])
 		{
 			freeeverything(minilst);
