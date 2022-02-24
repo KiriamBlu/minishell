@@ -24,6 +24,7 @@ typedef struct s_minib
 	t_cmds	*cmds;
 	t_list	*envp;
 	t_list	*exp;
+	int 	cmdnum;
 	int		envindex;
 	int		expindex;
 	char	*pwd;
@@ -36,18 +37,18 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-void	checkforexit(char **line, t_minib *minilst);
-void	checkforenv(char **line, t_list *envp);
-void	checkforexport(char **line, t_minib *minilst);
-void	checkforcd(char **line, t_minib *minilst);
-void	*fuckeveryting(t_list *list);
-void	checkforunset(char **line, t_minib *minilst);
-void	checkforecho(char **line, t_minib *minilst);
+void	checkforexit(char *cmd, char *arg, t_minib *minilst);
+void	checkforenv(char *cmd, char *arg, t_list *envp);
+void	checkforexport(char *cmd, char *arg, t_minib *minilst);
+void	checkforcd(char *cmd, char *arg, t_minib *minilst);
+void	checkforunset(char *cmd, char *arg, t_minib *minilst);
+void 	checkforecho(char *cmd, char *arg);
 
 //LEXER
 
 char	**lexer(t_list *list, char *line);
 char	**ft_prepare(char *line);
+void	morfeo(t_cmds *com, char **line);
 
 //UTILS
 
@@ -60,11 +61,15 @@ void	delpos(t_list **list, int pos);
 int 	isinexp(t_list *list, char *line);
 char	*getlineinenv(t_list *list, int i);
 t_list	*createarraylst(char **array);
+void	*fuckeveryting(t_list *list);
 int		getvariable(char *add, t_list *list);
 int		itsinenv(char *add, t_list *list);
 int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);
 int		checkadd(char *add);
+int		num_matrix(char **matrix);
+void	freecmds(t_minib *minilst);
+char	*getaddedexp(char *add);
 
 //DEBUGGIN TOOLS
 
