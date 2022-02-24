@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 12:39:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/24 12:37:30 by jsanfeli         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINI_SHELL_H
 # define MINI_SHELL_H
 
@@ -76,6 +64,7 @@ int		getvariable(char *add, t_list *list);
 int		itsinenv(char *add, t_list *list);
 int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);
+int		checkadd(char *add);
 
 //DEBUGGIN TOOLS
 
