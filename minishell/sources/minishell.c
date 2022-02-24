@@ -18,17 +18,15 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
-char	**prepline(char *line, t_minib *minilst)
+void	prepline(char *line, t_minib *minilst)
 {
-	char	**auxline;
 	char	**newline;
 
 	newline = lexer(minilst->envp, line);
-	printf("%s\n", newline[0]);
-	printf("%s\n", newline[1]);
-	auxline = ft_split(newline[0], ' ');
+	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
+	minilst->cmdnum = num_matrix(newline);
+	morfeo(minilst->cmds, newline);
 	freemat(newline);
-	return(auxline);
 }
 
 int checkforspaces(char *line)
@@ -42,30 +40,33 @@ int checkforspaces(char *line)
 	return(0);
 }
 
-void checkeverything(char *line, t_minib *minilst)
+void	checkeverything(char *line, t_minib *minilst)
 {
-	char	**auxline;
+	int i;
 
+	i = 0;
 	if (ft_strlen(line) != 0 && checkforspaces(line) != 0)
 	{
-		auxline = prepline(line, minilst);
-		checkforexit(auxline, minilst);
-		checkforcd(auxline, minilst);
-		checkforenv(auxline, minilst->envp);
-		checkforecho(auxline, minilst);
-		if(strcmp(auxline[0], "leaks") == 0)
-			system("leaks minishell");
-		if (strcmp(auxline[0], "pwd") == 0)
+		prepline(line, minilst);
+		while(i < minilst->cmdnum)
 		{
-			free(minilst->pwd);
-			minilst->pwd = getcwd(NULL, 0);
-			printf("%s\n", minilst->pwd);
+			checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
+			checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+			{
+				free(minilst->pwd);
+				minilst->pwd = getcwd(NULL, 0);
+				printf("%s\n", minilst->pwd);
+			}
+			checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+				system("leaks minishell");
+			i++;
 		}
-		checkforexport(auxline, minilst);
-		checkforunset(auxline, minilst);
-		freemat(auxline);
 	}
-	return ;
 }
 
 int main(int argc, const char **argv, char **envp)
@@ -82,6 +83,7 @@ int main(int argc, const char **argv, char **envp)
 		line = readline("minishell> ");
 		add_history(line);
 		checkeverything(line, &minilst);
+		freecmds(&minilst);
 		free(line);
 	}
 	return 0;
