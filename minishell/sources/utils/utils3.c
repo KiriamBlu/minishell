@@ -9,4 +9,3 @@ int num_matrix(char **matrix)
 		i++;
 	return (i);
 }
-

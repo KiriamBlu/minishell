@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/23 15:04:33 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:28:46 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,25 @@ int		itsinenv(char *add, t_list *list)
 	return(1);
 }
 
+void	freecmds(t_minib *minilst)
+{
+	int i;
+
+	i = 0;
+	while(i < minilst->cmdnum)
+	{
+		free(minilst->cmds[i].cmd);
+		free(minilst->cmds[i].args);
+		i++;
+	}
+	free(minilst->cmds);
+}
+
 void	freeeverything(t_minib *minilst)
 {
+	
 	ft_lstclear(minilst->envp, free);
 	ft_lstclear(minilst->exp, free);
+	freecmds(minilst);
 	free(minilst->pwd);
 }

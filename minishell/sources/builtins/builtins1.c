@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/24 13:05:58 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:43:08 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char **getdonexp(char **envp, int i)
 void getaddexp(char *add, t_minib *minilst)
 {
 	char *tmp;
-	char *aux;
 	int i;
 
 	i = getvariable(add, minilst->envp);
@@ -91,57 +90,57 @@ int checkadd(char *add)
 	return(0);
 }
 
-void checkforexport(char **line, t_minib *minilst)
+void checkforexport(char *cmd, char *arg, t_minib *minilst)
 {
 	int i;
+	char **args;
 
-	i = 0;
-	if (strcmp(line[0], "export") != 0)
+	i = -1;
+	if (strcmp(cmd, "export") != 0)
 		return	;
-	if(!line[1])
+	args = ft_split(arg, ' ');
+	if(!args[0])
 	{
 		printlistexp(minilst->exp);
 		return ;
 	}
-	while(line[++i])
+	while(args[++i])
 	{
-		if(checkadd(line[i]) == -1)
-		{
-			printf("minishell: export: %s: not a valid identifier\n", line[1]);
-			return;
-		}
-		getaddexp(line[i], minilst);
+		if(checkadd(args[i]) == -1)
+			printf("minishell: export: %s: not a valid identifier\n", args[1]);
+		getaddexp(args[i], minilst);
 	}
+	freemat(args);
 }
 
-void checkforunset(char **line, t_minib *minilst)
+void checkforunset(char *cmd, char *arg, t_minib *minilst)
 {
 	int i;
 	int j;
+	char **args;
 
-	j = 0;
-	if (strcmp(line[0], "unset") != 0)
+	j = -1;
+	if (strcmp(cmd, "unset") != 0)
 		return	;
-	if(!line[1])
+	args = ft_split(arg, ' ');
+	if(!args[0])
 		return ;
-	while(line[++j])
+	while(args[++j])
 	{
-		if(checkadd(line[j]) == -1)
-		{
-			printf("minishell: unset: %s: not a valid identifier\n", line[1]);
-			return;
-		}
-		i = getposinlst(minilst->envp, line[j]);
+		if(checkadd(args[j]) == -1)
+			printf("minishell: unset: %s: not a valid identifier\n", args[1]);
+		i = getposinlst(minilst->envp, args[j]);
 		if(i != -1)
 		{
 			minilst->envindex--;
 			delpos(&minilst->envp, i);
 		}
-		i = getposinlst(minilst->exp, line[j]);
+		i = getposinlst(minilst->exp, args[j]);
 		if(i != -1)
 		{
 			minilst->expindex--;
 			delpos(&minilst->exp, i);
 		}
 	}
+	freemat(args);
 }

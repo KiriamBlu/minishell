@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:56:20 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/24 16:58:03 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/24 17:45:10 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ void	morfeo(t_cmds *com, char **line)
 		freemat(aux);
 		while(line[i][j] == ' ')
 			j++;
-		while(line[i][j] != ' ')
+		while(line[i][j] != ' ' && line[i][j])
 			j++;
-		printf("%d\n", j);
 		com[i].args = ft_substr(line[i], j + 1, ft_strlen(line[i]));
-		printf("%s\n%s\n", com[i].cmd, com[i].args);
 		i++;
 	}
-	
 }
-
 //"hola" "|" | pepe "|"
