@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/23 20:33:20 by jporta           ###   ########.fr       */
+/*   Updated: 2022/02/24 15:57:52 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,7 @@ char	*ft_newline(char *line, char **aux)
 			while (aux[a][++j] != '=' && line[i] != '\0')
 				i++;
 			while (aux[a][++j])
-			{
 				newline = ft_strjoinmod(newline, aux[a][j]);
-				printf("este: %s\n", newline);
-			}
 			if (a > 0)
 				i++;
 			j = 0;
@@ -181,15 +178,10 @@ char	**lexer(t_list *list, char *line)
 		aux = ft_prepare(line);
 		return (aux);
 	}
-	printf(" este%s\n", dollar);
 	aux = ft_split(dollar, '$');
 	tmp = ft_expandenv(aux, list);
 	freemat(aux);
 	newline = ft_newline(line, tmp);
-	printf("%s\n", newline);
 	tmp = ft_prepare(newline);
-	printf("tmp: %s\n%s\n", tmp[0], tmp[1]);
 	return (tmp);
 }
-
-//hola

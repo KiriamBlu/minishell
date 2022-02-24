@@ -48,6 +48,7 @@ void	checkforecho(char **line, t_minib *minilst);
 
 char	**lexer(t_list *list, char *line);
 char	**ft_prepare(char *line);
+void	morfeo(t_cmds *com, char **line);
 
 //UTILS
 
@@ -65,6 +66,7 @@ int		itsinenv(char *add, t_list *list);
 int		getposinlst(t_list *list, char *line);
 char	*getnamevariable(char *add);
 int		checkadd(char *add);
+int		num_matrix(char **matrix);
 
 //DEBUGGIN TOOLS
 
