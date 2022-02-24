@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/24 19:28:46 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:55:27 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,17 @@ void	freecmds(t_minib *minilst)
 	int i;
 
 	i = 0;
-	while(i < minilst->cmdnum)
+	if(minilst->cmdnum != 0)
 	{
-		free(minilst->cmds[i].cmd);
-		free(minilst->cmds[i].args);
-		i++;
+		while(i < minilst->cmdnum)
+		{
+			free(minilst->cmds[i].cmd);
+			free(minilst->cmds[i].args);
+			i++;
+		}
+		free(minilst->cmds);
+		minilst->cmdnum = 0;
 	}
-	free(minilst->cmds);
 }
 
 void	freeeverything(t_minib *minilst)

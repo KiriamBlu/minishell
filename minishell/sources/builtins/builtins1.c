@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/24 18:43:08 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:54:17 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char **getdonexp(char **envp, int i)
 			if (ft_strncmp(envp[k], envp[j], ft_strlen(envp[j]) + 1) > 0)
 				count++;
 		}
-		aux[count] = ft_strdup(envp[k]);
+		aux[count] = getaddedexp(envp[k]);
 	}
 	return(aux);
 }
@@ -46,10 +46,10 @@ void getaddexp(char *add, t_minib *minilst)
 		if(ft_strchr(add, '='))
 		{
 			putinpos(&minilst->envp, ft_lstsize(minilst->envp), ft_strdup(add));
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));//PONER COMILLAS DESPUES DEL IGUAL
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), getaddedexp(add));//PONER COMILLAS DESPUES DEL IGUAL
 		}
 		else
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), getaddedexp(add));
 	}
 	else
 	{
@@ -62,7 +62,7 @@ void getaddexp(char *add, t_minib *minilst)
 		if(itsinenv(add, minilst->envp) == -1 && ft_strchr(add, '='))
 		{
 			delpos(&minilst->exp, i);
-			putinpos(&minilst->exp, i, ft_strdup(add));
+			putinpos(&minilst->exp, i, getaddedexp(add));
 		}
 		free(tmp);
 	}
@@ -101,6 +101,7 @@ void checkforexport(char *cmd, char *arg, t_minib *minilst)
 	args = ft_split(arg, ' ');
 	if(!args[0])
 	{
+		freemat(args);
 		printlistexp(minilst->exp);
 		return ;
 	}

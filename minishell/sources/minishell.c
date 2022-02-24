@@ -84,6 +84,7 @@ int main(int argc, const char **argv, char **envp)
 		add_history(line);
 		checkeverything(line, &minilst);
 		freecmds(&minilst);
+		//system("leaks minishell");
 		free(line);
 	}
 	return 0;

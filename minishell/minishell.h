@@ -69,6 +69,7 @@ char	*getnamevariable(char *add);
 int		checkadd(char *add);
 int		num_matrix(char **matrix);
 void	freecmds(t_minib *minilst);
+char	*getaddedexp(char *add);
 
 //DEBUGGIN TOOLS
 
