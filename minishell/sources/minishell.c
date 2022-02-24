@@ -52,6 +52,7 @@ void checkeverything(char *line, t_minib *minilst)
 		checkforexit(auxline, minilst);
 		checkforcd(auxline, minilst);
 		checkforenv(auxline, minilst->envp);
+		checkforecho(auxline, minilst);
 		if(strcmp(auxline[0], "leaks") == 0)
 			system("leaks minishell");
 		if (strcmp(auxline[0], "pwd") == 0)
