@@ -24,9 +24,9 @@ typedef struct s_minib
 	t_cmds	*cmds;
 	t_list	*envp;
 	t_list	*exp;
-	int 	cmdnum;
 	int		envindex;
 	int		expindex;
+	int 	cmdnum;
 	char	*pwd;
 }	t_minib;
 
@@ -49,6 +49,11 @@ void 	checkforecho(char *cmd, char *arg);
 char	**lexer(t_list *list, char *line);
 char	**ft_prepare(char *line);
 void	morfeo(t_cmds *com, char **line);
+
+//SIGNALS
+
+void	inputsignal(void);
+void	rl_replace_line (const char *text, int clear_undo);
 
 //UTILS
 

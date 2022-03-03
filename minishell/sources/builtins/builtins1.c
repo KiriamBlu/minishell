@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/24 19:54:17 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:04:31 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void getaddexp(char *add, t_minib *minilst)
 		if(ft_strchr(add, '='))
 		{
 			putinpos(&minilst->envp, ft_lstsize(minilst->envp), ft_strdup(add));
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), getaddedexp(add));//PONER COMILLAS DESPUES DEL IGUAL
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), getaddedexp(add));
 		}
 		else
-			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), getaddedexp(add));
+			putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, add), ft_strdup(add));
 	}
 	else
 	{

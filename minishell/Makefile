@@ -10,7 +10,8 @@ SRCS =  ./sources/minishell.c \
 		./sources/utils/utils2.c \
 		./sources/lexer/lexer0.c \
 		./sources/builtins/builtins2.c \
-		./sources/utils/utils3.c
+		./sources/utils/utils3.c \
+		./sources/signals/signals0.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -23,12 +24,13 @@ GCC := gcc
 CFLAGS := -Wall -Wextra -g #-fsanitize=address -g3 #-Werror
 MV := mv -f
 RM := rm -f
+LDFLAGS	:= -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
 
 %.o: %.c
 	$(GCC)  $(CFLAGS) -c $< -I $(INC_DIR) -o $@ 
 
 $(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
-	$(GCC) -lreadline -o $(NAME)  $^ -I $(INC_DIR)
+	$(GCC) -lreadline $(LDFLAGS) -o $(NAME)  $^ -I $(INC_DIR)
 
 $(LIBFT_DIR)$(LIBFT_NAME): $(LIBFT_DIR)
 	make -C $(LIBFT_DIR)
