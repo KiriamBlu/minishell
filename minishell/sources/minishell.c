@@ -80,9 +80,15 @@ int main(int argc, const char **argv, char **envp)
 	prepbasics(&minilst, envp);
 	while(1)
 	{
+		inputsignal();
 		line = readline("minishell> ");
+		if(!line) //LIBERAR STRUCT
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		add_history(line);
-		checkeverything(line, &minilst);
+		checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
 		freecmds(&minilst);
 		//system("leaks minishell");
 		free(line);
