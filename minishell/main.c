@@ -97,20 +97,20 @@ char* reestruct( char * str, t_k *list )
 		// char *exp = ft_strchr(&tmp[i], '$');
 		if ( tmp[i] != '$' )
 		{
-			before = ft_strjoinmod(before, tmp[i] );
+			before = ft_strjoinmod(before, tmp[i]);
 			i++;
 
 		}
 
 		else 
 		{
-			char *exp = ft_substr(&tmp[i], 0  , len_expan(&tmp[i]) );
+			char *exp = ft_substr(&tmp[i], 0, len_expan(&tmp[i]) );
 
 
 		 	tmp_aux = expan(  exp , list );
 	
 
-			middle = ft_strjoin(before, tmp_aux );
+			middle = ft_strjoin(before, tmp_aux);
 				printf (" --> %s\n", middle);
 
 			free(before);

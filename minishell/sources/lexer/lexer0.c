@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/02/24 19:13:24 by jporta           ###   ########.fr       */
+/*   Updated: 2022/03/02 00:22:11 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ char	**lexer(t_list *list, char *line, t_lexer *lexer)
 	char	*dollar;
 	char	*newline;
 	char	**tmp;
+
 
 	dollar = ft_expenv(list, line);
 	if (!dollar || ft_strlen(dollar) == 1)
