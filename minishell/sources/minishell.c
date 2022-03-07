@@ -18,15 +18,26 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
-void	prepline(char *line, t_minib *minilst)
+char	*prepline(char *line, t_minib *minilst)
 {
 	char	**newline;
+	int		i;
+	char	*polla;
 
-	newline = lexer(minilst->envp, line);
+	polla = ft_prueba(line, minilst->envp);
+	printf("%s\n", polla);
+	/* newline = lexer(minilst->envp, line, minilst->lexer);
+	i = 0;
+	while (newline[i])
+	{
+		printf("%s\n", newline[i]);
+		i++;
+	}
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
 	morfeo(minilst->cmds, newline);
-	freemat(newline);
+	freemat(newline); */
+	return(polla);
 }
 
 int checkforspaces(char *line)
@@ -42,6 +53,8 @@ int checkforspaces(char *line)
 
 void	checkeverything(char *line, t_minib *minilst)
 {
+	char	**auxline;
+	char	*linea;
 	int i;
 
 	i = 0;
