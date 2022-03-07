@@ -1,20 +1,24 @@
 
 #include "../../minishell.h"
 
-void	checkforenv(char **line, t_list *envp)
+void	checkforenv(char *cmd, char *arg, t_list *envp)
 {
 	int i;
+	char **args;
 
 	i = -1;
-	if (strcmp("env", line[0]) == 0)
+	args = ft_split(arg, ' ');
+	if (strcmp("env", cmd) == 0)
 	{
-		if(line[1])
+		if(args[0])
 		{
-			printf("env: %s: No such file or directory\n", line[1]);
+			freemat(args);
+			printf("env: %s: No such file or directory\n", args[0]);
 			return ;
 		}
 		printlist(envp);
 	}
+	freemat(args);
 }
 
 void	cd_update_env(int i[2], t_minib *minilst)
@@ -64,13 +68,15 @@ char	*check_pwd(char *str, int home, int opwd, t_minib *minilst)
 }
 
 
-void	checkforcd(char **line, t_minib *minilst)
+void	checkforcd(char *cmd, char *arg, t_minib *minilst)
 {
 	char	*str;
 	int		i[2];
+	char	**args;
 
-	if (strcmp("cd", line[0]) != 0)
+	if (strcmp("cd", cmd) != 0)
 		return	;
+	args = ft_split(arg, ' ');
 	if (getposinlst(minilst->envp, "PWD") != -1)
 	{
 		minilst->pwd = getcwd(NULL, 0);
@@ -78,7 +84,7 @@ void	checkforcd(char **line, t_minib *minilst)
 	}
 	i[0] = getposinlst(minilst->envp, "PWD");
 	i[1] = getposinlst(minilst->envp, "OLDPWD");
-	str = check_pwd(line[1], getposinlst(minilst->envp, "HOME"), getposinlst(minilst->envp, "OLDPWD"), minilst);
+	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME") + 1, getposinlst(minilst->envp, "OLDPWD"), minilst);
 	if(chdir(str) == -1)
 	{
 		if(!minilst->pwd)
@@ -88,40 +94,42 @@ void	checkforcd(char **line, t_minib *minilst)
 	}
 	else
 		cd_update_env(i, minilst);
+	freemat(args);
 	free(str);
 }
 
-void checkforexit(char **line, t_minib *minilst)
+void checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 {
 	int		i;
+	char	**aux;
 
 	i = 0;
-
-	if (strcmp(line[0], "exit") == 0)
+	if (strcmp(cmd, "exit") == 0)
 	{
+		aux = ft_split(arg, ' ');
 		printf("exit\n");
-		freemat(line);
-		if (!line[1])
+		if (!aux[0])
 		{
+			freemat(aux);
 			freeeverything(minilst);
-			system("leaks minishell");
 			exit(0);
 		}
-		if(line[2]) //SALIDA EN CASO DE MAS DE DOS ARGS
+		if(aux[1]) //SALIDA EN CASO DE MAS DE DOS ARGS
 		{
 			printf("minishell: exit: too many arguments\n");
+			freemat(aux);
 			return ;
 		}
 		i = -1;
-		while(line[1][++i])
+		while(aux[0][++i])
 		{
-			if(ft_isdigit(line[1][i]) != 1)
+			if(ft_isdigit(aux[0][i]) != 1)
 			{
-				printf("minishell: exit: %s: numeric argument required\n", line[1]);
+				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
 				break ;
 			}
 		}
 		freeeverything(minilst);
-		exit(ft_atoi(line[1]));
+		exit(ft_atoi(aux[0]));
 	}
 }

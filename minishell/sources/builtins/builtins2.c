@@ -1,22 +1,25 @@
 
 #include "../../minishell.h"
 
-void checkforecho(char **line, t_minib *minilst)
+void checkforecho(char *cmd, char *arg)
 {
 	int i;
 	int j;
 
-	if (strcmp(line[0], "echo") != 0)
+	if (strcmp(cmd, "echo") != 0)
 		return ;
-	j = 0;
+	j = -1;
 	i = 0;
-	while(line[++j])
+	while(arg[++j])
 	{
-		if (strcmp(line[j], "-n") == 0)
+		if (arg[j] == '-' && arg[j + 1] == 'n')
+		{
+			j += 1;
 			i = 1;
+		}
 		else
 		{
-			printf("%s", line[j]);
+			printf("%c", arg[j]);
 		}
 	}
 	if(i != 1)
