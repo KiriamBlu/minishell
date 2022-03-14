@@ -92,9 +92,11 @@ int main(int argc, const char **argv, char **envp)
 	{
 		inputsignal();
 		line = readline("minishell> ");
-		if(!line) //LIBERAR STRUCT
+		if(!line)
 		{
 			printf("exit\n");
+			freecmds(&minilst);
+			//system("leaks minishell");
 			exit(0);
 		}
 		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
