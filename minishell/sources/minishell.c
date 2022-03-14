@@ -58,27 +58,24 @@ void	checkeverything(char *line, t_minib *minilst)
 	int i;
 
 	i = 0;
-	if (ft_strlen(line) != 0 && checkforspaces(line) != 0)
+	prepline(line, minilst);
+	while(i < minilst->cmdnum)
 	{
-		prepline(line, minilst);
-		while(i < minilst->cmdnum)
+		checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+		checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+		checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
+		checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+		if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 		{
-			checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
-			checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
-			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
-			{
-				free(minilst->pwd);
-				minilst->pwd = getcwd(NULL, 0);
-				printf("%s\n", minilst->pwd);
-			}
-			checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
-				system("leaks minishell");
-			i++;
+			free(minilst->pwd);
+			minilst->pwd = getcwd(NULL, 0);
+			printf("%s\n", minilst->pwd);
 		}
+		checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+		checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+		if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+			system("leaks minishell");
+		i++;
 	}
 }
 
@@ -100,8 +97,11 @@ int main(int argc, const char **argv, char **envp)
 			printf("exit\n");
 			exit(0);
 		}
-		add_history(line);
-		checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
+		{
+			add_history(line);
+			checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+		}
 		freecmds(&minilst);
 		//system("leaks minishell");
 		free(line);
