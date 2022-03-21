@@ -25,11 +25,12 @@ void	prepline(char *line, t_minib *minilst)
 	char	*expanded;
 
 	expanded = ft_prueba(line, minilst->envp);
-	newline = lexier(expanded);;
+	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
 	morfeo(minilst->cmds, newline);
 	freemat(newline);
+	free(expanded);
 }
 
 int checkforspaces(char *line)
@@ -45,8 +46,6 @@ int checkforspaces(char *line)
 
 void	checkeverything(char *line, t_minib *minilst)
 {
-	char	**auxline;
-	char	*linea;
 	int i;
 
 	i = 0;

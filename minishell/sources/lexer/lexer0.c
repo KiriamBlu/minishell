@@ -63,7 +63,7 @@ int countpipe(char *expanded)
 	return(k + 1);
 }
 
-char **lexier(char *expanded)
+char **lexer(char *expanded)
 {
 	int i;
 	int a;
@@ -97,5 +97,3 @@ char **lexier(char *expanded)
 	comands[status] = 0;
 	return(comands);
 }
-
-

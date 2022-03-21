@@ -48,7 +48,7 @@ void 	checkforecho(char *cmd, char *arg);
 
 void	morfeo(t_cmds *com, char **line);
 char	*ft_prueba(char *line, t_list *list);
-char	**lexier(char *expanded);
+char	**lexer(char *expanded);
 
 //SIGNALS
 
