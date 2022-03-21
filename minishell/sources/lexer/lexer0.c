@@ -182,7 +182,6 @@ char	**lexer(t_list *list, char *line, t_lexer *lexer)
 		aux = ft_prepare(line);
 		return (aux);
 	}
-	printf("hola\n");
 	aux = ft_split(dollar, '$');
 	tmp = ft_expandenv(aux, list);
 	freemat(aux);

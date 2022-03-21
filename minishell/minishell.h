@@ -61,6 +61,7 @@ char	**ft_prepare(char *line);
 void	morfeo(t_cmds *com, char **line);
 char	**lexer(t_list *list, char *line, t_lexer *lexer);
 char	*ft_prueba(char *line, t_list *list);
+char	**lexier(char *expanded);
 
 //SIGNALS
 

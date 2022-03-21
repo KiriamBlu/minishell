@@ -98,7 +98,7 @@ void checkforexport(char *cmd, char *arg, t_minib *minilst)
 	i = -1;
 	if (strcmp(cmd, "export") != 0)
 		return	;
-	args = ft_split(arg, ' ');
+	args = ft_split(arg, ' '); // ANADIR LA SEPARACIÓN DE LOS ARGUMENTOS POR ("")
 	if(!args[0])
 	{
 		freemat(args);
