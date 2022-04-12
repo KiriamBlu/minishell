@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/12 18:06:42 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:08:39 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ void checkforunset(char *cmd, char *arg, t_minib *minilst)
 		if(checkadd(args[j]) == -1)
 		{
 			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
+			freemat(args);
 			return ;
 		}
 		i = getposinlst(minilst->envp, args[j]);
