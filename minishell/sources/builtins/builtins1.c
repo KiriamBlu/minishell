@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/12 16:49:37 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:06:42 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,11 @@ void checkforexport(char *cmd, char *arg, t_minib *minilst)
 	while(args[++i])
 	{
 		if(checkadd(args[i]) == -1)
-			printf("minishell: export: %s: not a valid identifier\n", args[1]);
+		{
+			printf("minishell: export: %s: not a valid identifier\n", args[0]);
+			freemat(args);
+			return ;
+		}
 		getaddexp(args[i], minilst);
 	}
 	freemat(args);
@@ -199,7 +203,10 @@ void checkforunset(char *cmd, char *arg, t_minib *minilst)
 	while(args[++j])
 	{
 		if(checkadd(args[j]) == -1)
-			printf("minishell: unset: %s: not a valid identifier\n", args[1]);
+		{
+			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
+			return ;
+		}
 		i = getposinlst(minilst->envp, args[j]);
 		if(i != -1)
 		{
