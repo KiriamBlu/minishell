@@ -6,8 +6,7 @@ void prepbasics(t_minib *minilst, char **envp)
 	int i;
 	char **aux;
 
-	if(!minilst->pwd)
-		minilst->pwd = getcwd(NULL, 0);
+	minilst->pwd = getcwd(NULL, 0);
 	i = 0;
 	while(envp[i])
 		i++;
@@ -77,10 +76,12 @@ int main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
+	int		i;
 
 	argv = NULL;
 	if(argc != 1)
 		exit(0);
+	i = 0;
 	prepbasics(&minilst, envp);
 	while(1)
 	{
@@ -89,7 +90,8 @@ int main(int argc, const char **argv, char **envp)
 		if(!line)
 		{
 			printf("exit\n");
-			freecmds(&minilst);
+			if (i > 0)
+				freecmds(&minilst);
 			//system("leaks minishell");
 			exit(0);
 		}
@@ -97,6 +99,7 @@ int main(int argc, const char **argv, char **envp)
 		{
 			add_history(line);
 			checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+			i++;
 		}
 		freecmds(&minilst);
 		//system("leaks minishell");
