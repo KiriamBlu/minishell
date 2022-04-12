@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer3.c                                           :+:      :+:    :+:   */
+/*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jporta            #+#    #+#             */
-/*   Updated: 2022/03/14 15:49:55 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:41:11 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 	int	a;
 	int k;
 	char *name[4];
+	char *aux;
 	
 	i = 0;
 	a = 0;
@@ -87,7 +88,6 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 	if(k == 0)
 		return(ft_strdup(line));
 	name[1] = ft_strdup(line); //GUARDAR EN LA TMP LA LINEA PARA EMPEZAR A TRABAJAR CON UNA LINEA CAMBIANTE
-	name[0] = ft_calloc(sizeof(char), 1); //DAR UNA PEQUEÑA RESERVA INCIAL PARA PODER UNIRLE MAS PARTES DE LA LINEA PARA SER DEVUELTA
 	while (k > 0)
 	{
 		while (line[a] != '$')
@@ -97,19 +97,18 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 					;
 			a++;
 		}
-		name[2] = ft_substr(line, i, a - i); //GUARDAS DESE EL PUUNTO DONDE VAS A TRABAJAR EN AUX PARA AÑADIR DESDE AHI LA EXPANSIÓN
+		aux = ft_substr(line, i, a - i); //GUARDAS DESE EL PUUNTO DONDE VAS A TRABAJAR EN AUX PARA AÑADIR DESDE AHI LA EXPANSIÓN
 		name[3] = ft_substr(line, a + 1, ft_getlenname(line, a)); //OBTIENES Y ALMACENAS EL NOMBRE DE LA VARIABLE A SER EXPANDIDA
-		name[2] = ft_strjoin(name[2], expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
-		name[0] = ft_strjoin(name[0], name[2]);//HAS UNIDO LA EXPANSIÓN AL FULL
-		free(name[2]);
+		name[2] = freezerjoin(aux, expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
+		name[0] = freezerjoin(name[0], name[2]);//AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
 		free(name[1]);
+		free(name[3]);
 		name[1] = ft_substr(line, a, name[0] - line); //EN LA TEMPORAL GUARDAS EL FINAL
 		i = a;
 		k--;
 	}
-	name[0] = ft_strjoin(name[0], name[1]); //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$'
-	free(name[1]);
+	name[0] = freezerjoin(name[0], name[1]); //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$'
 	//system("leaks minishell");
 	return (name[0]);
 }

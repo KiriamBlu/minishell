@@ -55,3 +55,32 @@ char *getaddedexp(char *add)
 	free(aux);
 	return(tmp);
 }
+
+char	*freezerjoin(char *s1, char *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	i = 0;
+	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	while (*(s1 + i) != '\0')
+	{
+		*(str + i) = *(s1 + i);
+		i++;
+	}
+	j = 0;
+	while (*(s2 + j) != '\0')
+	{
+		*(str + i + j) = *(s2 + j);
+		j++;
+	}
+	free(s1);
+	free(s2);
+	return (str);
+}

@@ -6,7 +6,7 @@
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/12 16:28:17 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/12 16:49:37 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char **exportarg(char *cmd)
 		status++;
 		numcom--;
 	}
-	comands[numcom - 1] = 0;
+	comands[status] = 0;
 	return(comands);
 }
 
