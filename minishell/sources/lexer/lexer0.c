@@ -1,192 +1,99 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer0.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 19:16:17 by jporta            #+#    #+#             */
-/*   Updated: 2022/03/02 00:22:11 by jporta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_strjoinmod(char *line, char c)
+char	**ft_prepare(char *line)
 {
-	char	*tmp;
-	int		i = 0;
-	int		j = 0;
+	char	**cmd;
 
-
-	while (line[i])
-		i++;
-	tmp = (char *)malloc(i + 2);
-	while (j < i)
+	if (count_c(line, '|') > 0)
 	{
-		tmp[j] = line[j];
-		j++;
+		cmd = ft_splitmod(line, '|');
+		return (cmd);
 	}
-	tmp[j] = c;
-	tmp[j + 1] = 0;
-	free(line);
-	return (tmp);
+	else
+	{
+		cmd = malloc(sizeof(char **) * 1);
+		cmd[0] = ft_strdup(line);
+	}
+	cmd[1] = NULL;
+	return (cmd);
 }
 
-char	*ft_expenv(t_list *list, char *line)
+void	morfeo(t_cmds *com, char **line)
 {
 	int		i;
-	char	*arg;
-
-	i = -1;
-	arg = malloc(sizeof(char *));
-	while (line[++i])
-	{
-		if (line[i] == '\'')
-			while (line[++i] != '\'')
-				;
-		else if (line[i] == '"')
-		{
-			while (line[++i] != '"' )
-			{
-				if (line[i] == '$' && line[i + 1] != '$')
-				{
-					arg = ft_strjoinmod(arg, line[i]);
-					while (ft_isalnum(line[++i]) != 0 || line[i] == '$')
-						arg = ft_strjoinmod(arg, line[i]);
-				}
-			}
-		}
-		if (line[i] == '$')
-		{
-			arg = ft_strjoinmod(arg, line[i]);
-			while (ft_isalnum(line[++i]) != 0 || line[i] == '$')
-				arg = ft_strjoinmod(arg, line[i]);
-		}
-	}
-	if (arg[0] == '\0')
-	{
-		free(arg);
-		arg = NULL;	
-	}
-	return (arg);
-}
-
-char	*ft_position(t_list *list, char *aux)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	i = getposinlst(list, aux);
-	tmp = ft_strdup(" ");
-	if (i < 0)
-		return (tmp);
-	free(tmp);
-	tmp = ft_strdup(getlineinenv(list, i + 1));
-	return (tmp);
-}
-
-char	**ft_expandenv(char **aux, t_list *list)
-{
-	int		i;
-	char	**expand;
-	int		a;
-	char	*temp;
-
-	i = -1;
-	a = 0;
-	while (aux[++i])
-		a++;
-	i = 0;
-	expand = ft_calloc(sizeof(char *), a + 1);
-	while (aux[i])
-	{
-		temp = ft_position(list, aux[i]);
-		expand[i] = ft_strdup(temp);
-		free(temp);
-		i++;
-	}
-	return (expand);
-}
-
-char	*ft_newline(char *line, char **aux)
-{
-	int		i;
-	char	*newline;
-	int		a;
+	char	**aux;
 	int		j;
 
-	newline = ft_calloc(sizeof(char *), 1);
-	i = -1;
-	a = 0;
-	j = -1;
-	while (line[++i])
+	i = 0;
+	while (line[i])
 	{
-		if (line[i] == '\'')
-		{
-			newline = ft_strjoinmod(newline, line[i]);
-			while (line[++i] != '\'')
-				newline = ft_strjoinmod(newline, line[i]);
-			newline = ft_strjoinmod(newline, line[i]);
+		j = 0;
+		aux = ft_split(line[i], ' ');
+		if(aux[0])
+		{	
+			com[i].cmd = ft_strdup(aux[0]);
+			freemat(aux);
+			j = ft_strlen(com[i].cmd);
+			com[i].args = ft_substr(line[i], j + 1, ft_strlen(line[i]));
 		}
-		else if (line[i] == '"')
-		{
-			newline = ft_strjoinmod(newline, line[i]);
-			while (line[++i] != '"')
-			{
-				if (line[i] == '$' && aux[a][j] != ' ')
-				{
-					while (aux[a][++j] != '=' && line[i] != '\0'
-						&& aux[a][j] != ' ')
-						i++;
-					while (aux[a][++j])
-						newline = ft_strjoinmod(newline, aux[a][j]);
-					if (a > 0)
-						i++;
-					j = 0;
-					a++;
-				}
-				else
-					newline = ft_strjoinmod(newline, line[i]);
-			}
-		}
-		else if (line[i] == '$' && aux[a][j] != ' ')
-		{
-			while (aux[a][++j] != '=' && line[i] != '\0')
-				i++;
-			while (aux[a][++j])
-				newline = ft_strjoinmod(newline, aux[a][j]);
-			if (a > 0)
-				i++;
-			j = 0;
-			a++;
-		}
-		else
-			newline = ft_strjoinmod(newline, line[i]);
+		i++;
 	}
-	return (newline);
 }
 
-char	**lexer(t_list *list, char *line, t_lexer *lexer)
+int countpipe(char *expanded)
 {
-	char	**aux;
-	char	*dollar;
-	char	*newline;
-	char	**tmp;
-
-
-	dollar = ft_expenv(list, line);
-	if (!dollar || ft_strlen(dollar) == 1)
+	int i;
+	int k;
+	
+	i = 0;
+	k = 0;
+	while(expanded[i])
 	{
-		aux = ft_prepare(line);
-		return (aux);
+		if(expanded[i] == '|')
+			k++;
+		if (expanded[i] == '\'')
+			while(expanded[++i] != '\'')
+				;
+		if (expanded[i] == '"')
+			while(expanded[++i] != '"')
+				;
+		i++;
 	}
-	printf("hola\n");
-	aux = ft_split(dollar, '$');
-	tmp = ft_expandenv(aux, list);
-	freemat(aux);
-	newline = ft_newline(line, tmp);
-	tmp = ft_prepare(newline);
-	return (tmp);
+	return(k + 1);
+}
+
+char **lexer(char *expanded)
+{
+	int i;
+	int a;
+	int numcom;
+	int status;
+	char **comands;
+
+	numcom = countpipe(expanded);
+	comands = malloc(sizeof(char *) * numcom + 1);
+	i = 0;
+	a = 0;
+	status = 0;
+	while(numcom > 0)
+	{
+		while(expanded[i] != '|' && expanded[i])
+		{
+			if (expanded[i] == '\'')
+				while(expanded[++i] != '\'')
+					;
+			if (expanded[i] == '"')
+				while(expanded[++i] != '"')
+					;
+			i++;
+		}
+		comands[status] = ft_substr(expanded, a, i - a);
+		i += 1;
+		a = i;
+		status++;
+		numcom--;
+	}
+	comands[status] = 0;
+	return(comands);
 }

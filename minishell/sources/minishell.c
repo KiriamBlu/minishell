@@ -18,26 +18,18 @@ void prepbasics(t_minib *minilst, char **envp)
 	freemat(aux);
 }
 
-char	*prepline(char *line, t_minib *minilst)
+void	prepline(char *line, t_minib *minilst)
 {
 	char	**newline;
-	int		i;
-	char	*polla;
+	char	*expanded;
 
-	polla = ft_prueba(line, minilst->envp);
-	printf("%s\n", polla);
-	/* newline = lexer(minilst->envp, line, minilst->lexer);
-	i = 0;
-	while (newline[i])
-	{
-		printf("%s\n", newline[i]);
-		i++;
-	}
+	expanded = ft_prueba(line, minilst->envp);
+	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
 	morfeo(minilst->cmds, newline);
-	freemat(newline); */
-	return(polla);
+	freemat(newline);
+	free(expanded);
 }
 
 int checkforspaces(char *line)
@@ -53,29 +45,30 @@ int checkforspaces(char *line)
 
 void	checkeverything(char *line, t_minib *minilst)
 {
-	char	**auxline;
-	char	*linea;
 	int i;
 
 	i = 0;
 	prepline(line, minilst);
-	while(i < minilst->cmdnum)
+	if(minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
 	{
-		checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-		checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-		checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
-		checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
-		if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+		while(i < minilst->cmdnum)
 		{
-			free(minilst->pwd);
-			minilst->pwd = getcwd(NULL, 0);
-			printf("%s\n", minilst->pwd);
+			checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
+			checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+			{
+				free(minilst->pwd);
+				minilst->pwd = getcwd(NULL, 0);
+				printf("%s\n", minilst->pwd);
+			}
+			checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+				system("leaks minishell");
+			i++;
 		}
-		checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-		checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-		if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
-			system("leaks minishell");
-		i++;
 	}
 }
 
@@ -83,10 +76,12 @@ int main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
+	int		i;
 
 	argv = NULL;
 	if(argc != 1)
 		exit(0);
+	i = 0;
 	prepbasics(&minilst, envp);
 	while(1)
 	{
@@ -95,7 +90,8 @@ int main(int argc, const char **argv, char **envp)
 		if(!line)
 		{
 			printf("exit\n");
-			freecmds(&minilst);
+			if (i > 0)
+				freecmds(&minilst);
 			//system("leaks minishell");
 			exit(0);
 		}
@@ -103,6 +99,7 @@ int main(int argc, const char **argv, char **envp)
 		{
 			add_history(line);
 			checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+			i++;
 		}
 		freecmds(&minilst);
 		//system("leaks minishell");

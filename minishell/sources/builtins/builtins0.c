@@ -21,42 +21,52 @@ void	checkforenv(char *cmd, char *arg, t_list *envp)
 	freemat(args);
 }
 
-void	cd_update_env(int i[2], t_minib *minilst)
+void	cd_update_env(t_minib *minilst)
 {
 	char	*tmp;
-	int		j[2];
+	int		i;
+	int		j;
 
-	delpos(&minilst->envp, i[1]);
-	putinpos(&minilst->envp, i[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, i[0]) + 4));
+	i = getposinlst(minilst->envp, "OLDPWD");
+	j = getposinlst(minilst->envp, "PWD");
+	if(i != -1)
+	{
+		delpos(&minilst->envp, i);
+		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, (j + 1)) + 4));
+	}
+	else
+		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, 17) + 4));	
 	tmp = getcwd(NULL, 0);
-	delpos(&minilst->envp, i[0]);
-	putinpos(&minilst->envp, i[0], ft_strjoin("PWD=", tmp));
-	j[0] = getposinlst(minilst->exp, "PWD");
-	j[1] = getposinlst(minilst->exp, "OLDPWD");
-	delpos(&minilst->exp, j[1]);
-	putinpos(&minilst->exp, j[1], ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j[0]) + 4));
-	delpos(&minilst->exp, j[0]);
-	putinpos(&minilst->exp, j[0], ft_strjoin("PWD=", tmp));
+	delpos(&minilst->envp, j);
+	putinpos(&minilst->envp, j, ft_strjoin("PWD=", tmp));
+	j = getposinlst(minilst->exp, "PWD");
+	i = getposinlst(minilst->exp, "OLDPWD");
+	delpos(&minilst->exp, i);
+	putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
+	delpos(&minilst->exp, j);
+	putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
 	free(tmp);
 }
 
-char	*check_pwd(char *str, int home, int opwd, t_minib *minilst)
+char	*check_pwd(char *str, int home, t_minib *minilst)
 {
 	char	*s;
+	int		i;
 
 	s = NULL;
 	if (!str)
 	{
 		if (home != -1)
-			s = ft_strdup(getlineinenv(minilst->envp, home) + 5);
+			s = ft_strdup(getlineinenv(minilst->envp, home + 1) + 5);
 		else
 			printf("minishell: cd: HOME not set\n");
 	}
-	else if(!ft_strncmp(str, "-", ft_strlen(str)))
+	else if(!strcmp(str, "-"))
 	{
-		if(opwd != -1)
+		i = getposinlst(minilst->envp, "OLDPWD") + 1;
+		if(i != 0)
 		{
-			s = ft_strdup(getlineinenv(minilst->envp, opwd) + 7);
+			s = ft_strdup(getlineinenv(minilst->envp, i) + 7);
 			printf("%s\n", s);
 		}
 		else
@@ -71,20 +81,17 @@ char	*check_pwd(char *str, int home, int opwd, t_minib *minilst)
 void	checkforcd(char *cmd, char *arg, t_minib *minilst)
 {
 	char	*str;
-	int		i[2];
 	char	**args;
 
 	if (strcmp("cd", cmd) != 0)
 		return	;
 	args = ft_split(arg, ' ');
-	if (getposinlst(minilst->envp, "PWD") != -1)
+	if (getposinlst(minilst->envp, "PWD") == -1)
 	{
 		minilst->pwd = getcwd(NULL, 0);
-		putinpos(&minilst->envp, 16, minilst->pwd);
+		putinpos(&minilst->envp, 16, ft_strjoin("PWD=", minilst->pwd));
 	}
-	i[0] = getposinlst(minilst->envp, "PWD");
-	i[1] = getposinlst(minilst->envp, "OLDPWD");
-	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME") + 1, getposinlst(minilst->envp, "OLDPWD"), minilst);
+	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst);
 	if(chdir(str) == -1)
 	{
 		if(!minilst->pwd)
@@ -93,7 +100,7 @@ void	checkforcd(char *cmd, char *arg, t_minib *minilst)
 			printf("minishell: cd: %s: No such file or directory\n", str);
 	}
 	else
-		cd_update_env(i, minilst);
+		cd_update_env(minilst);
 	freemat(args);
 	free(str);
 }
@@ -114,7 +121,7 @@ void checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			freeeverything(minilst);
 			exit(0);
 		}
-		if(aux[1]) //SALIDA EN CASO DE MAS DE DOS ARGS
+		if(aux[1])
 		{
 			printf("minishell: exit: too many arguments\n");
 			freemat(aux);
