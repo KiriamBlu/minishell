@@ -23,7 +23,7 @@ void	prepline(char *line, t_minib *minilst)
 	char	**newline;
 	char	*expanded;
 
-	expanded = ft_prueba(line, minilst->envp);
+	expanded = expander(line, minilst->envp);
 	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);

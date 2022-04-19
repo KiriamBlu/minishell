@@ -74,7 +74,7 @@ char *expanddollar(char *name, t_list *list)
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
 
-char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
+char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
 {
 	int	i;
 	int	a;
