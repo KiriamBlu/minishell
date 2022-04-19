@@ -37,12 +37,12 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-void	checkforexit(char *cmd, char *arg, t_minib *minilst);
-void	checkforenv(char *cmd, char *arg, t_list *envp);
-void	checkforexport(char *cmd, char *arg, t_minib *minilst);
-void	checkforcd(char *cmd, char *arg, t_minib *minilst);
-void	checkforunset(char *cmd, char *arg, t_minib *minilst);
-void 	checkforecho(char *cmd, char *arg);
+int	checkforexit(char *cmd, char *arg, t_minib *minilst);
+int	checkforenv(char *cmd, char *arg, t_list *envp);
+int	checkforexport(char *cmd, char *arg, t_minib *minilst);
+int	checkforcd(char *cmd, char *arg, t_minib *minilst);
+int	checkforunset(char *cmd, char *arg, t_minib *minilst);
+int	checkforecho(char *cmd, char *arg);
 
 //LEXER
 
@@ -82,5 +82,9 @@ char	*freezerjoin(char *s1, char *s2);
 
 void	printlist(t_list *list);
 void	printlistexp(t_list *list);
+
+//EXECUTER
+
+void executer(t_minib *minilst, int i);
 
 #endif

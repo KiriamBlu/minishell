@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/12 17:41:11 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/19 21:32:34 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
 		free(name[1]);
 		free(name[3]);
-		name[1] = ft_substr(line, a, name[0] - line); //EN LA TEMPORAL GUARDAS EL FINAL
+		name[1] = ft_substr(line, a, (ft_strlen(name[0]) - ft_strlen(line))); //EN LA TEMPORAL GUARDAS EL FINAL
 		i = a;
 		k--;
 	}
