@@ -109,7 +109,7 @@ char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2
 		if(name[1])
 			free(name[1]);
 		free(name[3]);
-		if(ft_strlen(name[0]) > ft_strlen(line))
+		if (ft_strlen(name[0]) > ft_strlen(line))
 			name[1] = ft_substr(line, a, (ft_strlen(name[0]) - ft_strlen(line))); //EN LA TEMPORAL GUARDAS EL FINAL
 		else
 			name[1] = ft_substr(line, a, (ft_strlen(line) - ft_strlen(name[0])));
