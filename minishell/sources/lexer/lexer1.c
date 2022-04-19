@@ -77,7 +77,7 @@ char *expanddollar(char *name, t_list *list)
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
 
-char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
+char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
 {
 	int	i;
 	int	a;
@@ -90,7 +90,8 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 	k = countdollars(line);
 	if(k == 0)
 		return(ft_strdup(line));
-	name[1] = ft_strdup(line); //GUARDAR EN LA TMP LA LINEA PARA EMPEZAR A TRABAJAR CON UNA LINEA CAMBIANTE
+	name[0] = NULL;
+	name[1] = NULL;
 	while (k > 0)
 	{
 		while (line[a] != '$')
@@ -105,16 +106,17 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 		name[2] = freezerjoin(aux, expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
 		name[0] = freezerjoin(name[0], name[2]); //AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
-		free(name[1]);
+		if(name[1])
+			free(name[1]);
 		free(name[3]);
 		if(ft_strlen(name[0]) > ft_strlen(line))
-			name[1] = ft_substr(line, a, ft_strlen(name[0]) - ft_strlen(line)); //EN LA TEMPORAL GUARDAS EL FINAL
+			name[1] = ft_substr(line, a, (ft_strlen(name[0]) - ft_strlen(line))); //EN LA TEMPORAL GUARDAS EL FINAL
 		else
-			name[1] = ft_substr(line, a, ft_strlen(line) - ft_strlen(name[0]));
+			name[1] = ft_substr(line, a, (ft_strlen(line) - ft_strlen(name[0])));
 		i = a;
 		k--;
 	}
-	name[0] = freezerjoin(name[0], name[1]);  //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$'
+	name[0] = freezerjoin(name[0], name[1]); //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$' 
 	//system("leaks minishell");
 	return (name[0]);
 }
