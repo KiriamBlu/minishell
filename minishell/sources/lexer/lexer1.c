@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/19 21:32:34 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/19 23:17:42 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ char *expanddollar(char *name, t_list *list)
 	}
 	check = getposinlst(list, name) + 1;
 	if(check == 0)
-		return(" ");
+	{
+		expand = ft_strdup(" ");
+		return(expand);
+	}
 	expand = getlineinenv(list, check);
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
@@ -100,15 +103,18 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 		aux = ft_substr(line, i, a - i); //GUARDAS DESE EL PUUNTO DONDE VAS A TRABAJAR EN AUX PARA AÑADIR DESDE AHI LA EXPANSIÓN
 		name[3] = ft_substr(line, a + 1, ft_getlenname(line, a)); //OBTIENES Y ALMACENAS EL NOMBRE DE LA VARIABLE A SER EXPANDIDA
 		name[2] = freezerjoin(aux, expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
-		name[0] = freezerjoin(name[0], name[2]);//AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
+		name[0] = freezerjoin(name[0], name[2]); //AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
 		free(name[1]);
 		free(name[3]);
-		name[1] = ft_substr(line, a, (ft_strlen(name[0]) - ft_strlen(line))); //EN LA TEMPORAL GUARDAS EL FINAL
+		if(ft_strlen(name[0]) > ft_strlen(line))
+			name[1] = ft_substr(line, a, ft_strlen(name[0]) - ft_strlen(line)); //EN LA TEMPORAL GUARDAS EL FINAL
+		else
+			name[1] = ft_substr(line, a, ft_strlen(line) - ft_strlen(name[0]));
 		i = a;
 		k--;
 	}
-	name[0] = freezerjoin(name[0], name[1]); //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$'
+	name[0] = freezerjoin(name[0], name[1]);  //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$'
 	//system("leaks minishell");
 	return (name[0]);
 }
