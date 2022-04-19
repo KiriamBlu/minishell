@@ -1,13 +1,13 @@
 
 #include "../../minishell.h"
 
-void checkforecho(char *cmd, char *arg)
+int checkforecho(char *cmd, char *arg)
 {
 	int i;
 	int j;
 
 	if (strcmp(cmd, "echo") != 0)
-		return ;
+		return (0);
 	j = -1;
 	i = 0;
 	while(arg[++j] == ' ')
@@ -25,4 +25,5 @@ void checkforecho(char *cmd, char *arg)
 	}
 	if(i != 1)
 		printf("\n");
+	return (1);
 }

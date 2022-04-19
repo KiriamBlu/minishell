@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/02/21 22:08:13 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/19 21:37:36 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char **createlstarray(t_list *lst, int index)
 	char **aux;
 
 	j = index;
-	aux = malloc(sizeof(char *) * j);
+	aux = malloc(sizeof(char *) * j + 1);
 	i = 0;
 	while (i < index)
 	{
@@ -82,6 +82,7 @@ char **createlstarray(t_list *lst, int index)
 		lst = lst->next;
 		i++;
 	}
+	aux[i] = 0;
 	return (aux);
 }
 

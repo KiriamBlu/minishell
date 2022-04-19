@@ -46,6 +46,7 @@ int checkforspaces(char *line)
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
+	int k;
 
 	i = 0;
 	prepline(line, minilst);
@@ -53,20 +54,27 @@ void	checkeverything(char *line, t_minib *minilst)
 	{
 		while(i < minilst->cmdnum)
 		{
-			checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
-			checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+			k = 0;
+			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			k += checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
+			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
 			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 			{
 				free(minilst->pwd);
 				minilst->pwd = getcwd(NULL, 0);
 				printf("%s\n", minilst->pwd);
+				k += 1;
 			}
-			checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+			{
+				k++;
 				system("leaks minishell");
+			}
+			if (k == 0)
+				executer(minilst, i);
 			i++;
 		}
 	}

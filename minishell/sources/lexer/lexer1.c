@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/12 17:41:11 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/04/19 23:17:42 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ char *expanddollar(char *name, t_list *list)
 	}
 	check = getposinlst(list, name) + 1;
 	if(check == 0)
-		return(" ");
+	{
+		expand = ft_strdup(" ");
+		return(expand);
+	}
 	expand = getlineinenv(list, check);
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
@@ -101,7 +104,7 @@ char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2
 		aux = ft_substr(line, i, a - i); //GUARDAS DESE EL PUUNTO DONDE VAS A TRABAJAR EN AUX PARA AÑADIR DESDE AHI LA EXPANSIÓN
 		name[3] = ft_substr(line, a + 1, ft_getlenname(line, a)); //OBTIENES Y ALMACENAS EL NOMBRE DE LA VARIABLE A SER EXPANDIDA
 		name[2] = freezerjoin(aux, expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
-		name[0] = freezerjoin(name[0], name[2]);//AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
+		name[0] = freezerjoin(name[0], name[2]); //AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
 		if(name[1])
 			free(name[1]);

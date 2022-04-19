@@ -1,7 +1,7 @@
 
 #include "../../minishell.h"
 
-void	checkforenv(char *cmd, char *arg, t_list *envp)
+int	checkforenv(char *cmd, char *arg, t_list *envp)
 {
 	int i;
 	char **args;
@@ -14,11 +14,13 @@ void	checkforenv(char *cmd, char *arg, t_list *envp)
 		{
 			freemat(args);
 			printf("env: %s: No such file or directory\n", args[0]);
-			return ;
+			return (1);
 		}
 		printlist(envp);
+		return(1);
 	}
 	freemat(args);
+	return (0);
 }
 
 void	cd_update_env(t_minib *minilst)
@@ -78,13 +80,13 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 }
 
 
-void	checkforcd(char *cmd, char *arg, t_minib *minilst)
+int	checkforcd(char *cmd, char *arg, t_minib *minilst)
 {
 	char	*str;
 	char	**args;
 
 	if (strcmp("cd", cmd) != 0)
-		return	;
+		return	(0);
 	args = ft_split(arg, ' ');
 	if (getposinlst(minilst->envp, "PWD") == -1)
 	{
@@ -103,9 +105,10 @@ void	checkforcd(char *cmd, char *arg, t_minib *minilst)
 		cd_update_env(minilst);
 	freemat(args);
 	free(str);
+	return(1);
 }
 
-void checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
+int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 {
 	int		i;
 	char	**aux;
@@ -125,7 +128,7 @@ void checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 		{
 			printf("minishell: exit: too many arguments\n");
 			freemat(aux);
-			return ;
+			return (1);
 		}
 		i = -1;
 		while(aux[0][++i])
@@ -139,4 +142,5 @@ void checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 		freeeverything(minilst);
 		exit(ft_atoi(aux[0]));
 	}
+	return(0);
 }
