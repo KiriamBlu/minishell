@@ -69,7 +69,10 @@ void	checkeverything(char *line, t_minib *minilst)
 			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 			k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+			{
+				k++;
 				system("leaks minishell");
+			}
 			if (k == 0)
 				executer(minilst, i);
 			i++;

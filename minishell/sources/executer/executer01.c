@@ -6,11 +6,19 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/19 22:05:32 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/19 22:29:35 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	ft_errorpipex(int index)
+{
+	if (index == 0)
+	{
+		exit(EXIT_FAILURE);
+	}
+}
 
 char	*path(char *cmd, char **envp)
 {
@@ -59,8 +67,12 @@ void executer(t_minib *minilst, int i)
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			printf("mal\n");
+			ft_errorpipex(0);
 		}
+		freemat(pths2);
+		freemat(envp);
+		free(arto);
+		free(paths);
 	}
 	waitpid(pid, &status, 0);
 }
