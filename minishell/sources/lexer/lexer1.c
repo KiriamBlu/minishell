@@ -74,7 +74,7 @@ char *expanddollar(char *name, t_list *list)
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
 
-char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
+char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
 {
 	int	i;
 	int	a;
@@ -104,7 +104,7 @@ char *ft_prueba(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[
 		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
 		free(name[1]);
 		free(name[3]);
-		name[1] = ft_substr(line, a, name[0] - line); //EN LA TEMPORAL GUARDAS EL FINAL
+		name[1] = ft_substr(line, a, ft_strlen(name[0]) - ft_strlen(line)); //EN LA TEMPORAL GUARDAS EL FINAL
 		i = a;
 		k--;
 	}
