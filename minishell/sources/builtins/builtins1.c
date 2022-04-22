@@ -149,6 +149,12 @@ char **exportarg(char *cmd)
 			if (cmd[i] == '"')
 				while(cmd[++i] != '"')
 					;
+			if(cmd[i] == '<' || cmd[i] == '>')
+			{
+				comands[status] = ft_substr(cmd, a, i - a);
+				comands[status] = 0;
+				return(comands);
+			}
 			i++;
 		}
 		comands[status] = ft_substr(cmd, a, i - a);

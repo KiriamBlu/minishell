@@ -22,7 +22,7 @@ char *getlineinenv(t_list *list, int i)
 	return(list->content);
 }
 
-void	printlist(t_list *list)
+void	printlist(t_list *list, int fileout)
 {
 	int i;
 	int j;
@@ -31,7 +31,8 @@ void	printlist(t_list *list)
 	j = ft_lstsize(list);
 	while(i < j)
 	{
-		printf("%s\n", (char *)list->content);
+		ft_putstr_fd((char *)list->content, fileout);
+		ft_putchar_fd('\n', fileout);
 		list = list->next;
 		i++;
 	}

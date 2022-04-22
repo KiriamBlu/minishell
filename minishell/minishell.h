@@ -38,12 +38,12 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-int	checkforexit(char *cmd, char *arg, t_minib *minilst);
-int	checkforenv(char *cmd, char *arg, t_list *envp);
+int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
+int	checkforenv(char *cmd, char *arg, t_list *envp, int fileout); //GESTIONADAS LAS REDIRECCIONE
 int	checkforexport(char *cmd, char *arg, t_minib *minilst);
-int	checkforcd(char *cmd, char *arg, t_minib *minilst);
+int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout);
 int	checkforunset(char *cmd, char *arg, t_minib *minilst);
-int	checkforecho(char *cmd, char *arg);
+int checkforecho(char *cmd, char *arg, int fileout);
 
 //LEXER
 
@@ -81,7 +81,7 @@ char	*freezerjoin(char *s1, char *s2);
 
 //DEBUGGIN TOOLS
 
-void	printlist(t_list *list);
+void	printlist(t_list *list, int fileout);
 void	printlistexp(t_list *list);
 
 //EXECUTER

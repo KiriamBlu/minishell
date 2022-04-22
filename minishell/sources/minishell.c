@@ -75,14 +75,14 @@ void	checkeverything(char *line, t_minib *minilst)
 		{
 			k = 0;
 			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
-			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+			k += checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp, minilst->cmds[i].fileout);
+			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
 			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 			{
 				free(minilst->pwd);
 				minilst->pwd = getcwd(NULL, 0);
-				printf("%s\n", minilst->pwd);
+				ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
 				k += 1;
 			}
 			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);

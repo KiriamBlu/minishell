@@ -31,6 +31,12 @@ void checkforredirect(char *line, int *filein, int *fileout)
 	flag = 0;
 	while(line[i])
 	{
+		if(line[i] == '"')
+			while(line[++i] != '"')
+				;
+		if(line[i] == '\'')
+			while(line[++i] != '\'')
+				;
 		if(line[i] == '>' || line[i] == '<')
 		{
 			if(line[i] == '>')
@@ -59,7 +65,6 @@ void checkforredirect(char *line, int *filein, int *fileout)
 					close(*filein);
 				*filein = open(aux,  O_RDONLY, 0666);
 				printf("%d\n", *filein);
-
 			}
 			free(aux);
 		}
