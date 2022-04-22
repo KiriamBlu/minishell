@@ -90,8 +90,8 @@ char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2
 	k = countdollars(line);
 	if(k == 0)
 		return(ft_strdup(line));
-	name[0] = NULL;
-	name[1] = NULL;
+	ft_bzero(&name[0], sizeof(char *));
+	ft_bzero(&name[1], sizeof(char *));
 	while (k > 0)
 	{
 		while (line[a] != '$')

@@ -15,7 +15,8 @@ typedef struct s_cmds
 {
 	char	*cmd;
 	char	*args;
-	int		type;
+	int		filein;
+	int 	fileout;
 }	t_cmds;
 
 typedef struct s_minib

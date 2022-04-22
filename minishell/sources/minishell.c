@@ -43,6 +43,23 @@ int checkforspaces(char *line)
 	return(0);
 }
 
+int checkinout(t_minib *minilst)
+{
+	int i;
+
+	i = 0;
+	while(i < minilst->cmdnum)
+	{
+		if(minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
+		{
+			printf("Not valid file\n");
+			return (-1);
+		}
+		i++;
+	}
+	return(0);
+}
+
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
@@ -50,7 +67,9 @@ void	checkeverything(char *line, t_minib *minilst)
 
 	i = 0;
 	prepline(line, minilst);
-	if(minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
+	if (checkinout(minilst) == -1)
+		return ;
+	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
 	{
 		while(i < minilst->cmdnum)
 		{
