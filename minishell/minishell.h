@@ -10,12 +10,23 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define ALIEN  "👽"
+# define SKULL	"🦠"
+# define FLAME	"🔥"
+# define PATH_TO_TMP	"/tmp/"
+# define BLUE_BOLD "\e[1;34m"
+# define GREEN_BOLD "\e[1;32m"
+# define MAG_BOLD "\e[1;35m"
+# define RED_BOLD "\e[1;31m"
+# define UNSET "\033[0m"
+# define CYAN "\e[0;36m"
 
 typedef struct s_cmds 
 {
 	char	*cmd;
 	char	*args;
-	int		type;
+	int		filein;
+	int 	fileout;
 }	t_cmds;
 
 typedef struct s_minib
@@ -27,6 +38,7 @@ typedef struct s_minib
 	int		expindex;
 	int 	cmdnum;
 	char	*pwd;
+	char	*promt;
 }	t_minib;
 
 
@@ -37,17 +49,17 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-void	checkforexit(char *cmd, char *arg, t_minib *minilst);
-void	checkforenv(char *cmd, char *arg, t_list *envp);
-void	checkforexport(char *cmd, char *arg, t_minib *minilst);
-void	checkforcd(char *cmd, char *arg, t_minib *minilst);
-void	checkforunset(char *cmd, char *arg, t_minib *minilst);
-void 	checkforecho(char *cmd, char *arg);
+int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
+int	checkforenv(char *cmd,  t_list *envp, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int	checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
+int checkforecho(char *cmd, char *arg, int fileout);//GESTIONADAS LAS REDIRECCIONES
 
 //LEXER
 
 void	morfeo(t_cmds *com, char **line);
-char	*ft_prueba(char *line, t_list *list);
+char	*expander(char *line, t_list *list);
 char	**lexer(char *expanded);
 
 //SIGNALS
@@ -77,10 +89,14 @@ int		count_c(char *str, char c); //cuenta pipes validos
 void	freecmds(t_minib *minilst);
 char	*getaddedexp(char *add);
 char	*freezerjoin(char *s1, char *s2);
+char 	*dopromt(void);
 
 //DEBUGGIN TOOLS
 
-void	printlist(t_list *list);
-void	printlistexp(t_list *list);
+void	printlist(t_list *list, int fileout);
+void	printlistexp(t_list *list, int fileout);
+//EXECUTER
+
+void executer(t_minib *minilst, int i);
 
 #endif

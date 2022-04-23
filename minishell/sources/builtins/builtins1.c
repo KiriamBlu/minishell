@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/04/12 16:49:37 by jsanfeli         ###   ########.fr       */
-=======
-/*   Updated: 2022/04/12 18:08:39 by jsanfeli         ###   ########.fr       */
->>>>>>> Builtins
+/*   Updated: 2022/04/19 21:42:18 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +149,12 @@ char **exportarg(char *cmd)
 			if (cmd[i] == '"')
 				while(cmd[++i] != '"')
 					;
+			if(cmd[i] == '<' || cmd[i] == '>')
+			{
+				comands[status] = ft_substr(cmd, a, i - a);
+				comands[status] = 0;
+				return(comands);
+			}
 			i++;
 		}
 		comands[status] = ft_substr(cmd, a, i - a);
@@ -165,18 +167,31 @@ char **exportarg(char *cmd)
 	return(comands);
 }
 
-void checkforexport(char *cmd, char *arg, t_minib *minilst)
+int checkarg(char *arg)
+{
+	int i;
+
+	i = 0;
+	while(arg[i] == ' ')
+		i++;
+	if (arg[i] == '>')
+		return (1);
+	else
+		return(0);
+}
+
+int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	int i;
 	char **args;
 
 	i = -1;
 	if (strcmp(cmd, "export") != 0)
-		return	;
-	if(ft_strlen(arg) == 0)
+		return (0);
+	if(checkarg(arg) == 1)
 	{
-		printlistexp(minilst->exp);
-		return ;
+		printlistexp(minilst->exp, fileout);
+		return (1);
 	}
 	args = exportarg(arg); // ANADIR LA SEPARACIÓN DE LOS ARGUMENTOS POR ("")
 	while(args[++i])
@@ -185,14 +200,15 @@ void checkforexport(char *cmd, char *arg, t_minib *minilst)
 		{
 			printf("minishell: export: %s: not a valid identifier\n", args[0]);
 			freemat(args);
-			return ;
+			return (1);
 		}
 		getaddexp(args[i], minilst);
 	}
 	freemat(args);
+	return(1);
 }
 
-void checkforunset(char *cmd, char *arg, t_minib *minilst)
+int checkforunset(char *cmd, char *arg, t_minib *minilst)
 {
 	int i;
 	int j;
@@ -200,17 +216,17 @@ void checkforunset(char *cmd, char *arg, t_minib *minilst)
 
 	j = -1;
 	if (strcmp(cmd, "unset") != 0)
-		return	;
+		return	(0);
 	args = ft_split(arg, ' ');
 	if(!args[0])
-		return ;
+		return (1);
 	while(args[++j])
 	{
 		if(checkadd(args[j]) == -1)
 		{
 			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
 			freemat(args);
-			return ;
+			return (1);
 		}
 		i = getposinlst(minilst->envp, args[j]);
 		if(i != -1)
@@ -226,4 +242,5 @@ void checkforunset(char *cmd, char *arg, t_minib *minilst)
 		}
 	}
 	freemat(args);
+	return(1);
 }
