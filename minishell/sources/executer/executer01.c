@@ -16,6 +16,7 @@ void	ft_errorpipex(int index)
 {
 	if (index == 0)
 	{
+		printf("zsh: command not found\n");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -74,5 +75,7 @@ void executer(t_minib *minilst, int i)
 		free(arto);
 		free(paths);
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 }

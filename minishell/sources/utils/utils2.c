@@ -110,6 +110,7 @@ void	freecmds(t_minib *minilst)
 			i++;
 		}
 		free(minilst->cmds);
+		free(minilst->promt);
 		minilst->cmdnum = 0;
 	}
 }

@@ -1,21 +1,13 @@
 
 #include "../../minishell.h"
 
-int	checkforenv(char *cmd, char *arg, t_list *envp, int fileout)
+int	checkforenv(char *cmd, t_list *envp, int fileout)
 {
-	int i;
-	char *args;
-
-	i = -1;
-	if(ft_strchr(arg, '>'))
-		args = ft_strdup(ft_strchr(arg, '>'));
 	if (strcmp("env", cmd) == 0)
 	{
 		printlist(envp, fileout);
 		return(1);
 	}
-	if(args)
-		free(args);
 	return (0);
 }
 
