@@ -43,6 +43,23 @@ int checkforspaces(char *line)
 	return(0);
 }
 
+int checkinout(t_minib *minilst)
+{
+	int i;
+
+	i = 0;
+	while(i < minilst->cmdnum)
+	{
+		if(minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
+		{
+			printf("Not valid file\n");
+			return (-1);
+		}
+		i++;
+	}
+	return(0);
+}
+
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
@@ -50,26 +67,32 @@ void	checkeverything(char *line, t_minib *minilst)
 
 	i = 0;
 	prepline(line, minilst);
-	if(minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
+	if (checkinout(minilst) == -1)
+		return ;
+	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
 	{
 		while(i < minilst->cmdnum)
 		{
 			k = 0;
 			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforenv(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->envp);
-			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args);
+			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+			k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
+			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
 			if (strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 			{
 				free(minilst->pwd);
 				minilst->pwd = getcwd(NULL, 0);
-				printf("%s\n", minilst->pwd);
+				ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
+				ft_putchar_fd('\n', minilst->cmds[i].fileout);
 				k += 1;
 			}
-			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 			k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 			if (strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+			{
+				k++;
 				system("leaks minishell");
+			}
 			if (k == 0)
 				executer(minilst, i);
 			i++;
@@ -91,7 +114,8 @@ int main(int argc, const char **argv, char **envp)
 	while(1)
 	{
 		inputsignal();
-		line = readline("minishell> ");
+		minilst.promt = dopromt();
+		line = readline(minilst.promt);
 		if(!line)
 		{
 			printf("exit\n");

@@ -1,25 +1,13 @@
 
 #include "../../minishell.h"
 
-int	checkforenv(char *cmd, char *arg, t_list *envp)
+int	checkforenv(char *cmd, t_list *envp, int fileout)
 {
-	int i;
-	char **args;
-
-	i = -1;
-	args = ft_split(arg, ' ');
 	if (strcmp("env", cmd) == 0)
 	{
-		if(args[0])
-		{
-			freemat(args);
-			printf("env: %s: No such file or directory\n", args[0]);
-			return (1);
-		}
-		printlist(envp);
+		printlist(envp, fileout);
 		return(1);
 	}
-	freemat(args);
 	return (0);
 }
 
@@ -50,7 +38,7 @@ void	cd_update_env(t_minib *minilst)
 	free(tmp);
 }
 
-char	*check_pwd(char *str, int home, t_minib *minilst)
+char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 {
 	char	*s;
 	int		i;
@@ -69,7 +57,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 		if(i != 0)
 		{
 			s = ft_strdup(getlineinenv(minilst->envp, i) + 7);
-			printf("%s\n", s);
+			ft_putstr_fd(s, fileout);
 		}
 		else
 			printf("minishell: cd: OLDPWD not set\n");
@@ -80,7 +68,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst)
 }
 
 
-int	checkforcd(char *cmd, char *arg, t_minib *minilst)
+int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	char	*str;
 	char	**args;
@@ -93,7 +81,7 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst)
 		minilst->pwd = getcwd(NULL, 0);
 		putinpos(&minilst->envp, 16, ft_strjoin("PWD=", minilst->pwd));
 	}
-	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst);
+	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
 	if(chdir(str) == -1)
 	{
 		if(!minilst->pwd)

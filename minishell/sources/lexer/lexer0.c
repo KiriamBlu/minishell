@@ -19,6 +19,78 @@ char	**ft_prepare(char *line)
 	return (cmd);
 }
 
+int openfilesindirect(char *line, int i, int *filein)
+{
+	int j;
+	char *aux;
+
+	j = i;
+	while(line[++j] == ' ')
+		while(line[++j] != ' ')
+			;
+	aux = malloc(sizeof(char) * j + 1);
+	j = 0;
+	while(line[++i] == ' ' && line[i])
+		while(line[++i] != ' ' && line[i])
+		{
+			aux[j] = line[i];
+			j++;
+		}
+	i -= 1;
+	if (*filein != STDIN_FILENO)
+		close(*filein);
+	*filein = open(aux,  O_RDONLY, 0666);
+	free(aux);
+	return(i);
+}
+
+
+int openfilesredirect(char *line, int i, int *fileout)
+{
+	int j;
+	char *aux;
+
+	j = i;
+	while(line[++j] == ' ')
+		while(line[++j] != ' ')
+			;
+	aux = malloc(sizeof(char) * j + 1);
+	j = 0;
+	while(line[++i] == ' ' && line[i])
+		while(line[++i] != ' ' && line[i])
+		{
+			aux[j] = line[i];
+			j++;
+		}
+	i -= 1;
+	if (*fileout != STDOUT_FILENO)
+		close(*fileout);
+	*fileout = open(aux, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	free(aux);
+	return(i);
+}
+
+void checkforredirect(char *line, int *filein, int *fileout)
+{
+	int i;
+
+	i = 0;
+	while(line[i])
+	{
+		if(line[i] == '"')
+			while(line[++i] != '"')
+				;
+		if(line[i] == '\'')
+			while(line[++i] != '\'')
+				;
+		if(line[i] == '>')
+			i = openfilesredirect(line, i, fileout);
+		if(line[i] == '<')
+			i = openfilesindirect(line, i, filein);
+		i++;
+	}
+}
+
 void	morfeo(t_cmds *com, char **line)
 {
 	int		i;
@@ -29,10 +101,13 @@ void	morfeo(t_cmds *com, char **line)
 	while (line[i])
 	{
 		j = 0;
+		com[i].filein = STDIN_FILENO;
+		com[i].fileout = STDOUT_FILENO;
 		aux = ft_split(line[i], ' ');
 		if(aux[0])
 		{	
 			com[i].cmd = ft_strdup(aux[0]);
+			checkforredirect(line[i], &com[i].filein, &com[i].fileout);
 			freemat(aux);
 			j = ft_strlen(com[i].cmd);
 			com[i].args = ft_substr(line[i], j + 1, ft_strlen(line[i]));

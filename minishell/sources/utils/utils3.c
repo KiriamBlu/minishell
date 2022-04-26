@@ -63,8 +63,10 @@ char	*freezerjoin(char *s1, char *s2)
 	size_t	j;
 
 	i = 0;
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s1)
+		return(ft_strdup(s2));
+	if (!s2)
+		return(ft_strdup(s1));
 	i = 0;
 	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!str)
@@ -84,3 +86,32 @@ char	*freezerjoin(char *s1, char *s2)
 	free(s2);
 	return (str);
 }
+
+char  *dopromt(void)
+{
+	char *aux;
+	char *aux2;
+
+
+	aux = ft_strjoin(SKULL, " ");
+	aux2 = ft_strjoin(aux, GREEN_BOLD);
+	free(aux);
+	aux = ft_strjoin(aux2, "Escromito_v0.1");
+	free(aux2);
+	aux2 = ft_strjoin(aux, MAG_BOLD);
+	free(aux);
+	aux = ft_strjoin(aux2, "-$>");
+	free(aux2);
+	return(aux);
+}
+
+
+
+
+
+
+
+
+
+
+

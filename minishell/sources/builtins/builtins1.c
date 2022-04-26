@@ -149,6 +149,12 @@ char **exportarg(char *cmd)
 			if (cmd[i] == '"')
 				while(cmd[++i] != '"')
 					;
+			if(cmd[i] == '<' || cmd[i] == '>')
+			{
+				comands[status] = ft_substr(cmd, a, i - a);
+				comands[status] = 0;
+				return(comands);
+			}
 			i++;
 		}
 		comands[status] = ft_substr(cmd, a, i - a);
@@ -161,7 +167,20 @@ char **exportarg(char *cmd)
 	return(comands);
 }
 
-int checkforexport(char *cmd, char *arg, t_minib *minilst)
+int checkarg(char *arg)
+{
+	int i;
+
+	i = 0;
+	while(arg[i] == ' ')
+		i++;
+	if (arg[i] == '>')
+		return (1);
+	else
+		return(0);
+}
+
+int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	int i;
 	char **args;
@@ -169,9 +188,9 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst)
 	i = -1;
 	if (strcmp(cmd, "export") != 0)
 		return (0);
-	if(ft_strlen(arg) == 0)
+	if(checkarg(arg) == 1)
 	{
-		printlistexp(minilst->exp);
+		printlistexp(minilst->exp, fileout);
 		return (1);
 	}
 	args = exportarg(arg); // ANADIR LA SEPARACIÓN DE LOS ARGUMENTOS POR ("")
