@@ -37,6 +37,7 @@ typedef struct s_minib
 	int		envindex;
 	int		expindex;
 	int 	cmdnum;
+	int		shlvl; //PARA ESTO ES LA GLOBAl POR SI NOS UNSETEAN EN EL ENV
 	char	*pwd;
 	char	*promt;
 }	t_minib;
@@ -89,7 +90,7 @@ int		count_c(char *str, char c); //cuenta pipes validos
 void	freecmds(t_minib *minilst);
 char	*getaddedexp(char *add);
 char	*freezerjoin(char *s1, char *s2);
-char 	*dopromt(void);
+char	*dopromt(t_minib *minilst);
 
 //DEBUGGIN TOOLS
 

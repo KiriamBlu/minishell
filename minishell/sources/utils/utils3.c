@@ -87,22 +87,28 @@ char	*freezerjoin(char *s1, char *s2)
 	return (str);
 }
 
-char  *dopromt(void)
+char  *dopromt(t_minib *minilst)
 {
 	char *aux;
 	char *aux2;
+	char *helps;
+	int		i;
 
-
+	i = minilst->shlvl;
 	aux = ft_strjoin(SKULL, " ");
 	aux2 = ft_strjoin(aux, GREEN_BOLD);
 	free(aux);
-	aux = ft_strjoin(aux2, "Escromito_v0.1");
+	aux = ft_strjoin(aux2, "Escromito_v0.");
 	free(aux2);
-	aux2 = ft_strjoin(aux, MAG_BOLD);
+	helps =  ft_itoa(i);
+	aux2 = ft_strjoin(aux, helps);
 	free(aux);
-	aux = ft_strjoin(aux2, "-$>");
+	free(helps);
+	aux = ft_strjoin(aux2, MAG_BOLD);
 	free(aux2);
-	return(aux);
+	aux2 = ft_strjoin(aux, "-$>");
+	free(aux);
+	return(aux2);
 }
 
 
