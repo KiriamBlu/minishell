@@ -19,16 +19,62 @@ char	**ft_prepare(char *line)
 	return (cmd);
 }
 
-void checkforredirect(char *line, int *filein, int *fileout)
+int openfilesindirect(char *line, int i, int *filein)
 {
-	int i;
-	int flag;
 	int j;
 	char *aux;
 
-	i = 0;
+	j = i;
+	while(line[++j] == ' ')
+		while(line[++j] != ' ')
+			;
+	aux = malloc(sizeof(char) * j + 1);
 	j = 0;
-	flag = 0;
+	while(line[++i] == ' ' && line[i])
+		while(line[++i] != ' ' && line[i])
+		{
+			aux[j] = line[i];
+			j++;
+		}
+	i -= 1;
+	if (*filein != STDIN_FILENO)
+		close(*filein);
+	*filein = open(aux,  O_RDONLY, 0666);
+	free(aux);
+	return(i);
+}
+
+
+int openfilesredirect(char *line, int i, int *fileout)
+{
+	int j;
+	char *aux;
+
+	j = i;
+	while(line[++j] == ' ')
+		while(line[++j] != ' ')
+			;
+	aux = malloc(sizeof(char) * j + 1);
+	j = 0;
+	while(line[++i] == ' ' && line[i])
+		while(line[++i] != ' ' && line[i])
+		{
+			aux[j] = line[i];
+			j++;
+		}
+	i -= 1;
+	if (*fileout != STDOUT_FILENO)
+		close(*fileout);
+	*fileout = open(aux, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	free(aux);
+	return(i);
+}
+
+void checkforredirect(char *line, int *filein, int *fileout)
+{
+	int i;
+
+	i = 0;
 	while(line[i])
 	{
 		if(line[i] == '"')
@@ -37,37 +83,10 @@ void checkforredirect(char *line, int *filein, int *fileout)
 		if(line[i] == '\'')
 			while(line[++i] != '\'')
 				;
-		if(line[i] == '>' || line[i] == '<')
-		{
-			if(line[i] == '>')
-				flag = 1;
-			j = i;
-			while(line[++j] == ' ')
-				while(line[++j] != ' ')
-					;
-			aux = malloc(sizeof(char) * j + 1);
-			j = 0;
-			while(line[++i] == ' ')
-				while(line[++i] != ' ')
-				{
-					aux[j] = line[i];
-					j++;
-				}
-			if (flag == 1)
-			{
-				if (*fileout != STDOUT_FILENO)
-					close(*fileout);
-				*fileout = open(aux, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-				printf("%d\n", *fileout);
-			}
-			else			{
-				if (*filein != STDIN_FILENO)
-					close(*filein);
-				*filein = open(aux,  O_RDONLY, 0666);
-				printf("%d\n", *filein);
-			}
-			free(aux);
-		}
+		if(line[i] == '>')
+			i = openfilesredirect(line, i, fileout);
+		if(line[i] == '<')
+			i = openfilesindirect(line, i, filein);
 		i++;
 	}
 }

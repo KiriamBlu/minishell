@@ -104,7 +104,6 @@ int main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
-	char *promt;
 	int		i;
 
 	argv = NULL;
