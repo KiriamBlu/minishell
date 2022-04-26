@@ -160,7 +160,7 @@ int main(int argc, const char **argv, char **envp)
 	while(1)
 	{
 		inputsignal();
-		minilst.promt = dopromt();
+		minilst.promt = dopromt(&minilst);
 		line = readline(minilst.promt);
 		if(!line)
 		{
