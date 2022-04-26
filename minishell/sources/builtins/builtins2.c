@@ -34,7 +34,7 @@ int checkforecho(char *cmd, char *arg, int fileout)
 	int j;
 	char *print;
 
-	if (strcmp(cmd, "echo") != 0)
+	if (ft_strcmp(cmd, "echo") != 0)
 		return (0);
 	print = argsdone(arg);
 	j = -1;

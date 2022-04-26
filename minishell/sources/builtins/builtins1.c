@@ -32,6 +32,7 @@ char **getdonexp(char **envp, int i)
 		}
 		aux[count] = getaddedexp(envp[k]);
 	}
+	aux[i] = 0;
 	return(aux);
 }
 
@@ -172,12 +173,13 @@ int checkarg(char *arg)
 	int i;
 
 	i = 0;
-	while(arg[i] == ' ')
+	while(arg[i] == ' ' && arg[i])
 		i++;
-	if (arg[i] == '>')
+	if (arg[i] == '>' || arg[i] == '\0') 
 		return (1);
 	else
-		return(0);
+		return(2);
+	return(1);
 }
 
 int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
@@ -186,7 +188,7 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 	char **args;
 
 	i = -1;
-	if (strcmp(cmd, "export") != 0)
+	if (ft_strcmp(cmd, "export") != 0)
 		return (0);
 	if(checkarg(arg) == 1)
 	{
@@ -215,7 +217,7 @@ int checkforunset(char *cmd, char *arg, t_minib *minilst)
 	char **args;
 
 	j = -1;
-	if (strcmp(cmd, "unset") != 0)
+	if (ft_strcmp(cmd, "unset") != 0)
 		return	(0);
 	args = ft_split(arg, ' ');
 	if(!args[0])
