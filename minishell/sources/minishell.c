@@ -16,6 +16,7 @@ void checkenvp(t_minib *minilst)
 	if(getposinlst(minilst->envp, "SHLVL") == -1)
 	{
 		tmp = ft_strjoin("SHLVL=", "1");
+		minilst->shlvl = 1;
 		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		minilst->shlvl = 1;
 		free(tmp);
@@ -50,32 +51,32 @@ void prepbasics(t_minib *minilst, char **envp)
 
 	minilst->pwd = getcwd(NULL, 0);
 	i = 0;
-	while(envp[i])
-		i++;
-	//if(i != 0)
-		minilst->envp = createarraylst(envp);
+	minilst->envp = createarraylst(envp);
 	checkenvp(minilst);
-	//tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
-	aux = getdonexp(envp, i);
-	//freemat(tmp);
+	tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
+	while(tmp[i])
+		i++;
+	aux = getdonexp(tmp, i);
+	freemat(tmp);
 	minilst->exp = createarraylst(aux);
-	minilst->envindex = i;
-	minilst->expindex = i;
 	freemat(aux);
 }
 
-void	prepline(char *line, t_minib *minilst)
+int	prepline(char *line, t_minib *minilst)
 {
+	int i;
 	char	**newline;
 	char	*expanded;
 
+	i = 0;
 	expanded = expander(line, minilst->envp); //AÑADIR $? A LAS EXPANSIONES
 	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
-	morfeo(minilst->cmds, newline);
+	i = morfeo(minilst->cmds, newline);
 	freemat(newline);
 	free(expanded);
+	return(i);
 }
 
 int checkforspaces(char *line)
@@ -112,7 +113,8 @@ void	checkeverything(char *line, t_minib *minilst)
 	int k;
 
 	i = 0;
-	prepline(line, minilst);
+	if(prepline(line, minilst) == -1)
+		return ;
 	if (checkinout(minilst) == -1)
 		return ;
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)

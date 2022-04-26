@@ -1,7 +1,7 @@
 
 #include "../../minishell.h"
 
-int	checkforenv(char *cmd, t_list *envp, int fileout)
+int	checkforenv(char *cmd,t_list *envp, int fileout)
 {
 	if (ft_strcmp("env", cmd) == 0)
 	{
