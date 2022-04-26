@@ -22,20 +22,30 @@ char	**ft_prepare(char *line)
 int openfilesindirect(char *line, int i, int *filein)
 {
 	int j;
+	int l;
 	char *aux;
 
 	j = i;
+	l = 0;
 	while(line[++j] == ' ')
-		while(line[++j] != ' ')
-			;
-	aux = malloc(sizeof(char) * j + 1);
+		;
+	while(line[j] != ' ')
+	{
+		if(line[j] == '>' || line[j] == '<')
+			return(-1);
+		l++;
+		j++;
+	}
+	aux = malloc(sizeof(char) * l + 1);
 	j = 0;
 	while(line[++i] == ' ' && line[i])
-		while(line[++i] != ' ' && line[i])
-		{
-			aux[j] = line[i];
-			j++;
-		}
+		;
+	while(line[i] != ' ' && line[i])
+	{
+		aux[j] = line[i];
+		j++;
+		i++;
+	}
 	i -= 1;
 	if (*filein != STDIN_FILENO)
 		close(*filein);
@@ -44,24 +54,73 @@ int openfilesindirect(char *line, int i, int *filein)
 	return(i);
 }
 
+int openfilesappend(char *line, int i, int *fileout)
+{
+	int j;
+	int l;
+	char *aux;
+
+	j = i;
+	l = 0;
+	while(line[++j] == ' ' && line[j])
+		;	
+	while(line[j] != ' ' && line[j])
+	{
+		if(line[j] == '>' || line[j] == '<')
+			return(-1);
+		j++;
+		l++;
+	}
+	aux = malloc(sizeof(char) * l + 1);
+	j = 0;
+	while(line[++i] == ' ' && line[i])
+		;	
+	while(line[i] != ' ' && line[i])
+	{
+		aux[j] = line[i];
+		j++;
+		i++;
+	}
+	i -= 1;
+	if (*fileout != STDOUT_FILENO)
+		close(*fileout);
+	*fileout = open(aux, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	free(aux);
+	return(i);
+}
 
 int openfilesredirect(char *line, int i, int *fileout)
 {
 	int j;
+	int l;
 	char *aux;
 
 	j = i;
-	while(line[++j] == ' ')
-		while(line[++j] != ' ')
-			;
+	if(line[i + 1] == '>')
+	{
+		i = openfilesappend(line, i + 1, fileout);
+		return(i);
+	}
+	l = 0;
+	while(line[++j] == ' ' && line[j])
+		;	
+	while(line[j] != ' ' && line[j])
+	{
+		if(line[j] == '>' || line[j] == '<')
+			return(-1);
+		j++;
+		l++;
+	}
 	aux = malloc(sizeof(char) * j + 1);
 	j = 0;
 	while(line[++i] == ' ' && line[i])
-		while(line[++i] != ' ' && line[i])
-		{
-			aux[j] = line[i];
-			j++;
-		}
+		;
+	while(line[i] != ' ' && line[i])
+	{
+		aux[j] = line[i];
+		j++;
+		i++;
+	}
 	i -= 1;
 	if (*fileout != STDOUT_FILENO)
 		close(*fileout);
@@ -70,7 +129,7 @@ int openfilesredirect(char *line, int i, int *fileout)
 	return(i);
 }
 
-void checkforredirect(char *line, int *filein, int *fileout)
+int checkforredirect(char *line, int *filein, int *fileout)
 {
 	int i;
 
@@ -87,11 +146,17 @@ void checkforredirect(char *line, int *filein, int *fileout)
 			i = openfilesredirect(line, i, fileout);
 		if(line[i] == '<')
 			i = openfilesindirect(line, i, filein);
+		if (i == -1)
+		{
+			printf("Error unespected token\n");
+			return(-1);
+		}
 		i++;
 	}
+	return(0);
 }
 
-void	morfeo(t_cmds *com, char **line)
+int	morfeo(t_cmds *com, char **line)
 {
 	int		i;
 	char	**aux;
@@ -107,13 +172,15 @@ void	morfeo(t_cmds *com, char **line)
 		if(aux[0])
 		{	
 			com[i].cmd = ft_strdup(aux[0]);
-			checkforredirect(line[i], &com[i].filein, &com[i].fileout);
 			freemat(aux);
 			j = ft_strlen(com[i].cmd);
 			com[i].args = ft_substr(line[i], j + 1, ft_strlen(line[i]));
+			if (checkforredirect(line[i], &com[i].filein, &com[i].fileout) == -1)
+				return(-1);
 		}
 		i++;
 	}
+	return(0);
 }
 
 int countpipe(char *expanded)

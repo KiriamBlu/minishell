@@ -19,7 +19,7 @@ char **getdonexp(char **envp, int i)
 	int		k;
 	int		count;
 
-	aux = ft_calloc(sizeof(char *), i + 1);
+	aux = malloc(sizeof(char *) * i + 1);
 	k = -1;
 	while(envp[++k])
 	{
