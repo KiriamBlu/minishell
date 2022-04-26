@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/26 14:43:43 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/26 14:58:21 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,37 @@ char	*path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void executer(t_minib *minilst, int i)
+void	executer(t_minib *minilst, int i)
 {
 	char		**envp;
-	char 		*arto;
-	char 		*paths;
-	char 		**pths2;
+	char		*arto;
+	char		*paths;
+	char		**pths2;
 	int			pid;
 	static int	status;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp)); //REPLICA ENV
+		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
 		printlist(minilst->envp, ft_lstsize(minilst->envp));
-		arto = ft_strjoin(minilst->cmds[i].cmd, " "); //UNION COMANDO
-		arto = ft_strjoin(arto, minilst->cmds[i].args); // UNION COMANDO CON ARGUMENTO
-		pths2 = ft_split(arto, ' '); //SPLITE PATH
+		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
+		arto = ft_strjoin(arto, minilst->cmds[i].args);
+		pths2 = ft_split(arto, ' ');
 		if (pths2[0][0] == '/' | pths2[0][0] == '~' | pths2[0][0] == '.' |
 			access(pths2[0], X_OK) == 0)
 		{	
 			if (execve(minilst->cmds[i].cmd, pths2, envp) == -1)
+			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
 				ft_errorpipex(0);
+			}
 		}
 		else 
 		{
-			paths = path(minilst->cmds[i].cmd, envp); // BUSCA PATH
-			if (execve(paths, pths2, envp) == -1) //EXCUVE
+			paths = path(minilst->cmds[i].cmd, envp);
+			if (execve(paths, pths2, envp) == -1)
 			{
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
