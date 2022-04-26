@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/19 23:15:50 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/26 14:43:43 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,31 +49,41 @@ char	*path(char *cmd, char **envp)
 
 void executer(t_minib *minilst, int i)
 {
-	char **envp;
-	char *arto;
-	char *paths;
-	char **pths2;
-	int pid;
+	char		**envp;
+	char 		*arto;
+	char 		*paths;
+	char 		**pths2;
+	int			pid;
 	static int	status;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp)); //REPLICA ENV
+		printlist(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " "); //UNION COMANDO
-		arto = ft_strjoin(arto, minilst->cmds[0].args); // UNION COMANDO CON ARGUMENTO
-		paths = path(minilst->cmds[i].cmd, envp); // BUSCA PATH
+		arto = ft_strjoin(arto, minilst->cmds[i].args); // UNION COMANDO CON ARGUMENTO
 		pths2 = ft_split(arto, ' '); //SPLITE PATH
-		if (execve(paths, pths2, envp) == -1) //EXCUVE
+		if (pths2[0][0] == '/' | pths2[0][0] == '~' | pths2[0][0] == '.' |
+			access(pths2[0], X_OK) == 0)
+		{	
+			if (execve(minilst->cmds[i].cmd, pths2, envp) == -1)
+				ft_errorpipex(0);
+		}
+		else 
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			ft_errorpipex(0);
+			paths = path(minilst->cmds[i].cmd, envp); // BUSCA PATH
+			if (execve(paths, pths2, envp) == -1) //EXCUVE
+			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
+				ft_errorpipex(0);
+			}	
+			free(paths);
 		}
 		freemat(pths2);
 		freemat(envp);
 		free(arto);
-		free(paths);
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

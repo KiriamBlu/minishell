@@ -3,7 +3,7 @@
 
 int	checkforenv(char *cmd, t_list *envp, int fileout)
 {
-	if (strcmp("env", cmd) == 0)
+	if (ft_strcmp("env", cmd) == 0)
 	{
 		printlist(envp, fileout);
 		return(1);
@@ -73,7 +73,7 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	char	*str;
 	char	**args;
 
-	if (strcmp("cd", cmd) != 0)
+	if (ft_strcmp("cd", cmd) != 0)
 		return	(0);
 	args = ft_split(arg, ' ');
 	if (getposinlst(minilst->envp, "PWD") == -1)
@@ -102,7 +102,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 	char	**aux;
 
 	i = 0;
-	if (strcmp(cmd, "exit") == 0)
+	if (ft_strcmp(cmd, "exit") == 0)
 	{
 		aux = ft_split(arg, ' ');
 		printf("exit\n");
