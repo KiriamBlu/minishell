@@ -39,7 +39,7 @@ int openfilesindirect(char *line, int i, int *filein)
 	i -= 1;
 	if (*filein != STDIN_FILENO)
 		close(*filein);
-	*filein = open(aux,  O_RDONLY, 0666);
+	*filein = open(aux,  O_RDONLY, 0777);
 	free(aux);
 	return(i);
 }

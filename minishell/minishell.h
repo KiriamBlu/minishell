@@ -98,6 +98,10 @@ void	printlist(t_list *list, int fileout);
 void	printlistexp(t_list *list, int fileout);
 //EXECUTER
 
-void executer(t_minib *minilst, int i);
+void	executer(t_minib *minilst, int i);
+char	*path(char *cmd, char **envp);
+void	ft_errorpipex(int index);
+void	simba(t_minib *minilst, int i, int k);
+void	ejecucion(t_minib *minilst, int i, int k);
 
 #endif

@@ -106,20 +106,8 @@ int checkinout(t_minib *minilst)
 	return(0);
 }
 
-void	checkeverything(char *line, t_minib *minilst)
+void ejecucion(t_minib *minilst, int i, int k)
 {
-	int i;
-	int k;
-
-	i = 0;
-	prepline(line, minilst);
-	if (checkinout(minilst) == -1)
-		return ;
-	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
-	{
-		while(i < minilst->cmdnum)
-		{
-			k = 0;
 			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 			k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
@@ -141,6 +129,36 @@ void	checkeverything(char *line, t_minib *minilst)
 			}
 			if (k == 0)
 				executer(minilst, i);
+}
+
+void	checkeverything(char *line, t_minib *minilst)
+{
+	int i;
+	int k;
+
+	i = 0;
+	prepline(line, minilst);
+	if (checkinout(minilst) == -1)
+		return ;
+	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
+	{
+		while(i < minilst->cmdnum)
+		{
+			k = 0;
+			if (minilst->cmdnum > 1)
+			{
+				while (i < minilst->cmdnum - 1)
+				{
+					printf("in%d\n", minilst->cmds[i].filein);
+					printf("out%d\n", minilst->cmds[i].fileout);
+					simba(minilst, i, k);
+					i++;
+				}
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				ejecucion(minilst, i, k);
+			}
+			else
+				ejecucion(minilst, i, k);
 			i++;
 		}
 	}
