@@ -5,6 +5,7 @@ void checkenvp(t_minib *minilst)
 {
 	char *tmp;
 	char *aux;
+	char *auxi;
 	int j;
 
 	if(getposinlst(minilst->envp, "PWD") == -1)
@@ -25,8 +26,10 @@ void checkenvp(t_minib *minilst)
 	{
 		j = getposinlst(minilst->envp, "SHLVL");
 		aux = ft_strdup(getlineinenv(minilst->envp, j + 1));
-		tmp = ft_substr(aux, ft_strlen(getnamevariable(aux)) + 1, ft_strlen(aux));
+		auxi = getnamevariable(aux);
+		tmp = ft_substr(aux, ft_strlen(auxi) + 1, ft_strlen(aux));
 		free(aux);
+		free(auxi);
 		minilst->shlvl = ft_atoi(tmp) + 1;
 		free(tmp);
 		aux = ft_itoa(minilst->shlvl);
