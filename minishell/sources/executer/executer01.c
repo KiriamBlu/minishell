@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 04:03:06 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 15:27:45 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_errorpipex(int index)
 	if (index == 0)
 	{
 		printf("zsh: command not found\n");
-		exit(EXIT_FAILURE);
 	}
 }
 
@@ -47,7 +46,7 @@ char	*path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	executer(t_minib *minilst, int i)
+void	executer(t_minib *minilst, int i, int num)
 {
 	char		**envp;
 	char		*arto;
@@ -56,7 +55,7 @@ void	executer(t_minib *minilst, int i)
 	int			pid;
 	static int	status;
 
-	if (minilst->cmdnum == 1)
+	if (minilst->cmdnum == 1 || num == 1)
 		pid = fork();
 	else
 		pid = 0;
@@ -65,7 +64,7 @@ void	executer(t_minib *minilst, int i)
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
 		arto = ft_strjoin(arto, minilst->cmds[i].args);
-		pths2 = ft_split(arto, ' ');
+		pths2 = ft_split(arto, ' ');	
 		if (pths2[0][0] == '/' || pths2[0][0] == '~' || pths2[0][0] == '.' ||
 			access(pths2[0], X_OK) == 0)
 		{	
@@ -84,7 +83,7 @@ void	executer(t_minib *minilst, int i)
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
 				ft_errorpipex(0);
-			}	
+			}
 			free(paths);
 		}
 		freemat(pths2);
@@ -93,6 +92,6 @@ void	executer(t_minib *minilst, int i)
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	if (minilst->cmdnum == 1)
+	if (minilst->cmdnum == 1 || num == 1)
 		waitpid(pid, &status, 0);
 }

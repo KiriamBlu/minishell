@@ -6,25 +6,17 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 04:26:55 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 15:28:08 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	finish(int fd1, int fd0, int pid)
-{
-	static int	status;
-
-	dup2(fd0, STDIN_FILENO);
-	waitpid(pid, &status, 0);
-	
-}
-
 void	simba(t_minib *minilst, int i, int k)
 {
 	int		pid;
 	int		fd[2];
+	int		status;
 
 	if (pipe(fd) == -1)
 		ft_errorpipex(0);
@@ -34,12 +26,11 @@ void	simba(t_minib *minilst, int i, int k)
 	if (pid == 0)
 	{
 		close(fd[0]);
-		printf("este: %d \n", fd[1]);
+		dprintf(2, "este: %d \n", fd[1]);
 		dup2(fd[1], STDOUT_FILENO);
-		ejecucion(minilst, i, k);
+		ejecucion(minilst, i, k, 0);
 	}
-	else
-		finish(fd[1], fd[0], pid);
-	
-		
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	waitpid(pid, &status, 0);
 }
