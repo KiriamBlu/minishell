@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 03:00:21 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 04:03:06 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	executer(t_minib *minilst, int i)
 	if (pid == 0)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
-		printlist(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
 		arto = ft_strjoin(arto, minilst->cmds[i].args);
 		pths2 = ft_split(arto, ' ');

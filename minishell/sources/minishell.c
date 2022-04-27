@@ -5,6 +5,7 @@ void checkenvp(t_minib *minilst)
 {
 	char *tmp;
 	char *aux;
+	char *auxi;
 	int j;
 
 	if(getposinlst(minilst->envp, "PWD") == -1)
@@ -25,8 +26,10 @@ void checkenvp(t_minib *minilst)
 	{
 		j = getposinlst(minilst->envp, "SHLVL");
 		aux = ft_strdup(getlineinenv(minilst->envp, j + 1));
-		tmp = ft_substr(aux, ft_strlen(getnamevariable(aux)) + 1, ft_strlen(aux));
+		auxi = getnamevariable(aux);
+		tmp = ft_substr(aux, ft_strlen(auxi) + 1, ft_strlen(aux));
 		free(aux);
+		free(auxi);
 		minilst->shlvl = ft_atoi(tmp) + 1;
 		free(tmp);
 		aux = ft_itoa(minilst->shlvl);
@@ -139,8 +142,6 @@ void	checkeverything(char *line, t_minib *minilst)
 	int k;
 
 	i = 0;
-
-	minilst->cmds[i].in_fd = STDIN_FILENO;
 	if(prepline(line, minilst) == -1)
 		return ;
 	if (checkinout(minilst) == -1)
@@ -154,8 +155,7 @@ void	checkeverything(char *line, t_minib *minilst)
 			{
 				while (i < minilst->cmdnum)
 				{
-					printf("out fuera: %d\n", minilst->cmds[i].fileout);
-					printf("in fuera: %d\n", minilst->cmds[i].filein);
+					dup2(minilst->cmds[0].filein, STDIN_FILENO);
 					simba(minilst, i, k);
 					i++;
 				}
