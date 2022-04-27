@@ -93,6 +93,8 @@ void	freecmds(t_minib *minilst);
 char	*getaddedexp(char *add);
 char	*freezerjoin(char *s1, char *s2);
 char	*dopromt(t_minib *minilst);
+char	*argsdone(char *arg);
+
 
 //DEBUGGIN TOOLS
 
