@@ -16,6 +16,7 @@ void checkenvp(t_minib *minilst)
 	if(getposinlst(minilst->envp, "SHLVL") == -1)
 	{
 		tmp = ft_strjoin("SHLVL=", "1");
+		minilst->shlvl = 1;
 		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		minilst->shlvl = 1;
 		free(tmp);
@@ -47,35 +48,36 @@ void prepbasics(t_minib *minilst, char **envp)
 {
 	int i;
 	char **aux;
+	char **tmp;
 
 	minilst->pwd = getcwd(NULL, 0);
 	i = 0;
-	while(envp[i])
-		i++;
-	//if(i != 0)
-		minilst->envp = createarraylst(envp);
+	minilst->envp = createarraylst(envp);
 	checkenvp(minilst);
-	//tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
-	aux = getdonexp(envp, i);
-	//freemat(tmp);
+	tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
+	while(tmp[i])
+		i++;
+	aux = getdonexp(tmp, i);
+	freemat(tmp);
 	minilst->exp = createarraylst(aux);
-	minilst->envindex = i;
-	minilst->expindex = i;
 	freemat(aux);
 }
 
-void	prepline(char *line, t_minib *minilst)
+int	prepline(char *line, t_minib *minilst)
 {
+	int i;
 	char	**newline;
 	char	*expanded;
 
+	i = 0;
 	expanded = expander(line, minilst->envp); //AÑADIR $? A LAS EXPANSIONES
 	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
-	morfeo(minilst->cmds, newline);
+	i = morfeo(minilst->cmds, newline);
 	freemat(newline);
 	free(expanded);
+	return(i);
 }
 
 int checkforspaces(char *line)
@@ -108,27 +110,27 @@ int checkinout(t_minib *minilst)
 
 void ejecucion(t_minib *minilst, int i, int k)
 {
-			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-			k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
-			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
-			if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
-			{
-				free(minilst->pwd);
-				minilst->pwd = getcwd(NULL, 0);
-				ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
-				ft_putchar_fd('\n', minilst->cmds[i].fileout);
-				k += 1;
-			}
-			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-			k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
-			{
-				k++;
-				system("leaks minishell");
-			}
-			if (k == 0)
-				executer(minilst, i);
+	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
+	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
+	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+	{
+		free(minilst->pwd);
+		minilst->pwd = getcwd(NULL, 0);
+		ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
+		ft_putchar_fd('\n', minilst->cmds[i].fileout);
+		k += 1;
+	}
+	k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+	{
+		k++;
+		system("leaks minishell");
+	}
+	if (k == 0)
+		executer(minilst, i);
 }
 
 void	checkeverything(char *line, t_minib *minilst)
@@ -139,7 +141,8 @@ void	checkeverything(char *line, t_minib *minilst)
 	i = 0;
 
 	minilst->cmds[i].in_fd = STDIN_FILENO;
-	prepline(line, minilst);
+	if(prepline(line, minilst) == -1)
+		return ;
 	if (checkinout(minilst) == -1)
 		return ;
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)

@@ -60,7 +60,7 @@ int checkforecho(char *cmd, char *arg, int fileout);//GESTIONADAS LAS REDIRECCIO
 
 //LEXER
 
-void	morfeo(t_cmds *com, char **line);
+int	morfeo(t_cmds *com, char **line);
 char	*expander(char *line, t_list *list);
 char	**lexer(char *expanded);
 
