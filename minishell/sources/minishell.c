@@ -63,6 +63,7 @@ void prepbasics(t_minib *minilst, char **envp)
 	aux = getdonexp(tmp, i);
 	freemat(tmp);
 	minilst->exp = createarraylst(aux);
+	minilst->cmdstatus = 0;
 	freemat(aux);
 }
 
@@ -176,6 +177,7 @@ int main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
+	char *promt;
 	int		i;
 
 	argv = NULL;
@@ -183,11 +185,12 @@ int main(int argc, const char **argv, char **envp)
 		exit(0);
 	i = 0;
 	prepbasics(&minilst, envp);
+	minilst.promt = dopromt(&minilst);
 	while(1)
 	{
 		inputsignal();
-		minilst.promt = dopromt(&minilst);
-		line = readline(minilst.promt);
+		promt = ft_strdup(minilst.promt);
+		line = readline(promt);
 		if(!line)
 		{
 			printf("exit\n");
@@ -205,7 +208,9 @@ int main(int argc, const char **argv, char **envp)
 		freecmds(&minilst);
 		//system("leaks minishell");
 		free(line);
+		free(promt);
 	}
+	free(minilst.promt);
 	return 0;
 }
 

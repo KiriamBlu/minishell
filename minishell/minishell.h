@@ -38,7 +38,8 @@ typedef struct s_minib
 	int		envindex;
 	int		expindex;
 	int 	cmdnum;
-	int		shlvl; //PARA ESTO ES LA GLOBAl POR SI NOS UNSETEAN EN EL ENV
+	int		shlvl;
+	int		cmdstatus;
 	char	*pwd;
 	char	*promt;
 }	t_minib;

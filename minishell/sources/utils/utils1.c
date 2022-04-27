@@ -61,7 +61,11 @@ t_list *createarraylst(char **array)
 	t_list *aux;
 
 	aux = NULL;
-	i = 0;
+	if(array[0])
+		aux = ft_lstnew(ft_strdup(array[0]));
+	else
+		return(NULL);
+	i = 1;
 	while(array[i])
 	{
 		ft_lstadd_back(&aux, ft_lstnew(ft_strdup(array[i])));

@@ -64,7 +64,6 @@ char *expanddollar(char *name, t_list *list)
 
 	if(name[0] == '?')
 	{
-		free(name);
 		return("$");
 	}
 	check = getposinlst(list, name) + 1;
