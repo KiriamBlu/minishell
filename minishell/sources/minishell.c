@@ -196,17 +196,15 @@ int main(int argc, const char **argv, char **envp)
 			printf("exit\n");
 			if (i > 0)
 				freecmds(&minilst);
-			//system("leaks minishell");
 			exit(0);
 		}
 		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
 		{
 			add_history(line);
-			checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+			checkeverything(line, &minilst);
 			i++;
 		}
 		freecmds(&minilst);
-		//system("leaks minishell");
 		free(line);
 		free(promt);
 	}

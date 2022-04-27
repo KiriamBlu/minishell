@@ -115,7 +115,7 @@ char *expander(char *line, t_list *list)
 	char *last;
 	
 	i = 0;
-	a = 0;
+	a = 1;
 	k = countdollars(line);
 	longstr = NULL;
 	if(k == 0)
