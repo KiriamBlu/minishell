@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 00:41:36 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 03:00:21 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	executer(t_minib *minilst, int i)
 	int			pid;
 	static int	status;
 
-	pid = fork();
+	if (minilst->cmdnum == 1)
+		pid = fork();
+	else
+		pid = 0;
 	if (pid == 0)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
@@ -91,5 +94,6 @@ void	executer(t_minib *minilst, int i)
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, &status, 0);
+	if (minilst->cmdnum == 1)
+		waitpid(pid, &status, 0);
 }

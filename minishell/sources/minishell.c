@@ -152,15 +152,13 @@ void	checkeverything(char *line, t_minib *minilst)
 			k = 0;
 			if (minilst->cmdnum > 1)
 			{
-				while (i < minilst->cmdnum - 1)
+				while (i < minilst->cmdnum)
 				{
-					printf("out%d\n", minilst->cmds[i].fileout);
-					printf("in%d\n", minilst->cmds[i].filein);
+					printf("out fuera: %d\n", minilst->cmds[i].fileout);
+					printf("in fuera: %d\n", minilst->cmds[i].filein);
 					simba(minilst, i, k);
 					i++;
 				}
-				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, k);
 			}
 			else
 				ejecucion(minilst, i, k);
