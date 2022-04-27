@@ -64,9 +64,17 @@ char	*freezerjoin(char *s1, char *s2)
 
 	i = 0;
 	if (!s1)
-		return(ft_strdup(s2));
+	{
+		str = ft_strdup(s2);
+		free(s2);
+		return(str);
+	}
 	if (!s2)
-		return(ft_strdup(s1));
+	{
+		str = ft_strdup(s1);
+		free(s1);
+		return(str);
+	}
 	i = 0;
 	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!str)
