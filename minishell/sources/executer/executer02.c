@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 02:09:43 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 02:36:08 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,21 @@ void	simba(t_minib *minilst, int i, int k)
 		ft_errorpipex(0);
 	if (pid == 0)
 	{
-		close(fd[0]);
-		printf("hola %d\n", fd[1]);
-		printf("hola2 %d\n", fd[0]);
+		if (minilst->cmds[i].in_fd != STDIN_FILENO)
+		{
+			dup2(minilst->cmds[i].in_fd, STDIN_FILENO);
+			close(minilst->cmds[i].in_fd);
+		}
+		if (fd[1] != STDOUT_FILENO)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
+		printf("out %d\n", fd[1]);
+		printf("in %d\n", fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		ejecucion(minilst, i, k);
+		minilst->cmds[i].in_fd = fd[0];
 	}
 	else
 		finish(fd[1], fd[0], pid);

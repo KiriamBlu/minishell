@@ -137,6 +137,8 @@ void	checkeverything(char *line, t_minib *minilst)
 	int k;
 
 	i = 0;
+
+	minilst->cmds[i].in_fd = STDIN_FILENO;
 	prepline(line, minilst);
 	if (checkinout(minilst) == -1)
 		return ;
@@ -149,8 +151,8 @@ void	checkeverything(char *line, t_minib *minilst)
 			{
 				while (i < minilst->cmdnum - 1)
 				{
-					printf("in%d\n", minilst->cmds[i].filein);
 					printf("out%d\n", minilst->cmds[i].fileout);
+					printf("in%d\n", minilst->cmds[i].filein);
 					simba(minilst, i, k);
 					i++;
 				}
