@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/26 14:58:21 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 00:41:36 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	executer(t_minib *minilst, int i)
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
 		arto = ft_strjoin(arto, minilst->cmds[i].args);
 		pths2 = ft_split(arto, ' ');
-		if (pths2[0][0] == '/' | pths2[0][0] == '~' | pths2[0][0] == '.' |
+		if (pths2[0][0] == '/' || pths2[0][0] == '~' || pths2[0][0] == '.' ||
 			access(pths2[0], X_OK) == 0)
 		{	
 			if (execve(minilst->cmds[i].cmd, pths2, envp) == -1)

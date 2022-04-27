@@ -51,6 +51,7 @@ void prepbasics(t_minib *minilst, char **envp)
 {
 	int i;
 	char **aux;
+	char **tmp;
 
 	minilst->pwd = getcwd(NULL, 0);
 	i = 0;
@@ -110,12 +111,39 @@ int checkinout(t_minib *minilst)
 	return(0);
 }
 
+void ejecucion(t_minib *minilst, int i, int k)
+{
+	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
+	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
+	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+	{
+		free(minilst->pwd);
+		minilst->pwd = getcwd(NULL, 0);
+		ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
+		ft_putchar_fd('\n', minilst->cmds[i].fileout);
+		k += 1;
+	}
+	k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+	{
+		k++;
+		system("leaks minishell");
+	}
+	if (k == 0)
+		executer(minilst, i);
+}
+
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
 	int k;
 
 	i = 0;
+
+	minilst->cmds[i].in_fd = STDIN_FILENO;
 	if(prepline(line, minilst) == -1)
 		return ;
 	if (checkinout(minilst) == -1)
@@ -125,27 +153,20 @@ void	checkeverything(char *line, t_minib *minilst)
 		while(i < minilst->cmdnum)
 		{
 			k = 0;
-			k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-			k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
-			k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
-			if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+			if (minilst->cmdnum > 1)
 			{
-				free(minilst->pwd);
-				minilst->pwd = getcwd(NULL, 0);
-				ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
-				ft_putchar_fd('\n', minilst->cmds[i].fileout);
-				k += 1;
+				while (i < minilst->cmdnum - 1)
+				{
+					printf("out%d\n", minilst->cmds[i].fileout);
+					printf("in%d\n", minilst->cmds[i].filein);
+					simba(minilst, i, k);
+					i++;
+				}
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				ejecucion(minilst, i, k);
 			}
-			k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-			k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-			if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
-			{
-				k++;
-				system("leaks minishell");
-			}
-			if (k == 0)
-				executer(minilst, i);
+			else
+				ejecucion(minilst, i, k);
 			i++;
 		}
 	}
