@@ -52,3 +52,4 @@ re: clean all
 
 .PHONY: all clean fclean re
 
+#cd minishell-tester && bash test.sh
