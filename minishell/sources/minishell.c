@@ -168,7 +168,7 @@ void	checkeverything(char *line, t_minib *minilst)
 			k = 0;
 			if (minilst->cmdnum > 1)
 			{
-				while (i < minilst->cmdnum - 1)
+				while (i < minilst->cmdnum)
 				{
 					simba(minilst, i, k);
 					i++;

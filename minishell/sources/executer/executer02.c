@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 15:28:08 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 15:57:14 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	simba(t_minib *minilst, int i, int k)
 		dup2(fd[1], STDOUT_FILENO);
 		ejecucion(minilst, i, k, 0);
 	}
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	waitpid(pid, &status, 0);
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid, &status, 0);
+	}
 }
