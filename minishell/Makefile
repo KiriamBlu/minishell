@@ -14,6 +14,7 @@ SRCS =  ./sources/minishell.c \
 		./sources/signals/signals0.c \
 		./sources/executer/executer01.c \
 		./sources/executer/executer02.c \
+		./sources/utils/utils4.c \
 
 OBJS = ${SRCS:.c=.o}
 

@@ -28,7 +28,7 @@ char *argsdone(char *arg)
 	return (argsdone);
 }
 
-int checkforecho(char *cmd, char *arg, int fileout)
+int checkforecho(char *cmd, char *arg, int fileout, int *status)
 {
 	int i;
 	int j;
@@ -55,5 +55,6 @@ int checkforecho(char *cmd, char *arg, int fileout)
 	if(i != 1)
 		ft_putchar_fd('\n', fileout);
 	free(print);
+	*status = 0;
 	return (1);
 }

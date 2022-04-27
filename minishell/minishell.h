@@ -53,16 +53,16 @@ void	prepbasics(t_minib *minilst, char **envp);
 //BUILTINS
 
 int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
-int	checkforenv(char *cmd,  t_list *envp, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int	checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
 int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
 int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
 int	checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
-int checkforecho(char *cmd, char *arg, int fileout);//GESTIONADAS LAS REDIRECCIONES
+int checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
 
 //LEXER
 
-int	morfeo(t_cmds *com, char **line);
-char	*expander(char *line, t_list *list);
+int		morfeo(t_cmds *com, char **line);
+char	*expander(char *line, t_minib *minilst);
 char	**lexer(char *expanded);
 
 //SIGNALS
@@ -98,6 +98,8 @@ char	*dopromt(t_minib *minilst);
 
 void	printlist(t_list *list, int fileout);
 void	printlistexp(t_list *list, int fileout);
+void	errorprintf(char *str, int *status);
+
 //EXECUTER
 
 void	executer(t_minib *minilst, int i);

@@ -193,6 +193,7 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 	if(checkarg(arg) == 1)
 	{
 		printlistexp(minilst->exp, fileout);
+		minilst->cmdstatus = 0;
 		return (1);
 	}
 	args = exportarg(arg); // ANADIR LA SEPARACIÓN DE LOS ARGUMENTOS POR ("")
@@ -201,12 +202,14 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 		if(checkadd(args[i]) == -1)
 		{
 			printf("minishell: export: %s: not a valid identifier\n", args[0]);
+			minilst->cmdstatus = 1;
 			freemat(args);
 			return (1);
 		}
 		getaddexp(args[i], minilst);
 	}
 	freemat(args);
+	minilst->cmdstatus = 0;
 	return(1);
 }
 
@@ -227,6 +230,7 @@ int checkforunset(char *cmd, char *arg, t_minib *minilst)
 		if(checkadd(args[j]) == -1)
 		{
 			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
+			minilst->cmdstatus = 1;
 			freemat(args);
 			return (1);
 		}
@@ -244,5 +248,6 @@ int checkforunset(char *cmd, char *arg, t_minib *minilst)
 		}
 	}
 	freemat(args);
+	minilst->cmdstatus = 0;
 	return(1);
 }

@@ -57,22 +57,20 @@ int ft_getlenname(char *line, int start)//mirar si start es == a dollar o el ant
 	return(i - start);
 }
 
-char *expanddollar(char *name, t_list *list)
+char *expanddollar(char *name, t_minib *minilst)
 {
 	char	*expand;
 	int		check;
 
 	if(name[0] == '?')
-	{
-		return("$");
-	}
-	check = getposinlst(list, name) + 1;
+		return(ft_itoa(minilst->cmdstatus));
+	check = getposinlst(minilst->envp, name) + 1;
 	if(check == 0)
 	{
 		expand = ft_strdup(" ");
 		return(expand);
 	}
-	expand = getlineinenv(list, check);
+	expand = getlineinenv(minilst->envp, check);
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
 
@@ -104,7 +102,7 @@ char *finished(char *line, char *longstr, int a)
 	return(aux);
 }
 
-char *expander(char *line, t_list *list)
+char *expander(char *line, t_minib *minilst)
 {
 	int	i;
 	int	a;
@@ -126,7 +124,7 @@ char *expander(char *line, t_list *list)
 		aux = ft_substr(line, i, a - i);
 		tmp = ft_substr(line, a + 1, ft_getlenname(line, a));
 		a += ft_strlen(tmp) + 1;
-		last = freezerjoin(aux, expanddollar(tmp, list));
+		last = freezerjoin(aux, expanddollar(tmp, minilst));
 		free(tmp);
 		longstr = freezerjoin(longstr, last);
 		i = a;

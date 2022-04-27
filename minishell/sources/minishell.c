@@ -74,7 +74,7 @@ int	prepline(char *line, t_minib *minilst)
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst->envp); //AÑADIR $? A LAS EXPANSIONES
+	expanded = expander(line, minilst); //AÑADIR $? A LAS EXPANSIONES
 	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
@@ -116,8 +116,8 @@ void ejecucion(t_minib *minilst, int i, int k)
 {
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
-	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
+	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
+	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
 	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 	{
 		free(minilst->pwd);
