@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 00:41:36 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/27 15:27:45 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_errorpipex(int index)
 	if (index == 0)
 	{
 		printf("zsh: command not found\n");
-		exit(EXIT_FAILURE);
 	}
 }
 
@@ -47,7 +46,7 @@ char	*path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	executer(t_minib *minilst, int i)
+void	executer(t_minib *minilst, int i, int num)
 {
 	char		**envp;
 	char		*arto;
@@ -57,11 +56,13 @@ void	executer(t_minib *minilst, int i)
 	int			pid;
 	static int	status;
 
-	pid = fork();
+	if (minilst->cmdnum == 1 || num == 1)
+		pid = fork();
+	else
+		pid = 0;
 	if (pid == 0)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
-		printlist(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
 		aux = argsdone(minilst->cmds[i].args);
 		arto = ft_strjoin(arto, aux);
@@ -85,7 +86,7 @@ void	executer(t_minib *minilst, int i)
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
 				ft_errorpipex(0);
-			}	
+			}
 			free(paths);
 		}
 		freemat(pths2);
@@ -94,6 +95,7 @@ void	executer(t_minib *minilst, int i)
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	minilst->cmdstatus = status;
+	if (minilst->cmdnum == 1 || num == 1)
+		waitpid(pid, &status, 0);
+  minilst->cmdstatus = status;
 }
