@@ -19,6 +19,7 @@ void checkenvp(t_minib *minilst)
 		tmp = ft_strjoin("SHLVL=", "1");
 		minilst->shlvl = 1;
 		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
+		minilst->shlvl = 1;
 		free(tmp);
 	}
 	else
@@ -50,7 +51,6 @@ void prepbasics(t_minib *minilst, char **envp)
 {
 	int i;
 	char **aux;
-	char **tmp;
 
 	minilst->pwd = getcwd(NULL, 0);
 	i = 0;
