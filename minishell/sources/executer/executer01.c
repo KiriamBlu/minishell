@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 15:27:45 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/28 20:15:55 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	executer(t_minib *minilst, int i, int num)
 			{
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
+				printf("este\n");
 				ft_errorpipex(0);
 			}
 		}
@@ -93,9 +94,11 @@ void	executer(t_minib *minilst, int i, int num)
 		freemat(envp);
 		free(arto);
 	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	if (minilst->cmdnum == 1 || num == 1)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
+	}
   minilst->cmdstatus = status;
 }
