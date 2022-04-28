@@ -57,66 +57,78 @@ int ft_getlenname(char *line, int start)//mirar si start es == a dollar o el ant
 	return(i - start);
 }
 
-char *expanddollar(char *name, t_list *list)
+char *expanddollar(char *name, t_minib *minilst)
 {
 	char	*expand;
 	int		check;
 
 	if(name[0] == '?')
-	{
-		free(name);
-		return("$");
-	}
-	check = getposinlst(list, name) + 1;
+		return(ft_itoa(minilst->cmdstatus));
+	check = getposinlst(minilst->envp, name) + 1;
 	if(check == 0)
 	{
 		expand = ft_strdup(" ");
 		return(expand);
 	}
-	expand = getlineinenv(list, check);
+	expand = getlineinenv(minilst->envp, check);
 	return(ft_substr(expand, ft_strlen(name) + 1, ft_strlen(expand)));
 }
 
-char *expander(char *line, t_list *list) //NAME[0] = FULL; NAME[1] = TMP; NAME[2] = AUX; NAME[3] = NAME
+int get_len(char *line, int a)
+{
+	int j;
+
+	j = a;
+	while (line[j] != '$')
+	{
+		if(line[j] == '\'')
+			while(line[++j] != '\'')
+				;
+		j++;
+	}
+	return(j);
+}
+
+char *finished(char *line, char *longstr, int a)
+{
+	char *full;
+	char *aux;
+
+	if (ft_strlen(longstr) > ft_strlen(line))
+		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
+	else
+		full = ft_substr(line, a, (ft_strlen(line) - ft_strlen(longstr)));
+	aux = freezerjoin(longstr, full);
+	return(aux);
+}
+
+char *expander(char *line, t_minib *minilst)
 {
 	int	i;
 	int	a;
 	int k;
-	char *name[4];
+	char *longstr;
+	char *tmp;
 	char *aux;
+	char *last;
 	
 	i = 0;
-	a = 0;
+	a = 1;
 	k = countdollars(line);
+	longstr = NULL;
 	if(k == 0)
 		return(ft_strdup(line));
-	ft_bzero(&name[0], sizeof(char *));
-	ft_bzero(&name[1], sizeof(char *));
 	while (k > 0)
 	{
-		while (line[a] != '$')
-		{
-			if(line[a] == '\'')
-				while(line[++a] != '\'')
-					;
-			a++;
-		}
-		aux = ft_substr(line, i, a - i); //GUARDAS DESE EL PUUNTO DONDE VAS A TRABAJAR EN AUX PARA AÑADIR DESDE AHI LA EXPANSIÓN
-		name[3] = ft_substr(line, a + 1, ft_getlenname(line, a)); //OBTIENES Y ALMACENAS EL NOMBRE DE LA VARIABLE A SER EXPANDIDA
-		name[2] = freezerjoin(aux, expanddollar(name[3], list)); //UNES LA EXPANSION DESDE EL TAMAÑO DE REYENO HASTA EL FINAL DE AUX
-		name[0] = freezerjoin(name[0], name[2]); //AQUIIIIIIIIIII EL LEAK EN NAME[0], necesitaas auxiliar
-		a += ft_strlen(name[3]) + 1; //GUARDAS LA POSICION DESDE DONDE CUENTAS
-		if(name[1])
-			free(name[1]);
-		free(name[3]);
-		if (ft_strlen(name[0]) > ft_strlen(line))
-			name[1] = ft_substr(line, a, (ft_strlen(name[0]) - ft_strlen(line))); //EN LA TEMPORAL GUARDAS EL FINAL
-		else
-			name[1] = ft_substr(line, a, (ft_strlen(line) - ft_strlen(name[0])));
+		a = get_len(line, a);
+		aux = ft_substr(line, i, a - i);
+		tmp = ft_substr(line, a + 1, ft_getlenname(line, a));
+		a += ft_strlen(tmp) + 1;
+		last = freezerjoin(aux, expanddollar(tmp, minilst));
+		free(tmp);
+		longstr = freezerjoin(longstr, last);
 		i = a;
 		k--;
 	}
-	name[0] = freezerjoin(name[0], name[1]); //EL RESTO DE LA FRASE UNA VEZ NO QUEDAN '$' 
-	//system("leaks minishell");
-	return (name[0]);
+	return (finished(line, longstr, a));
 }

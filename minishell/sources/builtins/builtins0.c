@@ -1,11 +1,12 @@
 
 #include "../../minishell.h"
 
-int	checkforenv(char *cmd,t_list *envp, int fileout)
+int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
 {
 	if (ft_strcmp("env", cmd) == 0)
 	{
 		printlist(envp, fileout);
+		*status = 0;
 		return(1);
 	}
 	return (0);
@@ -49,7 +50,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 		if (home != -1)
 			s = ft_strdup(getlineinenv(minilst->envp, home + 1) + 5);
 		else
-			printf("minishell: cd: HOME not set\n");
+			errorprintf("minishell: cd: HOME not set\n", &minilst->cmdstatus);
 	}
 	else if(!strcmp(str, "-"))
 	{
@@ -60,7 +61,10 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 			ft_putstr_fd(s, fileout);
 		}
 		else
-			printf("minishell: cd: OLDPWD not set\n");
+		{
+			errorprintf("minishell: cd: OLDPWD not set\n", &minilst->cmdstatus);
+			printf("%d\n", minilst->cmdstatus);
+		}
 	}
 	else
 		s = ft_strdup(str);
@@ -87,10 +91,16 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 		if(!minilst->pwd)
 			minilst->pwd = getcwd(NULL, 0);
 		if(str)
+		{
+			minilst->cmdstatus = 1;
 			printf("minishell: cd: %s: No such file or directory\n", str);
+		}
 	}
 	else
+	{
 		cd_update_env(minilst);
+		minilst->cmdstatus = 0;
+	}
 	freemat(args);
 	free(str);
 	return(1);
@@ -114,7 +124,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 		}
 		if(aux[1])
 		{
-			printf("minishell: exit: too many arguments\n");
+			errorprintf("minishell: exit: too many arguments\n", &minilst->cmdstatus);
 			freemat(aux);
 			return (1);
 		}
@@ -124,6 +134,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			if(ft_isdigit(aux[0][i]) != 1)
 			{
 				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
+				minilst->cmdstatus = 255;
 				break ;
 			}
 		}

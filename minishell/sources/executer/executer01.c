@@ -50,6 +50,7 @@ void	executer(t_minib *minilst, int i, int num)
 {
 	char		**envp;
 	char		*arto;
+	char		*aux;
 	char		*paths;
 	char		**pths2;
 	int			pid;
@@ -63,8 +64,10 @@ void	executer(t_minib *minilst, int i, int num)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
-		arto = ft_strjoin(arto, minilst->cmds[i].args);
-		pths2 = ft_split(arto, ' ');	
+		aux = argsdone(minilst->cmds[i].args);
+		arto = ft_strjoin(arto, aux);
+		free(aux);
+		pths2 = ft_split(arto, ' ');
 		if (pths2[0][0] == '/' || pths2[0][0] == '~' || pths2[0][0] == '.' ||
 			access(pths2[0], X_OK) == 0)
 		{	
@@ -94,4 +97,5 @@ void	executer(t_minib *minilst, int i, int num)
 	signal(SIGQUIT, SIG_IGN);
 	if (minilst->cmdnum == 1 || num == 1)
 		waitpid(pid, &status, 0);
+  minilst->cmdstatus = status;
 }

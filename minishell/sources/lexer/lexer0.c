@@ -19,6 +19,41 @@ char	**ft_prepare(char *line)
 	return (cmd);
 }
 
+/*int openfilesheredoc(char *line, int i, int *filein)
+{
+	int j;
+	int l;
+	char *aux;
+
+	j = i;
+	l = 0;
+	while(line[++j] == ' ' && line[j])
+		;	
+	while(line[j] != ' ' && line[j])
+	{
+		if(line[j] == '>' || line[j] == '<')
+			return(-1);
+		j++;
+		l++;
+	}
+	aux = malloc(sizeof(char) * l + 1);
+	j = 0;
+	while(line[++i] == ' ' && line[i])
+		;	
+	while(line[i] != ' ' && line[i])
+	{
+		aux[j] = line[i];
+		j++;
+		i++;
+	}
+	i -= 1;
+	if (*fileout != STDOUT_FILENO)
+		close(*fileout);
+	
+	free(aux);
+	return(i);
+}
+*/
 int openfilesindirect(char *line, int i, int *filein)
 {
 	int j;
@@ -27,6 +62,11 @@ int openfilesindirect(char *line, int i, int *filein)
 
 	j = i;
 	l = 0;
+	/*if(line[i + 1] == '<')
+	{
+		i = openfilesheredoc(line, i + 1, fileinss);
+		return(i);
+	}*/
 	while(line[++j] == ' ')
 		;
 	while(line[j] != ' ')

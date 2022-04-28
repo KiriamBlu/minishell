@@ -14,6 +14,7 @@ SRCS =  ./sources/minishell.c \
 		./sources/signals/signals0.c \
 		./sources/executer/executer01.c \
 		./sources/executer/executer02.c \
+		./sources/utils/utils4.c \
 
 OBJS = ${SRCS:.c=.o}
 
@@ -23,7 +24,7 @@ EXE_DIR = ./
 
 CC := cc
 GCC := gcc
-CFLAGS := -Wall -Wextra -g #-fsanitize=address -g3 #-Werror
+CFLAGS := -Wall -Wextra #-g -fsanitize=address -g3 #-Werror
 MV := mv -f
 RM := rm -f
 LDFLAGS	:= -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
@@ -32,7 +33,7 @@ LDFLAGS	:= -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/
 	$(GCC)  $(CFLAGS) -c $< -I $(INC_DIR) -o $@ 
 
 $(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
-	$(GCC) -lreadline $(LDFLAGS) -o $(NAME)  $^ -I $(INC_DIR)
+	$(GCC) -lreadline  $(LDFLAGS) -o $(NAME)  $^ -I $(INC_DIR)
 
 $(LIBFT_DIR)$(LIBFT_NAME): $(LIBFT_DIR)
 	make -C $(LIBFT_DIR)
@@ -51,3 +52,4 @@ re: clean all
 
 .PHONY: all clean fclean re
 
+#cd minishell-tester && bash test.sh

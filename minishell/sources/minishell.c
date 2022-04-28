@@ -63,6 +63,7 @@ void prepbasics(t_minib *minilst, char **envp)
 	aux = getdonexp(tmp, i);
 	freemat(tmp);
 	minilst->exp = createarraylst(aux);
+	minilst->cmdstatus = 0;
 	freemat(aux);
 }
 
@@ -73,7 +74,7 @@ int	prepline(char *line, t_minib *minilst)
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst->envp); //AÑADIR $? A LAS EXPANSIONES
+	expanded = expander(line, minilst); //AÑADIR $? A LAS EXPANSIONES
 	newline = lexer(expanded);;
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
@@ -118,8 +119,8 @@ void ejecucion(t_minib *minilst, int i, int k, int num)
 	pid = 0;
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout);
-	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout);
+	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
+	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
 	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 	{
 		free(minilst->pwd);
@@ -187,6 +188,7 @@ int main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
+	char *promt;
 	int		i;
 
 	argv = NULL;
@@ -194,29 +196,30 @@ int main(int argc, const char **argv, char **envp)
 		exit(0);
 	i = 0;
 	prepbasics(&minilst, envp);
+	minilst.promt = dopromt(&minilst);
 	while(1)
 	{
 		inputsignal();
-		minilst.promt = dopromt(&minilst);
-		line = readline(minilst.promt);
+		promt = ft_strdup(minilst.promt);
+		line = readline(promt);
 		if(!line)
 		{
 			printf("exit\n");
 			if (i > 0)
 				freecmds(&minilst);
-			//system("leaks minishell");
 			exit(0);
 		}
 		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
 		{
 			add_history(line);
-			checkeverything(line, &minilst); //ESTO ES TODO EL TEMA DE PARSEO + COMANDOS
+			checkeverything(line, &minilst);
 			i++;
 		}
 		freecmds(&minilst);
-		//system("leaks minishell");
 		free(line);
+		free(promt);
 	}
+	free(minilst.promt);
 	return 0;
 }
 

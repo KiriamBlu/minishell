@@ -38,7 +38,8 @@ typedef struct s_minib
 	int		envindex;
 	int		expindex;
 	int 	cmdnum;
-	int		shlvl; //PARA ESTO ES LA GLOBAl POR SI NOS UNSETEAN EN EL ENV
+	int		shlvl;
+	int		cmdstatus;
 	char	*pwd;
 	char	*promt;
 }	t_minib;
@@ -52,16 +53,16 @@ void	prepbasics(t_minib *minilst, char **envp);
 //BUILTINS
 
 int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
-int	checkforenv(char *cmd,  t_list *envp, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int	checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
 int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
 int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
 int	checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
-int checkforecho(char *cmd, char *arg, int fileout);//GESTIONADAS LAS REDIRECCIONES
+int checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
 
 //LEXER
 
-int	morfeo(t_cmds *com, char **line);
-char	*expander(char *line, t_list *list);
+int		morfeo(t_cmds *com, char **line);
+char	*expander(char *line, t_minib *minilst);
 char	**lexer(char *expanded);
 
 //SIGNALS
@@ -92,11 +93,15 @@ void	freecmds(t_minib *minilst);
 char	*getaddedexp(char *add);
 char	*freezerjoin(char *s1, char *s2);
 char	*dopromt(t_minib *minilst);
+char	*argsdone(char *arg);
+
 
 //DEBUGGIN TOOLS
 
 void	printlist(t_list *list, int fileout);
 void	printlistexp(t_list *list, int fileout);
+void	errorprintf(char *str, int *status);
+
 //EXECUTER
 
 void	executer(t_minib *minilst, int i, int num);
