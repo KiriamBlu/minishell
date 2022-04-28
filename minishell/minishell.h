@@ -109,5 +109,6 @@ char	*path(char *cmd, char **envp);
 void	ft_errorpipex(int index);
 void	simba(t_minib *minilst, int i );
 void	ejecucion(t_minib *minilst, int i, int num);
+void	finish_ejecucion(t_minib *minilst, int i, int num);
 
 #endif

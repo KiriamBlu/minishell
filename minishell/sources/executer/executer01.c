@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/28 23:25:55 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/29 00:25:05 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_errorpipex(int index)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_IGN);
 		printf("zsh: command not found\n");
+		exit(1);
 	}
 }
 
