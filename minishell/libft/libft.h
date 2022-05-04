@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 12:07:38 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/12 16:10:40 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/04 19:57:47 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	**ft_splitmod(char *s, char c);
 char	*ft_memcpymod(char *dest, char *src);
 char	*ft_strdupmod(char *s1);
+char	*ft_strjoinmod(char *line, char c);
 
 #endif
