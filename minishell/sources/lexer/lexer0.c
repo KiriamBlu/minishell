@@ -19,6 +19,30 @@ char	**ft_prepare(char *line)
 	return (cmd);
 }
 
+char *gettmp(int i, char *line)
+{
+	int a;
+	int j;
+	char *tmp;
+
+	a = i + 1;
+	while (line[a] == ' ')
+		a++;
+	j = a;
+	while (line[a] != ' ' && line[a])
+		a++;
+	tmp = malloc(sizeof(char) * (a - j));
+	a = j;
+	j = 0;
+	while(line[a] != ' ' && line[a])
+	{
+		tmp[j] = line[a];
+		j++;
+		a++;
+	}
+	return(tmp);
+}
+
 int openfilesheredoc(char *line, int i, int *filein)
 {
 	int a;
@@ -26,16 +50,19 @@ int openfilesheredoc(char *line, int i, int *filein)
 	char *tmp;
 	char *str;
 
-	j = 0;
 	a = i + 1;
+	while (line[a] == ' ')
+		a++;
+	j = a;
 	while (line[a] != ' ' && line[a])
 		a++;
 	// if(ft_strlen(line) == a && isvalid)
 	// 	printf("error\n");
-	tmp = ft_substr(line, i + 1, a); //tmp Es el limitador
+	tmp = gettmp(i, line); //tmp Es el limitador
+	//printf("%s\n", tmp);
 	str = ft_calloc(1, 1);
 	*filein = open(".hide", O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	while(ft_strcmp(str, tmp) != 0)
+	while(1)
 	{
 		free(str);
 		str = readline(">");
@@ -57,7 +84,7 @@ int openfilesindirect(char *line, int i, int *filein)
 	l = 0;
 	if(line[i + 1] == '<')
 	{
-		i = openfilesheredoc(line, i + 2, filein);
+		i = openfilesheredoc(line, i + 1, filein);
 		return(i);
 	}
 	while(line[++j] == ' ')
@@ -162,11 +189,15 @@ int openfilesredirect(char *line, int i, int *fileout)
 	return(i);
 }
 
-int checkforredirect(char *line, int *filein, int *fileout)
+char *checkforredirect(char *line, int *filein, int *fileout)
 {
 	int i;
+	int l;
+	char *tmp;
 
 	i = 0;
+	l = 0;
+	tmp = NULL;
 	while(line[i])
 	{
 		if(line[i] == '"')
@@ -176,23 +207,46 @@ int checkforredirect(char *line, int *filein, int *fileout)
 			while(line[++i] != '\'')
 				;
 		if(line[i] == '>')
-			i = openfilesredirect(line, i, fileout);
-		if(line[i] == '<')
-			i = openfilesindirect(line, i, filein);
-		if (i == -1)
 		{
+			l = openfilesredirect(line, i, fileout);
+			i += l;
+		}
+		if(line[i] == '<')
+		{
+			l = openfilesindirect(line, i, filein);
+			if(l > 1)
+			{
+				tmp = ft_substr(line, 0, i);
+				tmp = freezerjoin(tmp, ft_substr(line, l, ft_strlen(line)));
+				i += l;
+			}
+			else
+			{
+				i += l;
+				if (l != -1)
+					l = 0;
+			}
+		}
+		if (l == -1)
+		{
+			if(tmp)
+				free(tmp);
 			printf("Error unespected token\n");
-			return(-1);
+			return(NULL);
 		}
 		i++;
 	}
-	return(0);
+	if(!tmp)
+		return(ft_strdup(line));
+	else
+		return(tmp);
 }
 
 int	morfeo(t_cmds *com, char **line)
 {
 	int		i;
 	char	**aux;
+	char	*tmp;
 	int		j;
 
 	i = 0;
@@ -202,15 +256,20 @@ int	morfeo(t_cmds *com, char **line)
 		com[i].filein = STDIN_FILENO;
 		com[i].fileout = STDOUT_FILENO;
 		aux = ft_split(line[i], ' ');
+		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);;
+		if(tmp == NULL)
+			return(-1);
+		aux = ft_split(tmp, ' ');
 		if(aux[0])
-		{	
-			com[i].cmd = ft_strdup(aux[0]);
+		{
+			com[i].cmd = ft_strdup(aux[0]);;
 			freemat(aux);
 			j = ft_strlen(com[i].cmd);
-			com[i].args = ft_substr(line[i], j + 1, ft_strlen(line[i]));
-			if (checkforredirect(line[i], &com[i].filein, &com[i].fileout) == -1)
-				return(-1);
+			com[i].args = ft_substr(tmp, j + 1, ft_strlen(tmp));
+			printf("(%s)\n", com[i].cmd);
+			printf("(%s)\n", com[i].args);
 		}
+		free(tmp);
 		i++;
 	}
 	return(0);
