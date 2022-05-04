@@ -19,41 +19,34 @@ char	**ft_prepare(char *line)
 	return (cmd);
 }
 
-/*int openfilesheredoc(char *line, int i, int *filein)
+int openfilesheredoc(char *line, int i, int *filein)
 {
+	int a;
 	int j;
-	int l;
-	char *aux;
+	char *tmp;
+	char *str;
 
-	j = i;
-	l = 0;
-	while(line[++j] == ' ' && line[j])
-		;	
-	while(line[j] != ' ' && line[j])
-	{
-		if(line[j] == '>' || line[j] == '<')
-			return(-1);
-		j++;
-		l++;
-	}
-	aux = malloc(sizeof(char) * l + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;	
-	while(line[i] != ' ' && line[i])
+	a = i + 1;
+	while (line[a] != ' ' && line[a])
+		a++;
+	// if(ft_strlen(line) == a && isvalid)
+	// 	printf("error\n");
+	tmp = ft_substr(line, i + 1, a); //tmp Es el limitador
+	str = ft_calloc(1, 1);
+	*filein = open(".hide", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	while(ft_strcmp(str, tmp) != 0)
 	{
-		aux[j] = line[i];
-		j++;
-		i++;
+		free(str);
+		str = readline(">");
+		if (ft_strcmp(str, tmp) == 0)
+			break;
+		ft_putstr_fd(str, *filein);
+		ft_putstr_fd("\n", *filein);
 	}
-	i -= 1;
-	if (*fileout != STDOUT_FILENO)
-		close(*fileout);
-	
-	free(aux);
-	return(i);
+	return(a);
 }
-*/
+
 int openfilesindirect(char *line, int i, int *filein)
 {
 	int j;
@@ -62,11 +55,11 @@ int openfilesindirect(char *line, int i, int *filein)
 
 	j = i;
 	l = 0;
-	/*if(line[i + 1] == '<')
+	if(line[i + 1] == '<')
 	{
-		i = openfilesheredoc(line, i + 1, fileinss);
+		i = openfilesheredoc(line, i + 2, filein);
 		return(i);
-	}*/
+	}
 	while(line[++j] == ' ')
 		;
 	while(line[j] != ' ')

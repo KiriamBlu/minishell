@@ -107,7 +107,8 @@ void	errorprintf(char *str, int *status);
 void	executer(t_minib *minilst, int i, int num);
 char	*path(char *cmd, char **envp);
 void	ft_errorpipex(int index);
-void	simba(t_minib *minilst, int i, int k);
-void	ejecucion(t_minib *minilst, int i, int k, int num);
+void	simba(t_minib *minilst, int i );
+void	ejecucion(t_minib *minilst, int i, int num);
+void	finish_ejecucion(t_minib *minilst, int i, int num);
 
 #endif
