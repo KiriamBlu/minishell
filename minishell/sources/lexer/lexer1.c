@@ -16,14 +16,23 @@ int countdollars(char *line)
 {
 	int a;
 	int k;
+	int flag;
 
 	a = 0;
 	k = 0;
+	flag = 0;
 	while (line[a])
 	{
-		if(line[a] == '\'')
+		if(line[a] == '\'' && flag == 0)
 			while(line[++a] != '\'')
 				;
+		if(line[a] == '"')
+		{
+			if(flag == 0)
+				flag = 1;
+			else
+				flag = 0;
+		}
 		else if (line[a] == '$')
 			k++;
 		a++;
@@ -52,7 +61,7 @@ int ft_getlenname(char *line, int start)//mirar si start es == a dollar o el ant
 	i = start + 1;
 	if(line[i] == '?')
 		return(2);
-	while(ft_isalnum(line[i]) == 1 && line[i + 1] != ' ' && line[i + 1] != '$' && line[i + 1] != '"')
+	while(ft_isalnum(line[i]) == 1 && line[i + 1] != ' ' && line[i + 1] != '$' && line[i + 1] != '"' && line[i + 1] != '\'')
 		i++;
 	return(i - start);
 }
@@ -77,13 +86,22 @@ char *expanddollar(char *name, t_minib *minilst)
 int get_len(char *line, int a)
 {
 	int j;
+	int flag;
 
 	j = a;
+	flag = 0;
 	while (line[j] != '$')
 	{
-		if(line[j] == '\'')
+		if(line[j] == '\'' && flag == 1)
 			while(line[++j] != '\'')
 				;
+		if(line[a] == '"')
+		{
+			if(flag == 0)
+				flag = 1;
+			else
+				flag = 0;
+		}
 		j++;
 	}
 	return(j);
