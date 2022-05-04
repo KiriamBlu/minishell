@@ -56,5 +56,36 @@ int checkforecho(char *cmd, char *arg, int fileout, int *status)
 		ft_putchar_fd('\n', fileout);
 	free(print);
 	*status = 0;
-	return (1);
+	return(1);
+}
+
+int finishecho(char *cmd, char *arg, int fileout, int *status)
+{
+	int i;
+	int j;
+	char *print;
+
+	if (ft_strcmp(cmd, "echo") != 0)
+		return (0);
+	print = argsdone(arg);
+	j = -1;
+	i = 0;
+	while(print[++j] == ' ')
+		;
+	while(print[j])
+	{
+		if (print[j] == '-' && print[j + 1] == 'n')
+		{
+			j += 1;
+			i = 1;
+		}
+		else if(print[j] != '"' && print[j] != '\'')
+			ft_putchar_fd(print[j], fileout);
+		j++;
+	}
+	if(i != 1)
+		ft_putchar_fd('\n', fileout);
+	free(print);
+	*status = 0;
+	return(1);
 }

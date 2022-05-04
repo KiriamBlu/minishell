@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/04/27 15:27:45 by jporta           ###   ########.fr       */
+/*   Updated: 2022/04/29 00:25:05 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	ft_errorpipex(int index)
 {
 	if (index == 0)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 		printf("zsh: command not found\n");
+		exit(1);
 	}
 }
 
@@ -93,8 +96,6 @@ void	executer(t_minib *minilst, int i, int num)
 		freemat(envp);
 		free(arto);
 	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	if (minilst->cmdnum == 1 || num == 1)
 		waitpid(pid, &status, 0);
   minilst->cmdstatus = status;

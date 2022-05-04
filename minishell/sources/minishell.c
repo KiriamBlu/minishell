@@ -112,11 +112,11 @@ int checkinout(t_minib *minilst)
 	return(0);
 }
 
-void ejecucion(t_minib *minilst, int i, int k, int num)
+void finish_ejecucion(t_minib *minilst, int i, int num)
 {
-	int pid;
+	int k;
 
-	pid = 0;
+	k = 0;
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
@@ -140,22 +140,41 @@ void ejecucion(t_minib *minilst, int i, int k, int num)
 		executer(minilst, i, num);
 }
 
-void close_fd(t_minib *minilst)
+void ejecucion(t_minib *minilst, int i, int num)
 {
-	int i;
+	int k;
 
-	i = 0;
-	while (i < minilst->cmdnum)
+	k = 0;
+	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
+	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
+	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 	{
-		close(minilst->cmds[i].filein);
-		close(minilst->cmds[i].fileout);
+		free(minilst->pwd);
+		minilst->pwd = getcwd(NULL, 0);
+		ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
+		ft_putchar_fd('\n', minilst->cmds[i].fileout);
+		k += 1;
 	}
+	k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
+	k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
+	if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+	{
+		k++;
+		system("leaks minishell");
+	}
+	if (k == 0)
+		executer(minilst, i, num);
+	else
+		exit(0);
 }
 
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
-	int k;
+	int filein;
+	int fileout;
 
 	i = 0;
 	if(prepline(line, minilst) == -1)
@@ -166,20 +185,28 @@ void	checkeverything(char *line, t_minib *minilst)
 	{
 		while(i < minilst->cmdnum)
 		{
-			k = 0;
+			fileout = dup(STDOUT_FILENO);
+			filein = dup(STDIN_FILENO);
 			if (minilst->cmdnum > 1)
 			{
-				while (i < minilst->cmdnum)
+				while (i < minilst->cmdnum - 1)
 				{
-					simba(minilst, i, k);
+					simba(minilst, i);
 					i++;
 				}
+				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, k, 1);
+				finish_ejecucion(minilst, i, 1);
 			}
 			else
-				ejecucion(minilst, i, k, 0);
+			{
+				dup2(minilst->cmds[i].filein, STDIN_FILENO);
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				finish_ejecucion(minilst, i, 0);
+			}
 			i++;
+			dup2(fileout, STDOUT_FILENO);
+			dup2(filein, STDIN_FILENO);
 		}
 	}
 }
