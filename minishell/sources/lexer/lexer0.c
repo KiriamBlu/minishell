@@ -88,8 +88,7 @@ int openfilesindirect(char *line, int i, int *filein)
 		i = openfilesheredoc(line, i + 1, filein);
 		return(i);
 	}
-	while(line[++j] == ' ')
-		;
+	while(line[++j] == ' ');
 	while(line[j] != ' ')
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -97,10 +96,9 @@ int openfilesindirect(char *line, int i, int *filein)
 		l++;
 		j++;
 	}
-	aux = malloc(sizeof(char) * l + 1);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;
+	while(line[++i] == ' ' && line[i]);
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];
@@ -122,8 +120,7 @@ int openfilesappend(char *line, int i, int *fileout)
 
 	j = i;
 	l = 0;
-	while(line[++j] == ' ' && line[j])
-		;	
+	while(line[++j] == ' ' && line[j]);	
 	while(line[j] != ' ' && line[j])
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -131,10 +128,9 @@ int openfilesappend(char *line, int i, int *fileout)
 		j++;
 		l++;
 	}
-	aux = malloc(sizeof(char) * l + 1);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;	
+	while(line[++i] == ' ' && line[i]);	
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];
@@ -161,8 +157,7 @@ int openfilesredirect(char *line, int i, int *fileout)
 		return(i);
 	}
 	l = 0;
-	while(line[++j] == ' ' && line[j])
-		;	
+	while(line[++j] == ' ' && line[j]);	
 	while(line[j] != ' ' && line[j])
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -170,10 +165,10 @@ int openfilesredirect(char *line, int i, int *fileout)
 		j++;
 		l++;
 	}
-	aux = malloc(sizeof(char) * j + 1);
+		printf("%s\n", line);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;
+	while(line[++i] == ' ' && line[i]);
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];
