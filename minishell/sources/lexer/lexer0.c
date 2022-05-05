@@ -106,7 +106,6 @@ int openfilesindirect(char *line, int i, int *filein)
 		j++;
 		i++;
 	}
-	i -= 1;
 	if (*filein != STDIN_FILENO)
 		close(*filein);
 	*filein = open(aux,  O_RDONLY, 0666);
@@ -141,7 +140,6 @@ int openfilesappend(char *line, int i, int *fileout)
 		j++;
 		i++;
 	}
-	i -= 1;
 	if (*fileout != STDOUT_FILENO)
 		close(*fileout);
 	*fileout = open(aux, O_WRONLY | O_CREAT | O_APPEND, 0666);
@@ -181,7 +179,6 @@ int openfilesredirect(char *line, int i, int *fileout)
 		j++;
 		i++;
 	}
-	i -= 1;
 	if (*fileout != STDOUT_FILENO)
 		close(*fileout);
 	*fileout = open(aux, O_WRONLY | O_CREAT | O_TRUNC, 0666);
@@ -194,39 +191,30 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 	int i;
 	int l;
 	char *tmp;
+	char *aux;
 
 	i = 0;
 	l = 0;
-	tmp = NULL;
-	while(line[i])
+	tmp = ft_strdup(line);
+	while(tmp[i])
 	{
-		if(line[i] == '"')
-			while(line[++i] != '"')
+		if(tmp[i] == '"')
+			while(tmp[++i] != '"')
 				;
-		if(line[i] == '\'')
-			while(line[++i] != '\'')
+		if(tmp[i] == '\'')
+			while(tmp[++i] != '\'')
 				;
-		if(line[i] == '>')
+		if(tmp[i] == '<' || tmp[i] == '>')
 		{
-			l = openfilesredirect(line, i, fileout);
-			i += l;
-		}
-		if(line[i] == '<')
-		{
-			l = openfilesindirect(line, i, filein);
-			printf("SAlgo");
-			if(l > 1)
-			{
-				tmp = ft_substr(line, 0, i);
-				tmp = freezerjoin(tmp, ft_substr(line, l, ft_strlen(line)));
-				i += l;
-			}
-			else
-			{
-				i += l;
-				if (l != -1)
-					l = 0;
-			}
+			if(tmp[i] == '>')
+				l = openfilesredirect(tmp, i, fileout);
+			if(tmp[i] == '<')
+				l = openfilesindirect(tmp, i, filein);
+			aux = ft_strdup(tmp);
+			free(tmp);
+			tmp = ft_substr(aux, 0, i);
+			tmp = freezerjoin(tmp, ft_substr(aux, l, ft_strlen(aux)));
+			free(aux);
 		}
 		if (l == -1)
 		{
@@ -237,10 +225,7 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 		}
 		i++;
 	}
-	if(!tmp)
-		return(ft_strdup(line));
-	else
-		return(tmp);
+	return(tmp);
 }
 
 int	morfeo(t_cmds *com, char **line)
@@ -267,8 +252,6 @@ int	morfeo(t_cmds *com, char **line)
 			freemat(aux);
 			j = ft_strlen(com[i].cmd);
 			com[i].args = ft_substr(tmp, j + 1, ft_strlen(tmp));
-			printf("(%s)\n", com[i].cmd);
-			printf("(%s)\n", com[i].args);
 		}
 		free(tmp);
 		i++;
