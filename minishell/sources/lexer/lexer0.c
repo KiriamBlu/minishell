@@ -61,6 +61,8 @@ int openfilesheredoc(char *line, int i, int *filein)
 	tmp = gettmp(i, line); //tmp Es el limitador
 	//printf("%s\n", tmp);
 	str = ft_calloc(1, 1);
+	if (*filein != STDIN_FILENO)
+		close(*filein);
 	*filein = open(".hide", O_RDWR | O_CREAT | O_TRUNC, 0666);
 	while(1)
 	{
@@ -250,8 +252,9 @@ int	morfeo(t_cmds *com, char **line)
 		{
 			com[i].cmd = ft_strdup(aux[0]);;
 			freemat(aux);
-			j = ft_strlen(com[i].cmd);
-			com[i].args = ft_substr(tmp, j + 1, ft_strlen(tmp));
+			while(tmp[j++] == ' ');
+			j += ft_strlen(com[i].cmd);
+			com[i].args = ft_substr(tmp, j, ft_strlen(tmp));
 		}
 		free(tmp);
 		i++;
