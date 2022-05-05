@@ -75,7 +75,7 @@ int	prepline(char *line, t_minib *minilst)
 
 	i = 0;
 	expanded = expander(line, minilst); //AÑADIR $? A LAS EXPANSIONES
-	newline = lexer(expanded);;
+	newline = lexer(expanded);
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);
 	i = morfeo(minilst->cmds, newline);
@@ -194,16 +194,12 @@ void	checkeverything(char *line, t_minib *minilst)
 					simba(minilst, i);
 					i++;
 				}
-				printf("este: %d\n",minilst->cmds[i].filein);
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				finish_ejecucion(minilst, i, 1);
 			}
 			else
 			{
-				dprintf(2, "este: %d\n",minilst->cmds[i].filein);
-				dprintf(2, "estecomando: %s\n",minilst->cmds[i].cmd);
-				dprintf(2, "estecomando%s\n",minilst->cmds[i].args);
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				finish_ejecucion(minilst, i, 0);

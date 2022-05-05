@@ -61,6 +61,8 @@ int openfilesheredoc(char *line, int i, int *filein)
 	tmp = gettmp(i, line); //tmp Es el limitador
 	//printf("%s\n", tmp);
 	str = ft_calloc(1, 1);
+	if (*filein != STDIN_FILENO)
+		close(*filein);
 	*filein = open(".hide", O_RDWR | O_CREAT | O_TRUNC, 0666);
 	while(1)
 	{
@@ -201,7 +203,7 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 		if(tmp[i] == '"')
 			while(tmp[++i] != '"')
 				;
-		if(tmp[i] == '\'')
+		if(tmp[i] == '\'')  
 			while(tmp[++i] != '\'')
 				;
 		if(tmp[i] == '<' || tmp[i] == '>')
@@ -241,8 +243,7 @@ int	morfeo(t_cmds *com, char **line)
 		j = 0;
 		com[i].filein = STDIN_FILENO;
 		com[i].fileout = STDOUT_FILENO;
-		aux = ft_split(line[i], ' ');
-		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);;
+		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);
 		if(tmp == NULL)
 			return(-1);
 		aux = ft_split(tmp, ' ');
@@ -250,8 +251,9 @@ int	morfeo(t_cmds *com, char **line)
 		{
 			com[i].cmd = ft_strdup(aux[0]);;
 			freemat(aux);
-			j = ft_strlen(com[i].cmd);
-			com[i].args = ft_substr(tmp, j + 1, ft_strlen(tmp));
+			while(tmp[j++] == ' ');
+			j += ft_strlen(com[i].cmd);
+			com[i].args = ft_substr(tmp, j, ft_strlen(tmp));
 		}
 		free(tmp);
 		i++;
