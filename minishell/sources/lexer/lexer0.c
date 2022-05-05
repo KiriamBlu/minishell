@@ -61,7 +61,7 @@ int openfilesheredoc(char *line, int i, int *filein)
 	tmp = gettmp(i, line); //tmp Es el limitador
 	//printf("%s\n", tmp);
 	str = ft_calloc(1, 1);
-	*filein = open(".hide", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	*filein = open(".hide", O_RDWR | O_CREAT | O_TRUNC, 0666);
 	while(1)
 	{
 		free(str);
@@ -214,6 +214,7 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 		if(line[i] == '<')
 		{
 			l = openfilesindirect(line, i, filein);
+			printf("SAlgo");
 			if(l > 1)
 			{
 				tmp = ft_substr(line, 0, i);

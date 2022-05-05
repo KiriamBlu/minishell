@@ -1,0 +1,3 @@
+
+ls -la | wc -l | cat -e
+echo hola | wc  | cat -e

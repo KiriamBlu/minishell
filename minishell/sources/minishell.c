@@ -121,7 +121,7 @@ void finish_ejecucion(t_minib *minilst, int i, int num)
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
 	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
-	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
+	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0 || ft_strcmp(minilst->cmds[i].cmd, "PWD") == 0)
 	{
 		free(minilst->pwd);
 		minilst->pwd = getcwd(NULL, 0);
@@ -194,12 +194,16 @@ void	checkeverything(char *line, t_minib *minilst)
 					simba(minilst, i);
 					i++;
 				}
+				printf("este: %d\n",minilst->cmds[i].filein);
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				finish_ejecucion(minilst, i, 1);
 			}
 			else
 			{
+				dprintf(2, "este: %d\n",minilst->cmds[i].filein);
+				dprintf(2, "estecomando: %s\n",minilst->cmds[i].cmd);
+				dprintf(2, "estecomando%s\n",minilst->cmds[i].args);
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				finish_ejecucion(minilst, i, 0);
