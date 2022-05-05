@@ -54,6 +54,8 @@ void delpos(t_list **list, int pos)
 	t_list *aux;
 	void *kk;
 
+	if(pos == -1)
+		return ;
 	if(pos == 0)
 	{
 		*list = fuckeveryting(*list);
@@ -99,7 +101,7 @@ int	getposinlst(t_list *list, char *line)
 	while(i < j)
 	{
 		tmp = getnamevariable(list->content);
-		if(!strcmp(tmp, line))
+		if(!ft_strcmp(tmp, line))
 		{
 			free(tmp);
 			return(i);

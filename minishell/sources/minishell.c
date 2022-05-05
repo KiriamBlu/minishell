@@ -8,18 +8,18 @@ void checkenvp(t_minib *minilst)
 	char *auxi;
 	int j;
 
-	if(getposinlst(minilst->envp, "PWD") == -1)
-	{
-		tmp = ft_strjoin("PWD=", minilst->pwd);
-		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
-		free(tmp);
-	}
 	if(getposinlst(minilst->envp, "SHLVL") == -1)
 	{
 		tmp = ft_strjoin("SHLVL=", "1");
 		minilst->shlvl = 1;
 		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		minilst->shlvl = 1;
+		free(tmp);
+	}
+	if(getposinlst(minilst->envp, "PWD") == -1)
+	{
+		tmp = ft_strjoin("PWD=", minilst->pwd);
+		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		free(tmp);
 	}
 	else

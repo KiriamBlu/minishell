@@ -12,7 +12,7 @@ int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
 	return (0);
 }
 
-void	cd_update_env(t_minib *minilst)
+void	updateenv(t_minib *minilst)
 {
 	char	*tmp;
 	int		i;
@@ -20,23 +20,41 @@ void	cd_update_env(t_minib *minilst)
 
 	i = getposinlst(minilst->envp, "OLDPWD");
 	j = getposinlst(minilst->envp, "PWD");
-	if(i != -1)
+	if(i != -1 && j != -1)
 	{
 		delpos(&minilst->envp, i);
 		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, (j + 1)) + 4));
 	}
-	else
-		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, 17) + 4));	
-	tmp = getcwd(NULL, 0);
-	delpos(&minilst->envp, j);
-	putinpos(&minilst->envp, j, ft_strjoin("PWD=", tmp));
+	if(j != -1)
+	{
+		tmp = getcwd(NULL, 0);
+		delpos(&minilst->envp, j);
+		putinpos(&minilst->envp, j, ft_strjoin("PWD=", tmp));
+		free(tmp);
+	}
+}
+
+void	cd_update_env(t_minib *minilst)
+{
+	char	*tmp;
+	int		i;
+	int 	j;
+
+	updateenv(minilst);
 	j = getposinlst(minilst->exp, "PWD");
+	if(j != -1)
+	{
+		tmp = getcwd(NULL, 0);
+		delpos(&minilst->exp, j);
+		putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
+		free(tmp);
+	}
 	i = getposinlst(minilst->exp, "OLDPWD");
-	delpos(&minilst->exp, i);
-	putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
-	delpos(&minilst->exp, j);
-	putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
-	free(tmp);
+	if(i != -1 && j != -1)
+	{
+		delpos(&minilst->exp, i);
+		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
+	}
 }
 
 char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
@@ -80,11 +98,6 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	if (ft_strcmp("cd", cmd) != 0)
 		return	(0);
 	args = ft_split(arg, ' ');
-	if (getposinlst(minilst->envp, "PWD") == -1)
-	{
-		minilst->pwd = getcwd(NULL, 0);
-		putinpos(&minilst->envp, 16, ft_strjoin("PWD=", minilst->pwd));
-	}
 	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
 	if(chdir(str) == -1)
 	{

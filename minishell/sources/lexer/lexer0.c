@@ -165,7 +165,6 @@ int openfilesredirect(char *line, int i, int *fileout)
 		j++;
 		l++;
 	}
-		printf("%s\n", line);
 	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
 	while(line[++i] == ' ' && line[i]);
