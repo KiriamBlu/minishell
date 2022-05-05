@@ -39,6 +39,7 @@ typedef struct s_minib
 	int		expindex;
 	int 	cmdnum;
 	int		shlvl;
+	char	*lastcmd;
 	int		cmdstatus;
 	char	*pwd;
 	char	*promt;

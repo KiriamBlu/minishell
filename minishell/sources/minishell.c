@@ -46,6 +46,7 @@ void checkenvp(t_minib *minilst)
 		free(tmp);
 	}
 }
+	
 
 void prepbasics(t_minib *minilst, char **envp)
 {
@@ -63,6 +64,8 @@ void prepbasics(t_minib *minilst, char **envp)
 	aux = getdonexp(tmp, i);
 	freemat(tmp);
 	minilst->exp = createarraylst(aux);
+	if(getposinlst(minilst->envp, "OLDPWD") == -1)
+		putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, "OLDPWD"), getaddedexp("OLDPWD"));
 	minilst->cmdstatus = 0;
 	freemat(aux);
 }
