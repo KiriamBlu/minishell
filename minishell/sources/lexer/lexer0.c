@@ -56,10 +56,7 @@ int openfilesheredoc(char *line, int i, int *filein)
 	j = a;
 	while (line[a] != ' ' && line[a])
 		a++;
-	// if(ft_strlen(line) == a && isvalid)
-	// 	printf("error\n");
 	tmp = gettmp(i, line); //tmp Es el limitador
-	//printf("%s\n", tmp);
 	str = ft_calloc(1, 1);
 	if (*filein != STDIN_FILENO)
 		close(*filein);
@@ -73,6 +70,8 @@ int openfilesheredoc(char *line, int i, int *filein)
 		ft_putstr_fd(str, *filein);
 		ft_putstr_fd("\n", *filein);
 	}
+	close(*filein);
+	*filein = open(".hide", O_RDWR, 0666);
 	return(a);
 }
 
