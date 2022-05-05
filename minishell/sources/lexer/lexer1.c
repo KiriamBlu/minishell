@@ -90,6 +90,8 @@ int get_len(char *line, int a)
 
 	j = a;
 	flag = 0;
+	if(line[0] == '$')
+		return(0);
 	while (line[j] != '$')
 	{
 		if(line[j] == '\'' && flag == 1)

@@ -203,7 +203,7 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 		if(tmp[i] == '"')
 			while(tmp[++i] != '"')
 				;
-		if(tmp[i] == '\'')
+		if(tmp[i] == '\'')  
 			while(tmp[++i] != '\'')
 				;
 		if(tmp[i] == '<' || tmp[i] == '>')
@@ -243,8 +243,7 @@ int	morfeo(t_cmds *com, char **line)
 		j = 0;
 		com[i].filein = STDIN_FILENO;
 		com[i].fileout = STDOUT_FILENO;
-		aux = ft_split(line[i], ' ');
-		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);;
+		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);
 		if(tmp == NULL)
 			return(-1);
 		aux = ft_split(tmp, ' ');
