@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/05 16:02:01 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:52:37 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	freecmds(t_minib *minilst)
 			i++;
 		}
 		free(minilst->cmds);
+		unlink(".hide");
 		minilst->cmdnum = 0;
 	}
 }
