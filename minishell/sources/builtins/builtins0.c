@@ -42,19 +42,19 @@ void	cd_update_env(t_minib *minilst)
 
 	updateenv(minilst);
 	j = getposinlst(minilst->exp, "PWD");
-	if(j != -1)
-	{
-		tmp = getcwd(NULL, 0);
-		delpos(&minilst->exp, j);
-		putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
-		free(tmp);
-	}
 	i = getposinlst(minilst->exp, "OLDPWD");
 	if(i != -1 && j != -1)
 	{
 		delpos(&minilst->exp, i);
 		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
 	}
+	if(j != -1)
+	{
+		tmp = getcwd(NULL, 0);
+		delpos(&minilst->exp, j);
+		putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
+		free(tmp);
+	}	
 }
 
 char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
@@ -85,7 +85,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 		}
 	}
 	else
-		s = ft_strdup(str);
+		s = comparse(str);
 	return (s);
 }
 
@@ -123,6 +123,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 {
 	int		i;
 	char	**aux;
+	char	*tmp;
 
 	i = 0;
 	if (ft_strcmp(cmd, "exit") == 0)
@@ -135,16 +136,18 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			freeeverything(minilst);
 			exit(0);
 		}
+		tmp = comparse(aux[0]);
 		if(aux[1])
 		{
 			errorprintf("minishell: exit: too many arguments\n", &minilst->cmdstatus);
 			freemat(aux);
+			free(tmp);
 			return (1);
 		}
 		i = -1;
-		while(aux[0][++i])
+		while(tmp[i++])
 		{
-			if(ft_isdigit(aux[0][i]) != 1)
+			if(ft_isdigit(tmp[i]) != 1)
 			{
 				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
 				minilst->cmdstatus = 255;
@@ -152,7 +155,8 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			}
 		}
 		freeeverything(minilst);
-		exit(ft_atoi(aux[0]));
+		freemat(aux);
+		exit(ft_atoi(tmp));
 	}
 	return(0);
 }
