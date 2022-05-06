@@ -205,9 +205,9 @@ void	checkeverything(char *line, t_minib *minilst)
 				finish_ejecucion(minilst, i, 1);
 			}
 			i++;
+		}
 			dup2(fileout, STDOUT_FILENO);
 			dup2(filein, STDIN_FILENO);
-		}
 	}
 }
 
