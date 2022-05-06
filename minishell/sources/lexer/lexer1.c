@@ -143,7 +143,9 @@ char *expander(char *line, t_minib *minilst)
 		a = get_len(line, a);
 		aux = ft_substr(line, i, a - i);
 		tmp = ft_substr(line, a + 1, ft_getlenname(line, a));
-		a += ft_strlen(tmp) + 1;
+		if(tmp[0] != '?')
+			a += 1;
+		a += ft_strlen(tmp);
 		last = freezerjoin(aux, expanddollar(tmp, minilst));
 		free(tmp);
 		longstr = freezerjoin(longstr, last);

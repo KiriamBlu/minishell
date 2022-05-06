@@ -29,6 +29,8 @@ void	printlist(t_list *list, int fileout)
 
 	i = 0;
 	j = ft_lstsize(list);
+	if(j == 0)
+		return ;
 	while(i < j)
 	{
 		ft_putstr_fd((char *)list->content, fileout);

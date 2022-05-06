@@ -17,6 +17,7 @@ void	*fuckeveryting(t_list *list)
 	void *kk;
 
 	kk = list->next;
+	list->next = NULL;
 	free(list->content);
 	free(list);
 	return(kk);
