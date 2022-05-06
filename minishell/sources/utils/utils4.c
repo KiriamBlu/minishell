@@ -17,10 +17,10 @@ int lentmp(char *add)
 	while(add[j])
 	{
 		if(add[j] == '"')
-			while(add[++j] != '"')
+			while(add[++j] != '"' && add[j])
 				l++;
 		else if(add[j] == '\'')
-			while(add[++j] != '\'')
+			while(add[++j] != '\'' && add[j])
 				l++;
 		else
 			l++;
@@ -45,13 +45,13 @@ char *comparse(char *add)
 			if(add[j] == '"')
 			{
 				j++;
-				while(add[j] != '"')
+				while(add[j] != '"' && add[j])
 					tmp[l++] = add[j++];
 			}
 			else if(add[j] == '\'')
 			{
 				j++;
-				while(add[j] != '\'')
+				while(add[j] != '\'' && add[j])
 					tmp[l++] = add[j++];
 			}
 		}

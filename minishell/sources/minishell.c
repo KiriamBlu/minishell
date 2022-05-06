@@ -121,8 +121,16 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	char *aux;
 
 	aux = ft_strjoin("_=", minilst->cmds[i].cmd);
-	getaddexp(aux, minilst);
-	free(aux);
+	k = getposinlst(minilst->envp, "_");
+	if(k != -1)
+	{
+		delpos(&minilst->envp, k);
+		putinpos(&minilst->envp, k, aux);
+	}
+	else
+	{
+		putinpos(&minilst->envp, 0, aux);
+	}
 	k = 0;
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
@@ -171,6 +179,8 @@ void	checkeverything(char *line, t_minib *minilst)
 			{
 				while (i < minilst->cmdnum - 1)
 				{
+					dup2(minilst->cmds[i].filein, STDIN_FILENO);
+					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 					simba(minilst, i);
 					i++;
 				}

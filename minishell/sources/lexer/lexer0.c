@@ -32,18 +32,29 @@ char *gettmp(int i, char *line)
 	j = a;
 	while (line[a] != ' ' && line[a])
 		a++;
-	tmp = malloc(sizeof(char) * (a - j));
+	tmp = ft_calloc(sizeof(char), (a - j) + 1);
 	a = j;
 	j = 0;
 	while(line[a] != ' ' && line[a])
 	{
-		tmp[j] = line[a];
+		if(line[a] == '"')
+		{
+			a++;
+			while(line[a] != '"' && line[a])
+				tmp[j++] = line[a++];
+		}
+		else if(line[a] == '\'')
+		{
+			a++;
+			while(line[a] != '\'' && line[a])
+				tmp[j++] = line[a++];
+		}
+		else
+			tmp[j] = line[a];
 		j++;
 		a++;
 	}
-	aux =  comparse(tmp);
-	free(tmp);
-	return(aux);
+	return(tmp);
 }
 
 int openfilesheredoc(char *line, int i, int *filein)
