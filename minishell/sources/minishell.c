@@ -171,6 +171,8 @@ void	checkeverything(char *line, t_minib *minilst)
 			{
 				while (i < minilst->cmdnum - 1)
 				{
+					dup2(minilst->cmds[i].filein, STDIN_FILENO);
+					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 					simba(minilst, i);
 					i++;
 				}
@@ -185,9 +187,9 @@ void	checkeverything(char *line, t_minib *minilst)
 				ejecucion(minilst, i, 1, 0);
 			}
 			i++;
-		}
 			dup2(fileout, STDOUT_FILENO);
 			dup2(filein, STDIN_FILENO);
+		}
 	}
 }
 

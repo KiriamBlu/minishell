@@ -42,6 +42,7 @@ char *gettmp(int i, char *line)
 		a++;
 	}
 	aux =  comparse(tmp);
+	printf("%s\n", aux);
 	free(tmp);
 	return(aux);
 }
