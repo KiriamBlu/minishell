@@ -61,8 +61,6 @@ int openfilesheredoc(char *line, int i, int *filein)
 		a++;
 	tmp = gettmp(i, line); //tmp Es el limitador
 	str = ft_calloc(1, 1);
-	if (*filein != STDIN_FILENO)
-		close(*filein);
 	*filein = open(".hide", O_RDWR | O_CREAT | O_TRUNC, 0666);
 	while(1)
 	{
