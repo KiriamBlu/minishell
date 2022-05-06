@@ -118,6 +118,7 @@ int checkinout(t_minib *minilst)
 void ejecucion(t_minib *minilst, int i, int num, int flag)
 {
 	int k;
+	char *aux;
 
 	aux = ft_strjoin("_=", minilst->cmds[i].cmd);
 	getaddexp(aux, minilst);
