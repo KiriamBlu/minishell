@@ -118,7 +118,11 @@ int checkinout(t_minib *minilst)
 void ejecucion(t_minib *minilst, int i, int num, int flag)
 {
 	int k;
+	char *aux;
 
+	aux = ft_strjoin("_=", minilst->cmds[i].cmd);
+	getaddexp(aux, minilst);
+	free(aux);
 	k = 0;
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
@@ -150,6 +154,7 @@ void	checkeverything(char *line, t_minib *minilst)
 	int i;
 	int filein;
 	int fileout;
+	char *aux;
 
 	i = 0;
 	if(prepline(line, minilst) == -1)

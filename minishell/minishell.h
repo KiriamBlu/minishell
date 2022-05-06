@@ -96,6 +96,8 @@ char	*freezerjoin(char *s1, char *s2);
 char	*dopromt(t_minib *minilst);
 char	*argsdone(char *arg);
 char	*comparse(char *add);
+void	getaddexp(char *add, t_minib *minilst);
+
 
 //DEBUGGIN TOOLS
 
