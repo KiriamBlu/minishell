@@ -99,4 +99,6 @@ void	executer(t_minib *minilst, int i, int num)
 	if (minilst->cmdnum == 1 || num == 1)
 		waitpid(pid, &status, 0);
   minilst->cmdstatus = status;
+  if(WIFSIGNALED(status))
+  	minilst->cmdstatus = 127;
 }

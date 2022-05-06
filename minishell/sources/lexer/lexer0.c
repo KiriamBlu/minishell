@@ -24,6 +24,7 @@ char *gettmp(int i, char *line)
 	int a;
 	int j;
 	char *tmp;
+	char *aux;
 
 	a = i + 1;
 	while (line[a] == ' ')
@@ -40,7 +41,9 @@ char *gettmp(int i, char *line)
 		j++;
 		a++;
 	}
-	return(tmp);
+	aux =  comparse(tmp);
+	free(tmp);
+	return(aux);
 }
 
 int openfilesheredoc(char *line, int i, int *filein)
@@ -65,11 +68,14 @@ int openfilesheredoc(char *line, int i, int *filein)
 	{
 		free(str);
 		str = readline(">");
-		if (ft_strcmp(str, tmp) == 0)
+		if (!str || ft_strcmp(str, tmp) == 0)
 			break;
 		ft_putstr_fd(str, *filein);
 		ft_putstr_fd("\n", *filein);
 	}
+	if(str)
+		free(str);
+	free(tmp);
 	close(*filein);
 	*filein = open(".hide", O_RDWR, 0666);
 	return(a);
