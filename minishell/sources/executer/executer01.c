@@ -67,7 +67,7 @@ void	executer(t_minib *minilst, int i, int num)
 	{
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
 		arto = ft_strjoin(minilst->cmds[i].cmd, " ");
-		aux = argsdone(minilst->cmds[i].args);
+		aux = comparse(minilst->cmds[i].args);
 		arto = ft_strjoin(arto, aux);
 		free(aux);
 		pths2 = ft_split(arto, ' ');
