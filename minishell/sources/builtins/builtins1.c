@@ -145,11 +145,9 @@ char **exportarg(char *cmd)
 		while(cmd[i] != ' ' && cmd[i])
 		{
 			if (cmd[i] == '\'')
-				while(cmd[++i] != '\'')
-					;
+				while(cmd[++i] != '\'');
 			if (cmd[i] == '"')
-				while(cmd[++i] != '"')
-					;
+				while(cmd[++i] != '"');
 			if(cmd[i] == '<' || cmd[i] == '>')
 			{
 				comands[status] = ft_substr(cmd, a, i - a);
@@ -186,6 +184,7 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	int i;
 	char **args;
+	char *tmp;
 
 	i = -1;
 	if (ft_strcmp(cmd, "export") != 0)
@@ -196,17 +195,19 @@ int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 		minilst->cmdstatus = 0;
 		return (1);
 	}
-	args = exportarg(arg); // ANADIR LA SEPARACIÓN DE LOS ARGUMENTOS POR ("")
+	args = exportarg(arg);
 	while(args[++i])
 	{
-		if(checkadd(args[i]) == -1)
+		tmp = comparse(args[i]);
+		if(checkadd(tmp) == -1)
 		{
-			printf("minishell: export: %s: not a valid identifier\n", args[0]);
+			printf("minishell: export: %s: not a valid identifier\n", tmp);
 			minilst->cmdstatus = 1;
 			freemat(args);
 			return (1);
 		}
-		getaddexp(args[i], minilst);
+		getaddexp(tmp, minilst);
+		free(tmp);
 	}
 	freemat(args);
 	minilst->cmdstatus = 0;
@@ -218,6 +219,7 @@ int checkforunset(char *cmd, char *arg, t_minib *minilst)
 	int i;
 	int j;
 	char **args;
+	char *tmp;
 
 	j = -1;
 	if (ft_strcmp(cmd, "unset") != 0)
@@ -227,25 +229,27 @@ int checkforunset(char *cmd, char *arg, t_minib *minilst)
 		return (1);
 	while(args[++j])
 	{
-		if(checkadd(args[j]) == -1)
+		tmp = comparse(args[j]);
+		if(checkadd(tmp) == -1)
 		{
 			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
 			minilst->cmdstatus = 1;
 			freemat(args);
 			return (1);
 		}
-		i = getposinlst(minilst->envp, args[j]);
+		i = getposinlst(minilst->envp, tmp);
 		if(i != -1)
 		{
 			minilst->envindex--;
 			delpos(&minilst->envp, i);
 		}
-		i = getposinlst(minilst->exp, args[j]);
+		i = getposinlst(minilst->exp, tmp);
 		if(i != -1)
 		{
 			minilst->expindex--;
 			delpos(&minilst->exp, i);
 		}
+		free(tmp);
 	}
 	freemat(args);
 	minilst->cmdstatus = 0;

@@ -39,6 +39,7 @@ typedef struct s_minib
 	int		expindex;
 	int 	cmdnum;
 	int		shlvl;
+	char	*lastcmd;
 	int		cmdstatus;
 	char	*pwd;
 	char	*promt;
@@ -94,6 +95,8 @@ char	*getaddedexp(char *add);
 char	*freezerjoin(char *s1, char *s2);
 char	*dopromt(t_minib *minilst);
 char	*argsdone(char *arg);
+char	*comparse(char *add);
+void	getaddexp(char *add, t_minib *minilst);
 
 
 //DEBUGGIN TOOLS
@@ -108,7 +111,6 @@ void	executer(t_minib *minilst, int i, int num);
 char	*path(char *cmd, char **envp);
 void	ft_errorpipex(int index);
 void	simba(t_minib *minilst, int i );
-void	ejecucion(t_minib *minilst, int i, int num);
-void	finish_ejecucion(t_minib *minilst, int i, int num);
+void	ejecucion(t_minib *minilst, int i, int num, int flag);
 
 #endif

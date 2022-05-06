@@ -24,6 +24,7 @@ char *gettmp(int i, char *line)
 	int a;
 	int j;
 	char *tmp;
+	char *aux;
 
 	a = i + 1;
 	while (line[a] == ' ')
@@ -40,7 +41,9 @@ char *gettmp(int i, char *line)
 		j++;
 		a++;
 	}
-	return(tmp);
+	aux =  comparse(tmp);
+	free(tmp);
+	return(aux);
 }
 
 int openfilesheredoc(char *line, int i, int *filein)
@@ -63,11 +66,14 @@ int openfilesheredoc(char *line, int i, int *filein)
 	{
 		free(str);
 		str = readline(">");
-		if (ft_strcmp(str, tmp) == 0)
+		if (!str || ft_strcmp(str, tmp) == 0)
 			break;
 		ft_putstr_fd(str, *filein);
 		ft_putstr_fd("\n", *filein);
 	}
+	if(str)
+		free(str);
+	free(tmp);
 	close(*filein);
 	*filein = open(".hide", O_RDWR, 0666);
 	return(a);
@@ -86,8 +92,7 @@ int openfilesindirect(char *line, int i, int *filein)
 		i = openfilesheredoc(line, i + 1, filein);
 		return(i);
 	}
-	while(line[++j] == ' ')
-		;
+	while(line[++j] == ' ');
 	while(line[j] != ' ')
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -95,10 +100,9 @@ int openfilesindirect(char *line, int i, int *filein)
 		l++;
 		j++;
 	}
-	aux = malloc(sizeof(char) * l + 1);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;
+	while(line[++i] == ' ' && line[i]);
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];
@@ -120,8 +124,7 @@ int openfilesappend(char *line, int i, int *fileout)
 
 	j = i;
 	l = 0;
-	while(line[++j] == ' ' && line[j])
-		;	
+	while(line[++j] == ' ' && line[j]);	
 	while(line[j] != ' ' && line[j])
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -129,10 +132,9 @@ int openfilesappend(char *line, int i, int *fileout)
 		j++;
 		l++;
 	}
-	aux = malloc(sizeof(char) * l + 1);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;	
+	while(line[++i] == ' ' && line[i]);	
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];
@@ -159,8 +161,7 @@ int openfilesredirect(char *line, int i, int *fileout)
 		return(i);
 	}
 	l = 0;
-	while(line[++j] == ' ' && line[j])
-		;	
+	while(line[++j] == ' ' && line[j]);	
 	while(line[j] != ' ' && line[j])
 	{
 		if(line[j] == '>' || line[j] == '<')
@@ -168,10 +169,9 @@ int openfilesredirect(char *line, int i, int *fileout)
 		j++;
 		l++;
 	}
-	aux = malloc(sizeof(char) * j + 1);
+	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
-	while(line[++i] == ' ' && line[i])
-		;
+	while(line[++i] == ' ' && line[i]);
 	while(line[i] != ' ' && line[i])
 	{
 		aux[j] = line[i];

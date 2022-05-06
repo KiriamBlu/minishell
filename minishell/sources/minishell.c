@@ -8,18 +8,18 @@ void checkenvp(t_minib *minilst)
 	char *auxi;
 	int j;
 
-	if(getposinlst(minilst->envp, "PWD") == -1)
-	{
-		tmp = ft_strjoin("PWD=", minilst->pwd);
-		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
-		free(tmp);
-	}
 	if(getposinlst(minilst->envp, "SHLVL") == -1)
 	{
 		tmp = ft_strjoin("SHLVL=", "1");
 		minilst->shlvl = 1;
 		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		minilst->shlvl = 1;
+		free(tmp);
+	}
+	if(getposinlst(minilst->envp, "PWD") == -1)
+	{
+		tmp = ft_strjoin("PWD=", minilst->pwd);
+		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
 		free(tmp);
 	}
 	else
@@ -46,6 +46,7 @@ void checkenvp(t_minib *minilst)
 		free(tmp);
 	}
 }
+	
 
 void prepbasics(t_minib *minilst, char **envp)
 {
@@ -63,6 +64,8 @@ void prepbasics(t_minib *minilst, char **envp)
 	aux = getdonexp(tmp, i);
 	freemat(tmp);
 	minilst->exp = createarraylst(aux);
+	if(getposinlst(minilst->envp, "OLDPWD") == -1)
+		putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, "OLDPWD"), getaddedexp("OLDPWD"));
 	minilst->cmdstatus = 0;
 	freemat(aux);
 }
@@ -112,38 +115,14 @@ int checkinout(t_minib *minilst)
 	return(0);
 }
 
-void finish_ejecucion(t_minib *minilst, int i, int num)
+void ejecucion(t_minib *minilst, int i, int num, int flag)
 {
 	int k;
+	char *aux;
 
-	k = 0;
-	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
-	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
-	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0 || ft_strcmp(minilst->cmds[i].cmd, "PWD") == 0)
-	{
-		free(minilst->pwd);
-		minilst->pwd = getcwd(NULL, 0);
-		ft_putstr_fd(minilst->pwd, minilst->cmds[i].fileout);
-		ft_putchar_fd('\n', minilst->cmds[i].fileout);
-		k += 1;
-	}
-	k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
-	k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-	if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
-	{
-		k++;
-		system("leaks minishell");
-	}
-	if (k == 0)
-		executer(minilst, i, num);
-}
-
-void ejecucion(t_minib *minilst, int i, int num)
-{
-	int k;
-
+	aux = ft_strjoin("_=", minilst->cmds[i].cmd);
+	getaddexp(aux, minilst);
+	free(aux);
 	k = 0;
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
@@ -166,7 +145,7 @@ void ejecucion(t_minib *minilst, int i, int num)
 	}
 	if (k == 0)
 		executer(minilst, i, num);
-	else
+	else if(flag == 1)
 		exit(0);
 }
 
@@ -175,6 +154,7 @@ void	checkeverything(char *line, t_minib *minilst)
 	int i;
 	int filein;
 	int fileout;
+	char *aux;
 
 	i = 0;
 	if(prepline(line, minilst) == -1)
@@ -196,13 +176,13 @@ void	checkeverything(char *line, t_minib *minilst)
 				}
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				finish_ejecucion(minilst, i, 1);
+				ejecucion(minilst, i, 1, 0);
 			}
 			else
 			{
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				finish_ejecucion(minilst, i, 1);
+				ejecucion(minilst, i, 1, 0);
 			}
 			i++;
 		}

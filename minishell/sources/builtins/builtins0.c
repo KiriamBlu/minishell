@@ -12,7 +12,7 @@ int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
 	return (0);
 }
 
-void	cd_update_env(t_minib *minilst)
+void	updateenv(t_minib *minilst)
 {
 	char	*tmp;
 	int		i;
@@ -20,23 +20,41 @@ void	cd_update_env(t_minib *minilst)
 
 	i = getposinlst(minilst->envp, "OLDPWD");
 	j = getposinlst(minilst->envp, "PWD");
-	if(i != -1)
+	if(i != -1 && j != -1)
 	{
 		delpos(&minilst->envp, i);
 		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, (j + 1)) + 4));
 	}
-	else
-		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, 17) + 4));	
-	tmp = getcwd(NULL, 0);
-	delpos(&minilst->envp, j);
-	putinpos(&minilst->envp, j, ft_strjoin("PWD=", tmp));
+	if(j != -1)
+	{
+		tmp = getcwd(NULL, 0);
+		delpos(&minilst->envp, j);
+		putinpos(&minilst->envp, j, ft_strjoin("PWD=", tmp));
+		free(tmp);
+	}
+}
+
+void	cd_update_env(t_minib *minilst)
+{
+	char	*tmp;
+	int		i;
+	int 	j;
+
+	updateenv(minilst);
 	j = getposinlst(minilst->exp, "PWD");
 	i = getposinlst(minilst->exp, "OLDPWD");
-	delpos(&minilst->exp, i);
-	putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
-	delpos(&minilst->exp, j);
-	putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
-	free(tmp);
+	if(i != -1 && j != -1)
+	{
+		delpos(&minilst->exp, i);
+		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
+	}
+	if(j != -1)
+	{
+		tmp = getcwd(NULL, 0);
+		delpos(&minilst->exp, j);
+		putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
+		free(tmp);
+	}	
 }
 
 char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
@@ -67,7 +85,7 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 		}
 	}
 	else
-		s = ft_strdup(str);
+		s = comparse(str);
 	return (s);
 }
 
@@ -80,11 +98,6 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	if (ft_strcmp("cd", cmd) != 0)
 		return	(0);
 	args = ft_split(arg, ' ');
-	if (getposinlst(minilst->envp, "PWD") == -1)
-	{
-		minilst->pwd = getcwd(NULL, 0);
-		putinpos(&minilst->envp, 16, ft_strjoin("PWD=", minilst->pwd));
-	}
 	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
 	if(chdir(str) == -1)
 	{
@@ -110,6 +123,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 {
 	int		i;
 	char	**aux;
+	char	*tmp;
 
 	i = 0;
 	if (ft_strcmp(cmd, "exit") == 0)
@@ -122,16 +136,18 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			freeeverything(minilst);
 			exit(0);
 		}
+		tmp = comparse(aux[0]);
 		if(aux[1])
 		{
 			errorprintf("minishell: exit: too many arguments\n", &minilst->cmdstatus);
 			freemat(aux);
+			free(tmp);
 			return (1);
 		}
 		i = -1;
-		while(aux[0][++i])
+		while(tmp[i++])
 		{
-			if(ft_isdigit(aux[0][i]) != 1)
+			if(ft_isdigit(tmp[i]) != 1)
 			{
 				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
 				minilst->cmdstatus = 255;
@@ -139,7 +155,8 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			}
 		}
 		freeeverything(minilst);
-		exit(ft_atoi(aux[0]));
+		freemat(aux);
+		exit(ft_atoi(tmp));
 	}
 	return(0);
 }
