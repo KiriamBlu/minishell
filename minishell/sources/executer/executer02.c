@@ -35,7 +35,7 @@ void	simba(t_minib *minilst, int i)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		ejecucion(minilst, i, 0);
+		ejecucion(minilst, i, 0, 1);
 	}
 	else
 		finish(fd[1], fd[0], pid);
