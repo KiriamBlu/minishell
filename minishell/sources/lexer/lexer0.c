@@ -1,6 +1,84 @@
 
 #include "../../minishell.h"
 
+int		countpipe(char *expanded);
+char	*checkforredirect(char *line, int *filein, int *fileout);
+int		openfilesredirect(char *line, int i, int *fileout);
+int		openfilesappend(char *line, int i, int *fileout);
+int		openfilesindirect(char *line, int i, int *filein);
+int		openfilesheredoc(char *line, int i, int *filein);
+
+/*WORKS BY DOING A SIMPLE READING AND APPLAYING THE SAME RULES OF THE EXPANDER BUT ON THIS CASE IT PUTS EACH CMD INT TO A POINTER OF A MATRIX*/
+
+char **lexer(char *expanded)
+{
+	int i;
+	int a;
+	int numcom;
+	int status;
+	char **comands;
+
+	numcom = countpipe(expanded);
+	comands = malloc(sizeof(char *) * numcom + 1);
+	i = 0;
+	a = 0;
+	status = 0;
+	while(numcom > 0)
+	{
+		while(expanded[i] != '|' && expanded[i])
+		{
+			if (expanded[i] == '\'')
+				while(expanded[++i] != '\'')
+					;
+			if (expanded[i] == '"')
+				while(expanded[++i] != '"')
+					;
+			i++;
+		}
+		comands[status] = ft_substr(expanded, a, i - a);
+		i += 1;
+		a = i;
+		status++;
+		numcom--;
+	}
+	comands[status] = 0;
+	return(comands);
+}
+
+/*PREPS THE STRUCTURE OF CMDS AND OPENS THE FILES NECESARY*/
+
+int	morfeo(t_cmds *com, char **line)
+{
+	int		i;
+	char	**aux;
+	char	*tmp;
+	int		j;
+
+	i = 0;
+	while (line[i])
+	{
+		j = 0;
+		com[i].filein = STDIN_FILENO; //SETS BASIC INPUT FOR THE CMD
+		com[i].fileout = STDOUT_FILENO; //SETS BASIC OUTPUT FOR THE CMD
+		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout); //CHANGES THE INPUT OR OUTPUT IF NEEDED AND REMOVES REDDIRECTIOS INDIRECTONS APPENDS AND HERE DOCS
+		if(tmp == NULL)
+			return(-1);
+		aux = ft_split(tmp, ' ');
+		if(aux[0])
+		{
+			com[i].cmd = ft_strdup(aux[0]); //GETS THE CMD
+			freemat(aux);
+			while(tmp[j++] == ' ');
+			j += ft_strlen(com[i].cmd);
+			com[i].args = ft_substr(tmp, j, ft_strlen(tmp)); // GETS THE ARGS 
+		}
+		free(tmp);
+		i++;
+	}
+	return(0);
+}
+
+
 char	**ft_prepare(char *line)
 {
 	char	**cmd;
@@ -24,7 +102,6 @@ char *gettmp(int i, char *line)
 	int a;
 	int j;
 	char *tmp;
-	char *aux;
 
 	a = i + 1;
 	while (line[a] == ' ')
@@ -60,14 +137,12 @@ char *gettmp(int i, char *line)
 int openfilesheredoc(char *line, int i, int *filein)
 {
 	int a;
-	int j;
 	char *tmp;
 	char *str;
 
 	a = i + 1;
 	while (line[a] == ' ')
 		a++;
-	j = a;
 	while (line[a] != ' ' && line[a])
 		a++;
 	tmp = gettmp(i, line); //tmp Es el limitador
@@ -238,37 +313,6 @@ char *checkforredirect(char *line, int *filein, int *fileout)
 	return(tmp);
 }
 
-int	morfeo(t_cmds *com, char **line)
-{
-	int		i;
-	char	**aux;
-	char	*tmp;
-	int		j;
-
-	i = 0;
-	while (line[i])
-	{
-		j = 0;
-		com[i].filein = STDIN_FILENO;
-		com[i].fileout = STDOUT_FILENO;
-		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout);
-		if(tmp == NULL)
-			return(-1);
-		aux = ft_split(tmp, ' ');
-		if(aux[0])
-		{
-			com[i].cmd = ft_strdup(aux[0]);;
-			freemat(aux);
-			while(tmp[j++] == ' ');
-			j += ft_strlen(com[i].cmd);
-			com[i].args = ft_substr(tmp, j, ft_strlen(tmp));
-		}
-		free(tmp);
-		i++;
-	}
-	return(0);
-}
-
 int countpipe(char *expanded)
 {
 	int i;
@@ -289,39 +333,4 @@ int countpipe(char *expanded)
 		i++;
 	}
 	return(k + 1);
-}
-
-char **lexer(char *expanded)
-{
-	int i;
-	int a;
-	int numcom;
-	int status;
-	char **comands;
-
-	numcom = countpipe(expanded);
-	comands = malloc(sizeof(char *) * numcom + 1);
-	i = 0;
-	a = 0;
-	status = 0;
-	while(numcom > 0)
-	{
-		while(expanded[i] != '|' && expanded[i])
-		{
-			if (expanded[i] == '\'')
-				while(expanded[++i] != '\'')
-					;
-			if (expanded[i] == '"')
-				while(expanded[++i] != '"')
-					;
-			i++;
-		}
-		comands[status] = ft_substr(expanded, a, i - a);
-		i += 1;
-		a = i;
-		status++;
-		numcom--;
-	}
-	comands[status] = 0;
-	return(comands);
 }

@@ -1,6 +1,97 @@
 
 #include "../minishell.h"
 
+void	checkeverything(char *line, t_minib *minilst);
+void	ejecucion(t_minib *minilst, int i, int num, int flag);
+int		prepline(char *line, t_minib *minilst);
+void	checkenvp(t_minib *minilst);
+
+/*BASIC STRUCTURE OF THE MINISHELL. THIS IS THE CODE WICH MANAGES THE ENTIRE STRUCTURE AND EXECUTION OF THE PROGRAM*/
+
+int main(int argc, const char **argv, char **envp)
+{
+	t_minib	minilst;
+	char *line;
+	char *promt;
+	int		i;
+
+	argv = NULL;
+	if(argc != 1)
+		exit(0);
+	i = 0;
+	prepbasics(&minilst, envp); //PREPARES THE BASIC THINGS NEEDED FOR THE EXECUTION
+	minilst.promt = dopromt(&minilst); //NOT RELEVANT NEITHER NECESARY FOR THE EXECUTION
+	while(1)
+	{
+		inputsignal(); //OPENS SIGNALS
+		promt = ft_strdup(minilst.promt);
+		line = readline(promt); //READS FROM THE TERMINAL THE LINE THAT WILL HAVE THE CMD AND ARGS
+		if(!line) //CTRL D MID EXECUTION
+		{
+			printf("exit\n");
+			if (i > 0)
+				freecmds(&minilst);
+			exit(0);
+		}
+		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line) //ALLOWS THE PROGRAM TO FILTER NOT REAL CMDS LIKE SPACES AND EMPTY LINES
+		{
+			add_history(line); //GETS CMDS TO REGISTER INTO THE HISTORY
+			checkeverything(line, &minilst); //AFTER ALL THE FILTERS THE EXPANDER->LEXER->PARSERS->EXECTION IS MANEGED HERE.
+			i++;
+		}
+		freecmds(&minilst); //FINISHES THE EXECUTION AND FREEZES EVERYTHING
+		free(line);
+		free(promt);
+	}
+	free(minilst.promt);
+	return 0;
+}
+
+/*CHECK_EVERYTHING WILL PARSE AND MANAGE EVERY PART OF A COMPLEX EXECUTION OF A CMD.*/
+
+void	checkeverything(char *line, t_minib *minilst)
+{
+	int i;
+	int filein;
+	int fileout;
+
+	i = 0;
+	if(prepline(line, minilst) == -1) //PARSES THE LINE TO BE ABLE TO  MAKE IT UNDESRSTANDABLE FOR THE PROGRAM
+		return ;
+	if (checkinout(minilst) == -1) //CHECKS IF EVERY FILE THAT WILL BE USED WITH THE CMDS IS RIGHT
+		return ;
+	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
+	{
+		while(i < minilst->cmdnum) //EXECUTES ALL CMDS
+		{
+			fileout = dup(STDOUT_FILENO);
+			filein = dup(STDIN_FILENO);
+			if (minilst->cmdnum > 1)
+			{
+				while (i < minilst->cmdnum - 1)
+				{
+					dup2(minilst->cmds[i].filein, STDIN_FILENO);
+					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+					simba(minilst, i);
+					i++;
+				}
+				dup2(minilst->cmds[i].filein, STDIN_FILENO);
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				ejecucion(minilst, i, 1, 0);
+			}
+			else
+			{
+				dup2(minilst->cmds[i].filein, STDIN_FILENO);
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				ejecucion(minilst, i, 1, 0);
+			}
+			i++;
+		}
+		dup2(fileout, STDOUT_FILENO);		
+		dup2(filein, STDIN_FILENO);
+	}
+}
+
 void checkenvp(t_minib *minilst)
 {
 	char *tmp;
@@ -47,6 +138,7 @@ void checkenvp(t_minib *minilst)
 	}
 }
 	
+/*PREPARES THE LISTS FOR THE ENVP EN EXPORT OR SETTS THE NECESARY BASIC VARIABLES FOR THE EXECUTION*/
 
 void prepbasics(t_minib *minilst, char **envp)
 {
@@ -58,17 +150,20 @@ void prepbasics(t_minib *minilst, char **envp)
 	i = 0;
 	minilst->envp = createarraylst(envp);
 	checkenvp(minilst);
-	tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
+	tmp = createlstarray(minilst->envp, ft_lstsize(minilst->envp)); //BUILDS ENVP LIST
 	while(tmp[i])
 		i++;
 	aux = getdonexp(tmp, i);
 	freemat(tmp);
-	minilst->exp = createarraylst(aux);
+	minilst->exp = createarraylst(aux); //BUILDS EXPORT LIST 
 	if(getposinlst(minilst->envp, "OLDPWD") == -1)
 		putinpos(&minilst->exp, getgoodpositionexp(minilst->exp, "OLDPWD"), getaddedexp("OLDPWD"));
 	minilst->cmdstatus = 0;
 	freemat(aux);
 }
+
+/*AS IT NAME SAYS IT PRERPARES THE INCOMING 
+LINES TO EXPAND, FILTER, SPLITS, AND MAKES PRETTY THE LINE AND PREPARES THE STRUCTURE =)*/
 
 int	prepline(char *line, t_minib *minilst)
 {
@@ -77,52 +172,26 @@ int	prepline(char *line, t_minib *minilst)
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst); //AÑADIR $? A LAS EXPANSIONES
-	newline = lexer(expanded);
-	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
+	expanded = expander(line, minilst); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
+	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
+	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);
-	i = morfeo(minilst->cmds, newline);
+	i = morfeo(minilst->cmds, newline); //FILLS THE STRUCTURE WITH THE COMAND, ARGS, FILEIN, FILEOUT.
 	freemat(newline);
 	free(expanded);
 	return(i);
 }
 
-int checkforspaces(char *line)
-{
-	int i;
-
-	i = -1;
-	while(line[++i])
-		if(line[i] != ' ')
-			return(1);
-	return(0);
-}
-
-int checkinout(t_minib *minilst)
-{
-	int i;
-
-	i = 0;
-	while(i < minilst->cmdnum)
-	{
-		if(minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
-		{
-			printf("Not valid file\n");
-			return (-1);
-		}
-		i++;
-	}
-	return(0);
-}
+/*DOES THE ACTUAL EXECUTION OF CMDS AND FILTERS BETWEEN BUILTINS AND NON BUILTINS*/
 
 void ejecucion(t_minib *minilst, int i, int num, int flag)
 {
 	int k;
 	char *aux;
 
-	aux = ft_strjoin("_=", minilst->cmds[i].cmd);
+	aux = ft_strjoin("_=", minilst->cmds[i].cmd); //FROM HERE
 	k = getposinlst(minilst->envp, "_");
-	if(k != -1)
+	if(k != -1)							//IT PUTS IN ENV THE LAST CMD
 	{
 		delpos(&minilst->envp, k);
 		putinpos(&minilst->envp, k, aux);
@@ -130,8 +199,8 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	else
 	{
 		putinpos(&minilst->envp, 0, aux);
-	}
-	k = 0;
+	}//UNTILL HERE
+	k = 0; //THIS [K] ALLOWS THE PROGRAM TO KNOW IF THE CMD IS BUITLIN OR NOT
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
@@ -152,92 +221,7 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 		system("leaks minishell");
 	}
 	if (k == 0)
-		executer(minilst, i, num);
-	else if(flag == 1)
+		executer(minilst, i, num); //EXECUTES THE NON BUILTINS
+	else if(flag == 1) //FILTERS BETWEEN LAST CMDS AN MID EXECUTION CMDS
 		exit(0);
 }
-
-void	checkeverything(char *line, t_minib *minilst)
-{
-	int i;
-	int filein;
-	int fileout;
-	char *aux;
-
-	i = 0;
-	if(prepline(line, minilst) == -1)
-		return ;
-	if (checkinout(minilst) == -1)
-		return ;
-	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0)
-	{
-		while(i < minilst->cmdnum)
-		{
-			fileout = dup(STDOUT_FILENO);
-			filein = dup(STDIN_FILENO);
-			if (minilst->cmdnum > 1)
-			{
-				while (i < minilst->cmdnum - 1)
-				{
-					dup2(minilst->cmds[i].filein, STDIN_FILENO);
-					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-					simba(minilst, i);
-					i++;
-				}
-				dup2(minilst->cmds[i].filein, STDIN_FILENO);
-				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, 1, 0);
-			}
-			else
-			{
-				dup2(minilst->cmds[i].filein, STDIN_FILENO);
-				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, 1, 0);
-			}
-			i++;
-		}
-			dup2(fileout, STDOUT_FILENO);
-			dup2(filein, STDIN_FILENO);
-	}
-}
-
-int main(int argc, const char **argv, char **envp)
-{
-	t_minib	minilst;
-	char *line;
-	char *promt;
-	int		i;
-
-	argv = NULL;
-	if(argc != 1)
-		exit(0);
-	i = 0;
-	prepbasics(&minilst, envp);
-	minilst.promt = dopromt(&minilst);
-	while(1)
-	{
-		inputsignal();
-		promt = ft_strdup(minilst.promt);
-		line = readline(promt);
-		if(!line)
-		{
-			printf("exit\n");
-			if (i > 0)
-				freecmds(&minilst);
-			exit(0);
-		}
-		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
-		{
-			add_history(line);
-			checkeverything(line, &minilst);
-			i++;
-		}
-		freecmds(&minilst);
-		free(line);
-		free(promt);
-	}
-	free(minilst.promt);
-	return 0;
-}
-
-//HOLA PORTAAAAA

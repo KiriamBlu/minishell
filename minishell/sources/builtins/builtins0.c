@@ -134,6 +134,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 		{
 			freemat(aux);
 			freeeverything(minilst);
+			free(minilst->promt);
 			exit(0);
 		}
 		tmp = comparse(aux[0]);
@@ -155,6 +156,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)//AUX  MAYBE LEAKS
 			}
 		}
 		freeeverything(minilst);
+		free(minilst->promt);
 		freemat(aux);
 		exit(ft_atoi(tmp));
 	}
