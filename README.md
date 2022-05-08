@@ -59,18 +59,18 @@ After building the source, run `./minishell` from the project root.
 
 ## Workload sharing.
 
-KiriamBlu: 
-         -Builtins
-         -Redirections, Indirections, Appends, Heredock
-         -Expander, Lexer, Parser
-         -Basic structure (Execution estructure)
-         -Enviroment structure and relation with program
-         -Character handeling
-         -Implemented relation between builtins and cmds
-         -Signals
-         -Cmd status
-         -Test and debbuging
-juanpPorta:
+- KiriamBlu: 
+        -Builtins
+        -Redirections, Indirections, Appends, Heredock
+        -Expander, Lexer, Parser
+        -Basic structure (Execution estructure)
+        -Enviroment structure and relation with program
+        -Character handeling
+        -Implemented relation between builtins and cmds
+        -Signals
+        -Cmd status
+        -Test and debbuging
+- juanpPorta:
          -Estructure of cmds execution
          -Implemented path checking
          -Execution of cmds with pipes
