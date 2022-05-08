@@ -60,6 +60,8 @@ int	morfeo(t_cmds *com, char **line)
 		j = 0;
 		com[i].filein = STDIN_FILENO; //SETS BASIC INPUT FOR THE CMD
 		com[i].fileout = STDOUT_FILENO; //SETS BASIC OUTPUT FOR THE CMD
+		com[i].cmd = NULL;
+		com[i].args = NULL;
 		tmp = checkforredirect(line[i], &com[i].filein, &com[i].fileout); //CHANGES THE INPUT OR OUTPUT IF NEEDED AND REMOVES REDDIRECTIOS INDIRECTONS APPENDS AND HERE DOCS
 		if(tmp == NULL)
 			return(-1);
@@ -141,24 +143,29 @@ int openfilesheredoc(char *line, int i, int *filein)
 	char *str;
 
 	a = i + 1;
-	while (line[a] == ' ')
+	while (line[a] == ' ' && line[a])
 		a++;
+	if(line[a] == '>' || line[a] == '<')
+		return(-1);
 	while (line[a] != ' ' && line[a])
 		a++;
-	tmp = gettmp(i, line); //tmp Es el limitador
-	str = ft_calloc(1, 1);
+	tmp = gettmp(i, line);
+	str = NULL;
 	*filein = open(".hide", O_RDWR | O_CREAT | O_TRUNC, 0666);
 	while(1)
 	{
-		free(str);
-		str = readline(">");
-		if (!str || ft_strcmp(str, tmp) == 0)
+		str = readline("> ");
+		if(!str)
 			break;
+		if (ft_strcmp(str, tmp) == 0)
+		{
+			free(str);
+			break;
+		}
 		ft_putstr_fd(str, *filein);
 		ft_putstr_fd("\n", *filein);
-	}
-	if(str)
 		free(str);
+	}
 	free(tmp);
 	close(*filein);
 	*filein = open(".hide", O_RDWR, 0666);

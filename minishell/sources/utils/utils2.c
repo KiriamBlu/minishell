@@ -102,8 +102,10 @@ void	freecmds(t_minib *minilst)
 	{
 		while(i < minilst->cmdnum)
 		{
-			free(minilst->cmds[i].cmd);
-			free(minilst->cmds[i].args);
+			if(minilst->cmds[i].cmd)
+				free(minilst->cmds[i].cmd);
+			if(minilst->cmds[i].args)
+				free(minilst->cmds[i].args);
 			if(minilst->cmds[i].filein != STDIN_FILENO)
 				close(minilst->cmds[i].filein);
 			if(minilst->cmds[i].fileout != STDOUT_FILENO)

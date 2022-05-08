@@ -12,6 +12,88 @@
 
 #include "../../minishell.h"
 
+char	**getdonexp(char **envp, int i);
+char	*do_real_arg(char *add);
+void	getaddexp(char *add, t_minib *minilst);
+int		checkadd(char *add);
+char	**exportarg(char *cmd);
+
+int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
+{
+	int i;
+	char **args;
+	char *tmp;
+
+	i = -1;
+	if (ft_strcmp(cmd, "export") != 0)
+		return (0);
+	if(checkarg(arg) == 1)
+	{
+		printlistexp(minilst->exp, fileout);
+		minilst->cmdstatus = 0;
+		return (1);
+	}
+	args = exportarg(arg);
+	while(args[++i])
+	{
+		tmp = comparse(args[i]);
+		if(checkadd(tmp) == -1)
+		{
+			printf("minishell: export: %s: not a valid identifier\n", tmp);
+			minilst->cmdstatus = 1;
+			freemat(args);
+			return (1);
+		}
+		getaddexp(tmp, minilst);
+		free(tmp);
+	}
+	freemat(args);
+	minilst->cmdstatus = 0;
+	return(1);
+}
+
+int checkforunset(char *cmd, char *arg, t_minib *minilst)
+{
+	int i;
+	int j;
+	char **args;
+	char *tmp;
+
+	j = -1;
+	if (ft_strcmp(cmd, "unset") != 0)
+		return	(0);
+	args = ft_split(arg, ' ');
+	if(!args[0])
+		return (1);
+	while(args[++j])
+	{
+		tmp = comparse(args[j]);
+		if(checkadd(tmp) == -1)
+		{
+			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
+			minilst->cmdstatus = 1;
+			freemat(args);
+			return (1);
+		}
+		i = getposinlst(minilst->envp, tmp);
+		if(i != -1)
+		{
+			minilst->envindex--;
+			delpos(&minilst->envp, i);
+		}
+		i = getposinlst(minilst->exp, tmp);
+		if(i != -1)
+		{
+			minilst->expindex--;
+			delpos(&minilst->exp, i);
+		}
+		free(tmp);
+	}
+	freemat(args);
+	minilst->cmdstatus = 0;
+	return(1);
+}
+
 char **getdonexp(char **envp, int i)
 {
 	char	**aux;
@@ -177,81 +259,5 @@ int checkarg(char *arg)
 		return (1);
 	else
 		return(2);
-	return(1);
-}
-
-int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
-{
-	int i;
-	char **args;
-	char *tmp;
-
-	i = -1;
-	if (ft_strcmp(cmd, "export") != 0)
-		return (0);
-	if(checkarg(arg) == 1)
-	{
-		printlistexp(minilst->exp, fileout);
-		minilst->cmdstatus = 0;
-		return (1);
-	}
-	args = exportarg(arg);
-	while(args[++i])
-	{
-		tmp = comparse(args[i]);
-		if(checkadd(tmp) == -1)
-		{
-			printf("minishell: export: %s: not a valid identifier\n", tmp);
-			minilst->cmdstatus = 1;
-			freemat(args);
-			return (1);
-		}
-		getaddexp(tmp, minilst);
-		free(tmp);
-	}
-	freemat(args);
-	minilst->cmdstatus = 0;
-	return(1);
-}
-
-int checkforunset(char *cmd, char *arg, t_minib *minilst)
-{
-	int i;
-	int j;
-	char **args;
-	char *tmp;
-
-	j = -1;
-	if (ft_strcmp(cmd, "unset") != 0)
-		return	(0);
-	args = ft_split(arg, ' ');
-	if(!args[0])
-		return (1);
-	while(args[++j])
-	{
-		tmp = comparse(args[j]);
-		if(checkadd(tmp) == -1)
-		{
-			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
-			minilst->cmdstatus = 1;
-			freemat(args);
-			return (1);
-		}
-		i = getposinlst(minilst->envp, tmp);
-		if(i != -1)
-		{
-			minilst->envindex--;
-			delpos(&minilst->envp, i);
-		}
-		i = getposinlst(minilst->exp, tmp);
-		if(i != -1)
-		{
-			minilst->expindex--;
-			delpos(&minilst->exp, i);
-		}
-		free(tmp);
-	}
-	freemat(args);
-	minilst->cmdstatus = 0;
 	return(1);
 }
