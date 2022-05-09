@@ -57,6 +57,7 @@ char	*auxred(char *tmp, int i, int *filein, int *fileout)
 		l = openfilesindirect(tmp, i, filein);
 	if (l == -1)
 	{
+		free(tmp);
 		printf("Error unespected token\n");
 		return (NULL);
 	}
@@ -138,20 +139,15 @@ char *fillline(char *line, int *i)
 	l = *i;
 	while (line[++j] == ' ' && line[j])
 		;	
-	while (line[j++] != ' ' && line[j])
-		if (line[j] == '>' || line[j] == '<')
+	while (line[j] != ' ' && line[j])
+		if (line[j] == '>' || line[j++] == '<')
 			return (NULL);
-
 	aux = ft_calloc(sizeof(char), j + 1);
 	j = 0;
 	while (line[++l] == ' ' && line[l])
 		;
 	while (line[l] != ' ' && line[l])
-	{
-		aux[j] = line[l];
-		j++;
-		l++;
-	}
+		aux[j++] = line[l++];		
 	*i = l;
 	return(aux);
 }
