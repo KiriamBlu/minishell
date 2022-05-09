@@ -53,7 +53,9 @@ void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
 	int filein;
+	int filein2;
 	int fileout;
+	int fileout2;
 
 	i = 0;
 	if(prepline(line, minilst) == -1) //PARSES THE LINE TO BE ABLE TO  MAKE IT UNDESRSTANDABLE FOR THE PROGRAM
@@ -63,7 +65,9 @@ void	checkeverything(char *line, t_minib *minilst)
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
 	{
 		fileout = dup(STDOUT_FILENO);
+		fileout2 = fileout;
 		filein = dup(STDIN_FILENO);
+		filein2 = filein;
 		while(i < minilst->cmdnum) //EXECUTES ALL CMDS
 		{
 			if (minilst->cmdnum > 1)
@@ -88,8 +92,10 @@ void	checkeverything(char *line, t_minib *minilst)
 			}
 			i++;
 		}
-		dup2(fileout, STDOUT_FILENO);
-		dup2(filein, STDIN_FILENO);
+		dup2(filein2, STDIN_FILENO);
+		close(filein);
+		dup2(fileout2, STDOUT_FILENO);
+		close(fileout);
 	}
 }
 
