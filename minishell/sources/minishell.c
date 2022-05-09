@@ -62,10 +62,10 @@ void	checkeverything(char *line, t_minib *minilst)
 		return ;
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
 	{
+		fileout = dup(STDOUT_FILENO);
+		filein = dup(STDIN_FILENO);
 		while(i < minilst->cmdnum) //EXECUTES ALL CMDS
 		{
-			fileout = dup(STDOUT_FILENO);
-			filein = dup(STDIN_FILENO);
 			if (minilst->cmdnum > 1)
 			{
 				while (i < minilst->cmdnum - 1)
@@ -81,13 +81,14 @@ void	checkeverything(char *line, t_minib *minilst)
 			}
 			else
 			{
+				
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				ejecucion(minilst, i, 1, 0);
 			}
 			i++;
 		}
-		dup2(fileout, STDOUT_FILENO);		
+		dup2(fileout, STDOUT_FILENO);
 		dup2(filein, STDIN_FILENO);
 	}
 }
