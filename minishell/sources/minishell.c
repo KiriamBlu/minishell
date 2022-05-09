@@ -15,7 +15,7 @@ int main(int argc, const char **argv, char **envp)
 	char *promt;
 	int		i;
 
-	argv = NULL;
+	(void)argv;
 	if(argc != 1)
 		exit(0);
 	i = 0;
@@ -174,7 +174,9 @@ int	prepline(char *line, t_minib *minilst)
 
 	i = 0;
 	a = 1;
-	expanded = expander(line, minilst, i, a); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
+	expanded = ft_strdup(line);
+	while(countdollars(expanded) > 0) //CONFIRMAR LEGALIDAD DE ESTO
+		expanded = expander(expanded, minilst, i, a);
 	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);

@@ -26,6 +26,8 @@ char	*checkredirect(char *line, int *filein, int *fileout)
 
 	i = 0;
 	l = 0;
+	if (!line || ft_strlen(line) == 0)
+			return (NULL);
 	tmp = ft_strdup(line);
 	while (tmp[i])
 	{
@@ -37,7 +39,7 @@ char	*checkredirect(char *line, int *filein, int *fileout)
 				;
 		if (tmp[i] == '<' || tmp[i] == '>')
 			tmp = auxred(tmp, i, filein, fileout);
-		if (!tmp)
+		if (!tmp || ft_strlen(tmp) == 0)
 			return (NULL);
 		i++;
 	}

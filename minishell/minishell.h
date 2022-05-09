@@ -69,6 +69,7 @@ char	*checkredirect(char *line, int *filein, int *fileout);
 int		morfeo(t_cmds *com, char **line);
 char	*expander(char *line, t_minib *minilst, int i, int a);
 char	**lexer(char *expanded);
+int		countdollars(char *line);
 
 //SIGNALS
 

@@ -62,6 +62,7 @@ char	*finished(char *line, char *longstr, int a)
 	else
 		full = ft_substr(line, a, (ft_strlen(line) - ft_strlen(longstr)));
 	aux = freezerjoin(longstr, full);
+	free(line);
 	return (aux);
 }
 

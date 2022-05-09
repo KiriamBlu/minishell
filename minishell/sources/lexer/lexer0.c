@@ -57,11 +57,11 @@ int	morfeo(t_cmds *com, char **line)
 		aux = ft_split(tmp, ' ');
 		if (aux[0])
 		{
-			com[i[0]].cmd = ft_strdup(aux[0]);
-			freemat(aux);
+			com[i[0]].cmd = comparse(aux[0]);
 			while (tmp[i[1]++] == ' ')
 				;
-			i[1] += ft_strlen(com[i[0]].cmd);
+			i[1] += ft_strlen(aux[0]);
+			freemat(aux);
 			com[i[0]].args = ft_substr(tmp, i[1], ft_strlen(tmp));
 		}
 		free(tmp);
