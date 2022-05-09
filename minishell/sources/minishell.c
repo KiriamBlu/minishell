@@ -168,14 +168,24 @@ LINES TO EXPAND, FILTER, SPLITS, AND MAKES PRETTY THE LINE AND PREPARES THE STRU
 int	prepline(char *line, t_minib *minilst)
 {
 	int i;
+	int a;
 	char	**newline;
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
+	a = 1;
+	expanded = expander(line, minilst, i, a); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
 	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);
+	while(i < minilst->cmdnum)
+	{
+		minilst->cmds[i].filein = STDIN_FILENO;
+		minilst->cmds[i].fileout = STDOUT_FILENO;
+		minilst->cmds[i].cmd = NULL;
+		minilst->cmds[i].args = NULL;
+		i++;
+	}
 	i = morfeo(minilst->cmds, newline); //FILLS THE STRUCTURE WITH THE COMAND, ARGS, FILEIN, FILEOUT.
 	freemat(newline);
 	free(expanded);
