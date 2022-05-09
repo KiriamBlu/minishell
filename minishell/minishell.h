@@ -97,7 +97,8 @@ char	*dopromt(t_minib *minilst);
 char	*argsdone(char *arg);
 char	*comparse(char *add);
 void	getaddexp(char *add, t_minib *minilst);
-
+int		checkforspaces(char *line);
+int		checkinout(t_minib *minilst);
 
 //DEBUGGIN TOOLS
 

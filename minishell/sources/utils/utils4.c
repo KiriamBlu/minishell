@@ -64,3 +64,31 @@ char *comparse(char *add)
 	}
 	return(tmp);
 }
+
+int checkforspaces(char *line)
+{
+	int i;
+
+	i = -1;
+	while(line[++i])
+		if(line[i] != ' ')
+			return(1);
+	return(0);
+}
+
+int checkinout(t_minib *minilst)
+{
+	int i;
+
+	i = 0;
+	while(i < minilst->cmdnum)
+	{
+		if(minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
+		{
+			printf("Not valid file\n");
+			return (-1);
+		}
+		i++;
+	}
+	return(0);
+}

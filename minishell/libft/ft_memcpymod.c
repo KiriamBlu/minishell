@@ -15,12 +15,10 @@
 char	*ft_memcpymod(char *dest, char *src)
 {
 	size_t		i;
-	int			k;
 
 	if (ft_strlen(src) == 0 || src == dest)
 		return (dest);
 	i = 0;
-	k = 0;
 	while (i < ft_strlen(src))
 	{
 		if (src[i] == '"')
