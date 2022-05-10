@@ -14,7 +14,7 @@
 
 static void docontrolc(int signal)
 {
-	signal = 0;
+	(void)signal;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);

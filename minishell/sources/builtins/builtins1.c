@@ -16,6 +16,7 @@ char	**getdonexp(char **envp, int i);
 char	*do_real_arg(char *add);
 void	getaddexp(char *add, t_minib *minilst);
 int		checkadd(char *add);
+int		checkarg(char *arg);
 char	**exportarg(char *cmd);
 
 int checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)

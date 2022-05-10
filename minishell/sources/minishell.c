@@ -15,7 +15,7 @@ int main(int argc, const char **argv, char **envp)
 	char *promt;
 	int		i;
 
-	argv = NULL;
+	(void)argv;
 	if(argc != 1)
 		exit(0);
 	i = 0;
@@ -92,9 +92,9 @@ void	checkeverything(char *line, t_minib *minilst)
 			}
 			i++;
 		}
-		dup2(filein2, STDIN_FILENO);
+		dup2(filein, STDIN_FILENO);
 		close(filein);
-		dup2(fileout2, STDOUT_FILENO);
+		dup2(fileout, STDOUT_FILENO);
 		close(fileout);
 	}
 }
@@ -175,14 +175,26 @@ LINES TO EXPAND, FILTER, SPLITS, AND MAKES PRETTY THE LINE AND PREPARES THE STRU
 int	prepline(char *line, t_minib *minilst)
 {
 	int i;
+	int a;
 	char	**newline;
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
+	a = 1;
+	expanded = ft_strdup(line);
+	while(countdollars(expanded) > 0) //CONFIRMAR LEGALIDAD DE ESTO
+		expanded = expander(expanded, minilst, i, a);
 	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);
+	while(i < minilst->cmdnum)
+	{
+		minilst->cmds[i].filein = STDIN_FILENO;
+		minilst->cmds[i].fileout = STDOUT_FILENO;
+		minilst->cmds[i].cmd = NULL;
+		minilst->cmds[i].args = NULL;
+		i++;
+	}
 	i = morfeo(minilst->cmds, newline); //FILLS THE STRUCTURE WITH THE COMAND, ARGS, FILEIN, FILEOUT.
 	freemat(newline);
 	free(expanded);

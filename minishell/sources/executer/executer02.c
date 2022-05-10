@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/09 19:48:49 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/09 20:48:53 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	simba(t_minib *minilst, int i)
 	int		pid;
 	int		fd[2];
 
-	if (pipe(fd) == -1)
+	if (pipe(fd) == -1 )
 		ft_errorpipex(0);
 	pid = fork();
 	if (pid == -1)

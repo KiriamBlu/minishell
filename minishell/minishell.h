@@ -62,9 +62,14 @@ int checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS L
 
 //LEXER
 
+int		ft_getlenname(char *line, int start);
+char	*expanddollar(char *name, t_minib *minilst);
+int		get_len(char *line, int a);
+char	*checkredirect(char *line, int *filein, int *fileout);
 int		morfeo(t_cmds *com, char **line);
-char	*expander(char *line, t_minib *minilst);
+char	*expander(char *line, t_minib *minilst, int i, int a);
 char	**lexer(char *expanded);
+int		countdollars(char *line);
 
 //SIGNALS
 
