@@ -70,6 +70,13 @@ int		morfeo(t_cmds *com, char **line);
 char	*expander(char *line, t_minib *minilst, int i, int a);
 char	**lexer(char *expanded);
 int		countdollars(char *line);
+char	*fillline(char *line, int *i);
+int		openfilesredirect(char *line, int i, int *fileout);
+int		openfilesappend(char *line, int i, int *fileout);
+int		openfilesindirect(char *line, int i, int *filein);
+int		openfilesheredoc(char *line, int i, int *filein);
+int		ft_getlen(int i, char *line, int *filein);
+char	*gettmp(int i, char *line);
 
 //SIGNALS
 

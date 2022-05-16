@@ -1,73 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins1.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
+/*   Updated: 2022/04/29 00:02:07 by jsanfeli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char *argsdone(char *arg)
+int	printarg(char *print, int j, int fileout)
 {
-	int	a;
-	char *argsdone;
-	
-	a = 0;
-	while (arg[a])
+	int	i;
+
+	i = j;
+	if (print[i] == '"' || print[i] == '\'')
 	{
-		if(arg[a] == '\'')
-			while(arg[++a] != '\'')
-				;
-		if (arg[a] == '"')
-			while(arg[++a] != '"')
-				;
-		if (arg[a] == '>' || arg[a] == '<')
+		if (print[i] == '"')
 		{
-			while(arg[a - 1] == ' ')
-				a--;
-			break ;
+			while (print[++i] != '"')
+				ft_putchar_fd(print[i], fileout);
 		}
-		a++;
+		else if (print[i] == '\'')
+		{
+			while (print[++i] != '\'')
+				ft_putchar_fd(print[i], fileout);
+		}
 	}
-	argsdone = ft_substr(arg, 0, a);
-	//system("leaks minishell");
-	return (argsdone);
+	else
+		ft_putchar_fd(print[i], fileout);
+	i++;
+	return (i);
 }
 
-int checkforecho(char *cmd, char *arg, int fileout, int *status)
+int	returnstatusfree(char *print, int *status)
 {
-	int i;
-	int j;
-	char *print;
+	free(print);
+	*status = 0;
+	return (1);
+}
+
+int	checkforecho(char *cmd, char *arg, int fileout, int *status)
+{
+	int		i;
+	int		j;
+	char	*print;
 
 	if (ft_strcmp(cmd, "echo") != 0)
 		return (0);
-	print = argsdone(arg);
+	print = comparse(arg);
 	j = -1;
 	i = 0;
-	while(print[++j] == ' ')
+	while (print[++j] == ' ')
 		;
-	while(print[j])
+	while (print[j])
 	{
-		if (print[j] == '-' && print[j + 1] == 'n')
+		if (print[j] == '-' && print[j + 1] == 'n' && print[j + 2] == ' ')
 		{
-			j += 1;
+			j += 2;
+			while (print[j] == ' ')
+				j++;
 			i = 1;
 		}
-		if(print[j] == '"' || print[j] == '\'')
-		{
-			if(print[j] == '"')
-			{
-				while(print[++j] != '"')
-					ft_putchar_fd(print[j], fileout);
-			}
-			else if(print[j] == '\'')
-			{
-				while(print[++j] != '\'')
-					ft_putchar_fd(print[j], fileout);
-			}
-		}
-		else
-			ft_putchar_fd(print[j], fileout);
-		j++;
+		j = printarg(print, j, fileout);
 	}
-	if(i != 1)
+	if (i != 1)
 		ft_putchar_fd('\n', fileout);
-	free(print);
-	*status = 0;
-	return(1);
+	return (returnstatusfree(print, status));
 }
