@@ -53,12 +53,16 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
-int	checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
-int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int	checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
-int checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
+int		checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
+int		checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
+int		checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int		checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int		checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
+int 	checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
+int		checkadd(char *add);
+int		checkarg(char *arg);
+char	**exportarg(char *cmd);
+char	*do_real_arg(char *add);
 
 //LEXER
 

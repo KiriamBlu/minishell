@@ -82,6 +82,7 @@ void	checkeverything(char *line, t_minib *minilst)
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				ejecucion(minilst, i, 1, 0);
+				
 			}
 			else
 			{
