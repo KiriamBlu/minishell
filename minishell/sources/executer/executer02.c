@@ -13,14 +13,14 @@
 
 #include "../../minishell.h"
 
-void	finish(int fd1, int fd0, int pid, int i, t_minib *minilst)
-{
-	static int	status;
+// void	finish(int fd1, int fd0, int pid, int i, t_minib *minilst)
+// {
+// 	static int	status;
 
-	close(fd1);
-	dup2(fd0, STDIN_FILENO);
-	close(fd0);
-}
+// 	close(fd1);
+// 	dup2(fd0, STDIN_FILENO);
+// 	close(fd0);
+// }
 
 void	simba(t_minib *minilst, int i)
 {
@@ -33,10 +33,24 @@ void	simba(t_minib *minilst, int i)
 		ft_errorpipex(0);
 	if (minilst->cmds[i].pid == 0)
 	{
-		close(minilst->cmds[i].fd[0]);
-		dup2(minilst->cmds[i].fd[1], STDOUT_FILENO);
+		if (i == minilst->cmdnum - 1)
+		{
+			dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+			dup2(minilst->cmds[i].filein, STDIN_FILENO);
+		}
+		else
+		{
+			close(minilst->cmds[i].fd[0]);
+			dup2(minilst->cmds[i].fd[1], STDOUT_FILENO);
+		}
 		ejecucion(minilst, i, 0, 1);
+		// if (minilst->cmdstatus != 0)
+		// 	exit
 	}
 	else
-		finish(minilst->cmds[i].fd[1], minilst->cmds[i].fd[0], minilst->cmds[i].pid, i, minilst);
+	{
+		close(minilst->cmds[i].fd[1]);
+		dup2(minilst->cmds[i].fd[0], STDIN_FILENO);
+		close(minilst->cmds[i].fd[0]);
+	}
 }
