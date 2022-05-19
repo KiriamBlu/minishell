@@ -9,12 +9,12 @@
 /*   Updated: 2022/03/03 15:58:16 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
- 
- #include "../../minishell.h"
 
-static void docontrolc(int signal)
+#include "../../minishell.h"
+
+static void	docontrolc(int signal)
 {
-	signal = 0;
+	(void)signal;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);

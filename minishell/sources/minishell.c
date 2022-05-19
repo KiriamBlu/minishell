@@ -15,7 +15,7 @@ int main(int argc, const char **argv, char **envp)
 	char *promt;
 	int		i;
 
-	argv = NULL;
+	(void)argv;
 	if(argc != 1)
 		exit(0);
 	i = 0;
@@ -53,7 +53,9 @@ void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
 	int filein;
+	int filein2;
 	int fileout;
+	int fileout2;
 
 	i = 0;
 	if(prepline(line, minilst) == -1) //PARSES THE LINE TO BE ABLE TO  MAKE IT UNDESRSTANDABLE FOR THE PROGRAM
@@ -62,33 +64,41 @@ void	checkeverything(char *line, t_minib *minilst)
 		return ;
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
 	{
+		fileout = dup(STDOUT_FILENO);
+		fileout2 = fileout;
+		filein = dup(STDIN_FILENO);
+		filein2 = filein;
 		while(i < minilst->cmdnum) //EXECUTES ALL CMDS
 		{
-			fileout = dup(STDOUT_FILENO);
-			filein = dup(STDIN_FILENO);
 			if (minilst->cmdnum > 1)
 			{
-				while (i < minilst->cmdnum - 1)
+				while (i < minilst->cmdnum)
 				{
 					dup2(minilst->cmds[i].filein, STDIN_FILENO);
 					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 					simba(minilst, i);
 					i++;
 				}
-				dup2(minilst->cmds[i].filein, STDIN_FILENO);
-				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, 1, 0);
+				i = 0;
+				while (i < minilst->cmdnum)
+				{
+					wait(&(minilst->cmds[i].pid));
+					i++;
+				}
 			}
 			else
 			{
+				
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				ejecucion(minilst, i, 1, 0);
 			}
 			i++;
 		}
-		dup2(fileout, STDOUT_FILENO);		
 		dup2(filein, STDIN_FILENO);
+		close(filein);
+		dup2(fileout, STDOUT_FILENO);
+		close(fileout);
 	}
 }
 
@@ -168,14 +178,26 @@ LINES TO EXPAND, FILTER, SPLITS, AND MAKES PRETTY THE LINE AND PREPARES THE STRU
 int	prepline(char *line, t_minib *minilst)
 {
 	int i;
+	int a;
 	char	**newline;
 	char	*expanded;
 
 	i = 0;
-	expanded = expander(line, minilst); //EXPANDS IF NEEDED THE LINE AND RETURNS THE LINE EXPANDED.
+	a = 1;
+	expanded = ft_strdup(line);
+	while(countdollars(expanded) > 0) //CONFIRMAR LEGALIDAD DE ESTO
+		expanded = expander(expanded, minilst, i, a);
 	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);
+	while(i < minilst->cmdnum)
+	{
+		minilst->cmds[i].filein = STDIN_FILENO;
+		minilst->cmds[i].fileout = STDOUT_FILENO;
+		minilst->cmds[i].cmd = NULL;
+		minilst->cmds[i].args = NULL;
+		i++;
+	}
 	i = morfeo(minilst->cmds, newline); //FILLS THE STRUCTURE WITH THE COMAND, ARGS, FILEIN, FILEOUT.
 	freemat(newline);
 	free(expanded);

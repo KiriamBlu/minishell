@@ -27,7 +27,8 @@ typedef struct s_cmds
 	char	*args;
 	int		filein;
 	int 	fileout;
-	int		in_fd;
+	int		pid;
+	int		fd[2];
 }	t_cmds;
 
 typedef struct s_minib
@@ -53,18 +54,34 @@ void	prepbasics(t_minib *minilst, char **envp);
 
 //BUILTINS
 
-int	checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
-int	checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
-int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int	checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
-int checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
+int		checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
+int		checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
+int		checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int		checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
+int		checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
+int 	checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
+int		checkadd(char *add);
+int		checkarg(char *arg);
+char	**exportarg(char *cmd);
+char	*do_real_arg(char *add);
 
 //LEXER
 
+int		ft_getlenname(char *line, int start);
+char	*expanddollar(char *name, t_minib *minilst);
+int		get_len(char *line, int a);
+char	*checkredirect(char *line, int *filein, int *fileout);
 int		morfeo(t_cmds *com, char **line);
-char	*expander(char *line, t_minib *minilst);
+char	*expander(char *line, t_minib *minilst, int i, int a);
 char	**lexer(char *expanded);
+int		countdollars(char *line);
+char	*fillline(char *line, int *i);
+int		openfilesredirect(char *line, int i, int *fileout);
+int		openfilesappend(char *line, int i, int *fileout);
+int		openfilesindirect(char *line, int i, int *filein);
+int		openfilesheredoc(char *line, int i, int *filein);
+int		ft_getlen(int i, char *line, int *filein);
+char	*gettmp(int i, char *line);
 
 //SIGNALS
 
@@ -113,5 +130,6 @@ char	*path(char *cmd, char **envp);
 void	ft_errorpipex(int index);
 void	simba(t_minib *minilst, int i );
 void	ejecucion(t_minib *minilst, int i, int num, int flag);
+void	first_child(t_minib *minilst, int i);
 
 #endif
