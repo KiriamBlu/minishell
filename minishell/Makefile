@@ -6,11 +6,14 @@ SRCS =  ./sources/minishell.c \
 		./sources/builtins/builtins0.c \
 		./sources/lexer/lexer1.c  \
 		./sources/builtins/builtins1.c \
+		./sources/builtins/builtins3.c \
+		./sources/builtins/builtins4.c \
 		./sources/utils/utils1.c \
 		./sources/utils/utils2.c \
 		./sources/lexer/lexer0.c \
 		./sources/lexer/lexer2.c \
 		./sources/lexer/lexer3.c \
+		./sources/lexer/lexer4.c \
 		./sources/builtins/builtins2.c \
 		./sources/utils/utils3.c \
 		./sources/signals/signals0.c \

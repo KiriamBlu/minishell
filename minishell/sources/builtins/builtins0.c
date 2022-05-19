@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins0.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
+/*   Updated: 2022/04/29 00:02:07 by jsanfeli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../minishell.h"
 
@@ -5,67 +16,20 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout);
 void	updateenv(t_minib *minilst);
 void	cd_update_env(t_minib *minilst);
 
-/*BASIC BUILTINS COMMANDS*/
-
-int checkforexit(char *cmd, char *arg, t_minib *minilst)
-{
-	int		i;
-	char	**aux;
-	char	*tmp;
-
-	i = 0;
-	if (ft_strcmp(cmd, "exit") == 0)
-	{
-		aux = ft_split(arg, ' '); //ALLOWS ME TO DO CHECKS AND AFTER PREPARE THE ARGS TO REMOVE THE (') (")
-		printf("exit\n");
-		if (!aux[0]) //BASIC EXIT
-		{
-			freemat(aux);
-			freeeverything(minilst);
-			free(minilst->promt);
-			exit(0);
-		}
-		tmp = comparse(aux[0]);
-		if(aux[1]) //PARSE ERROR
-		{
-			errorprintf("minishell: exit: too many arguments\n", &minilst->cmdstatus);
-			minilst->cmdstatus = 255;
-			freemat(aux);
-			free(tmp);
-			return (1);
-		}
-		i = -1;
-		while(tmp[i++])
-		{
-			if(ft_isdigit(tmp[i]) != 1) //ERROR CHECK
-			{
-				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
-				minilst->cmdstatus = 255;
-				break ;
-			}
-		}
-		freeeverything(minilst);
-		free(minilst->promt);
-		freemat(aux);
-		exit(ft_atoi(tmp));
-	}
-	return(0);
-}
-
 int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	char	*str;
 	char	**args;
 
-	if (ft_strcmp("cd", cmd) != 0) //BASIC CHECK
+	if (ft_strcmp("cd", cmd) != 0)
 		return	(0);
 	args = ft_split(arg, ' ');
-	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout); //PREPS ARGS WITH ERROR CHECK
-	if(chdir(str) == -1) //CHANGES THE DIRECTORY
+	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
+	if (chdir(str) == -1)
 	{
-		if(!minilst->pwd)
+		if (!minilst->pwd)
 			minilst->pwd = getcwd(NULL, 0);
-		if(str)
+		if (str)
 		{
 			minilst->cmdstatus = 1;
 			printf("minishell: cd: %s: No such file or directory\n", str);
@@ -73,23 +37,12 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	}
 	else
 	{
-		cd_update_env(minilst); //UPDATES THE ENV
+		cd_update_env(minilst);
 		minilst->cmdstatus = 0;
 	}
 	freemat(args);
 	free(str);
-	return(1);
-}
-
-int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
-{
-	if (ft_strcmp("env", cmd) == 0 || ft_strcmp("/usr/bin/env", cmd) == 0)
-	{
-		printlist(envp, fileout);
-		*status = 0;
-		return(1);
-	}
-	return (0);
+	return (1);
 }
 
 void	updateenv(t_minib *minilst)
@@ -100,12 +53,13 @@ void	updateenv(t_minib *minilst)
 
 	i = getposinlst(minilst->envp, "OLDPWD");
 	j = getposinlst(minilst->envp, "PWD");
-	if(i != -1 && j != -1)
+	if (i != -1 && j != -1)
 	{
 		delpos(&minilst->envp, i);
-		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->envp, (j + 1)) + 4));
+		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=",
+			getlineinenv(minilst->envp, (j + 1)) + 4));
 	}
-	if(j != -1)
+	if (j != -1)
 	{
 		tmp = getcwd(NULL, 0);
 		delpos(&minilst->envp, j);
@@ -123,12 +77,13 @@ void	cd_update_env(t_minib *minilst)
 	updateenv(minilst);
 	j = getposinlst(minilst->exp, "PWD");
 	i = getposinlst(minilst->exp, "OLDPWD");
-	if(i != -1 && j != -1)
+	if (i != -1 && j != -1)
 	{
 		delpos(&minilst->exp, i);
-		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=", getlineinenv(minilst->exp, j) + 4));
+		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=",
+			getlineinenv(minilst->exp, j) + 4));
 	}
-	if(j != -1)
+	if (j != -1)
 	{
 		tmp = getcwd(NULL, 0);
 		delpos(&minilst->exp, j);
@@ -150,10 +105,10 @@ char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
 		else
 			errorprintf("minishell: cd: HOME not set\n", &minilst->cmdstatus);
 	}
-	else if(!strcmp(str, "-"))
+	else if (!strcmp(str, "-"))
 	{
 		i = getposinlst(minilst->envp, "OLDPWD") + 1;
-		if(i != 0)
+		if (i != 0)
 		{
 			s = ft_strdup(getlineinenv(minilst->envp, i) + 7);
 			ft_putstr_fd(s, fileout);
