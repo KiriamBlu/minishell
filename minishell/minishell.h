@@ -27,7 +27,8 @@ typedef struct s_cmds
 	char	*args;
 	int		filein;
 	int 	fileout;
-	int		in_fd;
+	int		pid;
+	int		fd[2];
 }	t_cmds;
 
 typedef struct s_minib
