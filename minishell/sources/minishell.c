@@ -79,6 +79,7 @@ void	checkeverything(char *line, t_minib *minilst)
 					simba(minilst, i);
 					i++;
 				}
+<<<<<<< HEAD
 				waitpid(minilst->cmds[i - 1].pid, &minilst->cmdstatus , 0);
 				close(minilst->cmds[i - 1].fd[0]);
 				close(minilst->cmds[i - 1].fd[1]);
@@ -89,6 +90,12 @@ void	checkeverything(char *line, t_minib *minilst)
 				// close(minilst->cmds[i].fd[1]);
 				// dup2(minilst->cmds[i].fd[0], STDIN_FILENO);
 				// close(minilst->cmds[i].fd[0]);
+=======
+				dup2(minilst->cmds[i].filein, STDIN_FILENO);
+				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				ejecucion(minilst, i, 1, 0);
+				
+>>>>>>> Entrega
 			}
 			else
 			{

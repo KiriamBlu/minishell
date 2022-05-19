@@ -9,10 +9,10 @@
 /*   Updated: 2022/03/03 15:58:16 by jsanfeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
- 
- #include "../../minishell.h"
 
-static void docontrolc(int signal)
+#include "../../minishell.h"
+
+static void	docontrolc(int signal)
 {
 	(void)signal;
 	printf("\n");
