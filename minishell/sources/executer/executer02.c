@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,26 +6,15 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/16 13:46:31 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/20 18:03:34 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// void	finish(int fd1, int fd0, int pid, int i, t_minib *minilst)
-// {
-// 	static int	status;
-
-// 	close(fd1);
-// 	dup2(fd0, STDIN_FILENO);
-// 	close(fd0);
-// }
-
 void	simba(t_minib *minilst, int i)
 {
-	int		pid;
-
-	if (pipe(minilst->cmds[i].fd) == -1 )
+	if (pipe (minilst->cmds[i].fd) == -1)
 		ft_errorpipex(0);
 	minilst->cmds[i].pid = fork();
 	if (minilst->cmds[i].pid == -1)
@@ -44,8 +32,6 @@ void	simba(t_minib *minilst, int i)
 			dup2(minilst->cmds[i].fd[1], STDOUT_FILENO);
 		}
 		ejecucion(minilst, i, 0, 1);
-		// if (minilst->cmdstatus != 0)
-		// 	exit
 	}
 	else
 	{
