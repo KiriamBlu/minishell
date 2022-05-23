@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals0.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:15:25 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/03/03 15:58:16 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/23 19:18:35 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ void	inputsignal(void)
 	HIJI:
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		SIGCHLD
 */

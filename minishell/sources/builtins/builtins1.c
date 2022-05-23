@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/29 00:02:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/23 19:37:32 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)
 			return (1);
 		}
 		i = -1;
-		while (tmp[i++])
+		while (tmp[++i])
 		{
 			if (ft_isdigit(tmp[i]) != 1)
 			{

@@ -67,6 +67,8 @@ void	checkeverything(char *line, t_minib *minilst)
 		files[1] = files[0];
 		while(++i < minilst->cmdnum) //EXECUTES ALL CMDS
 		{
+			signal(SIGINT, SIG_IGN);
+			signal(SIGQUIT, SIG_IGN);
 			if (minilst->cmdnum > 1)
 			{
 				while (i < minilst->cmdnum)
@@ -74,7 +76,7 @@ void	checkeverything(char *line, t_minib *minilst)
 					dup2(minilst->cmds[i].filein, STDIN_FILENO);
 					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
-						simba(minilst, i);
+						simba(minilst, i);					
 					i++;
 				}
 				i = -1;
@@ -215,7 +217,7 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	{
 		putinpos(&minilst->envp, 0, aux);
 	}//UNTILL HERE
-	k = 0; //THIS [K] ALLOWS THE PROGRAM TO KNOW IF THE CMD IS BUITLIN OR NOT
+	k = 0; //THIS [K] ALLOWS THE PROGRAM TO KNOW IF THE CMD IS BUITLIN OR NOT	
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);

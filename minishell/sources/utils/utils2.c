@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/09 19:32:55 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/23 15:30:28 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*fuckeveryting(t_list *list)
 	list->next = NULL;
 	free(list->content);
 	free(list);
-	return(kk);
+	return (kk);
 }
 
 int getgoodpositionexp(t_list *list, char *add)
@@ -33,21 +33,21 @@ int getgoodpositionexp(t_list *list, char *add)
 	j = 0;
 	i = ft_lstsize(list);
 	aux = getnamevariable(add);
-	while(j < i)
+	while (j < i)
 	{
 		tmp = getnamevariable(list->content);
 		if(strcmp(aux, tmp) < 0)
 		{
 			free(aux);
 			free(tmp);
-			return(j);
+			return (j);
 		}
 		free(tmp);
 		list = list->next;
 		j++;
 	}
 	free(aux);
-	return(j);
+	return (j);
 }
 
 char	*getnamevariable(char *add)
@@ -56,10 +56,10 @@ char	*getnamevariable(char *add)
 	char *kk;
 
 	i = 0;
-	while(add[i] && add[i] != '=')
+	while (add[i] && add[i] != '=')
 		i++;
 	kk = ft_substr(add, 0, i);
-	return(kk);
+	return (kk);
 }
 
 int		itsinenv(char *add, t_list *list)
@@ -82,7 +82,7 @@ int		itsinenv(char *add, t_list *list)
 			free(tmp);
 			free(str);
 			list = kk;
-			return(-1);
+			return (-1);
 		}
 		free(str);
 		list = list->next;
@@ -90,7 +90,7 @@ int		itsinenv(char *add, t_list *list)
 	}
 	free(tmp);
 	list = kk;
-	return(1);
+	return (1);
 }
 
 void	freecmds(t_minib *minilst)
