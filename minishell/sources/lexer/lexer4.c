@@ -86,6 +86,7 @@ int	openfilesredirect(char *line, int i, int *fileout)
 	if (line[i + 1] == '>')
 		return (openfilesappend(line, i + 1, fileout));
 	aux = fillline(line, &i);
+	printf("%s\n", line);
 	if (!aux)
 		return (-1);
 	if (*fileout != STDOUT_FILENO)

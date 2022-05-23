@@ -57,7 +57,9 @@ char	*finished(char *line, char *longstr, int a)
 	char	*full;
 	char	*aux;
 
-	if (ft_strlen(longstr) > ft_strlen(line))
+	if (a == 2)
+		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
+	else if (ft_strlen(longstr) > ft_strlen(line))
 		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
 	else
 		full = ft_substr(line, a, (ft_strlen(line) - ft_strlen(longstr)));

@@ -51,7 +51,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)
 			return (1);
 		}
 		i = -1;
-		while (tmp[i++])
+		while (tmp[++i])
 		{
 			if (ft_isdigit(tmp[i]) != 1)
 			{
