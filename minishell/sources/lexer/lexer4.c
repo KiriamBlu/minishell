@@ -58,7 +58,7 @@ int	openfilesindirect(char *line, int i, int *filein)
 		close(*filein);
 	*filein = open(aux, O_RDONLY, 0666);
 	free(aux);
-	if(*filein == -1)
+	if (*filein == -1)
 		return (-1);
 	return (i);
 }
@@ -86,6 +86,7 @@ int	openfilesredirect(char *line, int i, int *fileout)
 	if (line[i + 1] == '>')
 		return (openfilesappend(line, i + 1, fileout));
 	aux = fillline(line, &i);
+	printf("%s\n", line);
 	if (!aux)
 		return (-1);
 	if (*fileout != STDOUT_FILENO)
