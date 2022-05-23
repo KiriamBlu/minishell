@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>           +#+  +:+       +#+       */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/19 23:17:42 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/23 20:19:55 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*finished(char *line, char *longstr, int a)
 	if (ft_strlen(longstr) > ft_strlen(line))
 		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
 	else
-		full = ft_substr(line, a, (ft_strlen(line) - ft_strlen(longstr)));
+		full = ft_substr(line , a, (ft_strlen(line) - ft_strlen(longstr)));
 	aux = freezerjoin(longstr, full);
 	free(line);
 	return (aux);
