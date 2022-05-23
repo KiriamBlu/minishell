@@ -58,6 +58,8 @@ int	openfilesindirect(char *line, int i, int *filein)
 		close(*filein);
 	*filein = open(aux, O_RDONLY, 0666);
 	free(aux);
+	if(*filein == -1)
+		return (-1);
 	return (i);
 }
 
@@ -72,6 +74,8 @@ int	openfilesappend(char *line, int i, int *fileout)
 		close(*fileout);
 	*fileout = open(aux, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	free(aux);
+	if (*fileout == -1)
+		return (-1);
 	return (i);
 }
 
@@ -88,5 +92,7 @@ int	openfilesredirect(char *line, int i, int *fileout)
 		close(*fileout);
 	*fileout = open(aux, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	free(aux);
+	if (*fileout == -1)
+		return (-1);
 	return (i);
 }
