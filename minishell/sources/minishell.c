@@ -8,7 +8,7 @@ void	checkenvp(t_minib *minilst);
 
 /*BASIC STRUCTURE OF THE MINISHELL. THIS IS THE CODE WICH MANAGES THE ENTIRE STRUCTURE AND EXECUTION OF THE PROGRAM*/
 
-int main(int argc, const char **argv, char **envp)
+int	main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
 	char *line;
@@ -52,23 +52,20 @@ int main(int argc, const char **argv, char **envp)
 void	checkeverything(char *line, t_minib *minilst)
 {
 	int i;
-	int filein;
-	int filein2;
-	int fileout;
-	int fileout2;
+	int files[4];//filein 0 filein2 1 fileout 2 folout2 3
 
-	i = 0;
+	i = -1;
 	if(prepline(line, minilst) == -1) //PARSES THE LINE TO BE ABLE TO  MAKE IT UNDESRSTANDABLE FOR THE PROGRAM
 		return ;
 	if (checkinout(minilst) == -1) //CHECKS IF EVERY FILE THAT WILL BE USED WITH THE CMDS IS RIGHT
 		return ;
 	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
 	{
-		fileout = dup(STDOUT_FILENO);
-		fileout2 = fileout;
-		filein = dup(STDIN_FILENO);
-		filein2 = filein;
-		while(i < minilst->cmdnum) //EXECUTES ALL CMDS
+		files[2] = dup(STDOUT_FILENO);
+		files[3] = files[2];
+		files[0] = dup(STDIN_FILENO);
+		files[1] = files[0];
+		while(++i < minilst->cmdnum) //EXECUTES ALL CMDS
 		{
 			if (minilst->cmdnum > 1)
 			{
@@ -76,29 +73,25 @@ void	checkeverything(char *line, t_minib *minilst)
 				{
 					dup2(minilst->cmds[i].filein, STDIN_FILENO);
 					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-					simba(minilst, i);
+					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
+						simba(minilst, i);
 					i++;
 				}
-				i = 0;
-				while (i < minilst->cmdnum)
-				{
+				i = -1;
+				while (++i < minilst->cmdnum)
 					wait(&(minilst->cmds[i].pid));
-					i++;
-				}
 			}
 			else
 			{
-				
 				dup2(minilst->cmds[i].filein, STDIN_FILENO);
 				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 				ejecucion(minilst, i, 1, 0);
 			}
-			i++;
 		}
-		dup2(filein, STDIN_FILENO);
-		close(filein);
-		dup2(fileout, STDOUT_FILENO);
-		close(fileout);
+		dup2(files[0], STDIN_FILENO);
+		close(files[0]);
+		dup2(files[2], STDOUT_FILENO);
+		close(files[2]);
 	}
 }
 
@@ -208,8 +201,8 @@ int	prepline(char *line, t_minib *minilst)
 
 void ejecucion(t_minib *minilst, int i, int num, int flag)
 {
-	int k;
-	char *aux;
+	int		k;
+	char	*aux;
 
 	aux = ft_strjoin("_=", minilst->cmds[i].cmd); //FROM HERE
 	k = getposinlst(minilst->envp, "_");
