@@ -58,7 +58,7 @@ int	openfilesindirect(char *line, int i, int *filein)
 		close(*filein);
 	*filein = open(aux, O_RDONLY, 0666);
 	free(aux);
-	if(*filein == -1)
+	if (*filein == -1)
 		return (-1);
 	return (i);
 }
