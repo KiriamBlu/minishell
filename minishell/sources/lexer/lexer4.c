@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 20:20:05 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/24 13:10:23 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	openfilesredirect(char *line, int i, int *fileout)
 	if (line[i + 1] == '>')
 		return (openfilesappend(line, i + 1, fileout));
 	aux = fillline(line, &i);
-	printf("%s\n", line);
 	if (!aux)
 		return (-1);
 	if (*fileout != STDOUT_FILENO)
