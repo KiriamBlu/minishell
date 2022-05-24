@@ -43,6 +43,34 @@ int	returnstatusfree(char *print, int *status)
 	return (1);
 }
 
+int	start(char *print)
+{
+	int j;
+	int i;
+
+	j = ft_strlen(print);
+	while (print[j])
+	{
+		if (print[j] == '"')
+			while(print[j--] != '"' && print[j])
+				;
+		if (print[j] == '\'')
+			while(print[j--] != '\'' && print[j])
+				;
+		if (print[j] == 'n' && print[j + 1] == ' ' &&
+			(print[j - 1] == '-' || print[j - 1] == 'n'))
+		{
+			i = j;
+			while (print[--i] != '-' && print[i])
+				;
+			if (print[i] == '-')
+				break ;
+		}	
+		j--;
+	}
+	return(j);
+}
+
 int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 {
 	int		i;
@@ -51,20 +79,14 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 
 	if (ft_strcmp(cmd, "echo") != 0)
 		return (0);
-	print = comparse(arg);
+	print = ft_strdup(arg);
 	j = -1;
 	i = 0;
 	while (print[++j] == ' ')
 		;
 	while (print[j])
 	{
-		if (print[j] == '-' && print[j + 1] == 'n' && print[j + 2] == ' ')
-		{
-			j += 2;
-			while (print[j] == ' ')
-				j++;
-			i = 1;
-		}
+		j += start(print);
 		j = printarg(print, j, fileout);
 	}
 	if (i != 1)

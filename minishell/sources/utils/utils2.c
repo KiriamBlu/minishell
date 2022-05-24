@@ -36,7 +36,7 @@ int getgoodpositionexp(t_list *list, char *add)
 	while (j < i)
 	{
 		tmp = getnamevariable(list->content);
-		if(strcmp(aux, tmp) < 0)
+		if(ft_strcmp(aux, tmp) < 0)
 		{
 			free(aux);
 			free(tmp);
@@ -77,7 +77,7 @@ int		itsinenv(char *add, t_list *list)
 	while(j < i)
 	{
 		str = getnamevariable(list->content);
-		if(!strcmp(str, tmp))
+		if(!ft_strcmp(str, tmp))
 		{
 			free(tmp);
 			free(str);
@@ -102,13 +102,13 @@ void	freecmds(t_minib *minilst)
 	{
 		while(i < minilst->cmdnum)
 		{
-			if(minilst->cmds[i].cmd)
+			if (minilst->cmds[i].cmd)
 				free(minilst->cmds[i].cmd);
-			if(minilst->cmds[i].args)
+			if (minilst->cmds[i].args)
 				free(minilst->cmds[i].args);
-			if(minilst->cmds[i].filein != STDIN_FILENO)
+			if (minilst->cmds[i].filein != STDIN_FILENO)
 				close(minilst->cmds[i].filein);
-			if(minilst->cmds[i].fileout != STDOUT_FILENO)
+			if (minilst->cmds[i].fileout != STDOUT_FILENO)
 				close(minilst->cmds[i].fileout);
 			i++;
 		}

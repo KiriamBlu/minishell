@@ -110,7 +110,7 @@ int getvariable(char *add, t_list *list)
 	kk = list;
 	aux = getnamevariable(add);
 	caux = getnamevariable(list->content);
-	while(strcmp(caux, aux) != 0 && i < listsize)
+	while(ft_strcmp(caux, aux) != 0 && i < listsize)
 	{
 		free(caux);
 		list = list->next;

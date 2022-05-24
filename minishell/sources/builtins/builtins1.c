@@ -57,6 +57,8 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)
 			{
 				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
 				minilst->cmdstatus = 255;
+				free(tmp);
+				tmp = ft_strdup("255");
 				break ;
 			}
 		}

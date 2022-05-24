@@ -37,9 +37,9 @@ int	main(int argc, const char **argv, char **envp)
 		{
 			add_history(line); //GETS CMDS TO REGISTER INTO THE HISTORY
 			checkeverything(line, &minilst); //AFTER ALL THE FILTERS THE EXPANDER->LEXER->PARSERS->EXECTION IS MANEGED HERE.
+			freecmds(&minilst); //FINISHES THE EXECUTION AND FREEZES EVERYTHING
 			i++;
 		}
-		freecmds(&minilst); //FINISHES THE EXECUTION AND FREEZES EVERYTHING
 		free(line);
 		free(promt);
 	}
@@ -73,8 +73,10 @@ void	checkeverything(char *line, t_minib *minilst)
 			{
 				while (i < minilst->cmdnum)
 				{
+					dup2(minilst->cmds[i].filein, STDIN_FILENO);
+					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
-						simba(minilst, i);				
+						simba(minilst, i);					
 					i++;
 				}
 				i = -1;
@@ -212,9 +214,7 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 		putinpos(&minilst->envp, k, aux);
 	}
 	else
-	{
 		putinpos(&minilst->envp, 0, aux);
-	}//UNTILL HERE
 	k = 0; //THIS [K] ALLOWS THE PROGRAM TO KNOW IF THE CMD IS BUITLIN OR NOT	
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
