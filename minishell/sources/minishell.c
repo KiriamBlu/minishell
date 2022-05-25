@@ -75,8 +75,7 @@ void	checkeverything(char *line, t_minib *minilst)
 				{
 					dup2(minilst->cmds[i].filein, STDIN_FILENO);
 					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
-						simba(minilst, i);					
+					simba(minilst, i);
 					i++;
 				}
 				i = -1;

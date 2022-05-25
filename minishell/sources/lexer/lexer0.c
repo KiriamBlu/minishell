@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer0.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/05 18:53:48 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:56:30 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	morfeo(t_cmds *com, char **line)
 				;
 			i[1] += ft_strlen(aux);
 			com[i[0]].args = ft_substr(tmp, i[1], ft_strlen(tmp));
+			free(aux);
+			free(tmp);
 		}
-		free(aux);
-		free(tmp);
 		i[0]++;
 	}
 	return (0);
@@ -117,6 +117,8 @@ int	countpipe(char *expanded)
 
 	i = 0;
 	k = 0;
+	if (ft_comprobapipe(expanded) == 0)
+		ft_errorpipex(1);
 	while (expanded[i])
 	{
 		if (expanded[i] == '|')
