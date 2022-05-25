@@ -79,7 +79,8 @@ char	**argsprepecho(char *print)
 	{
 		i = helpecho(print, i);
 		aux[status] = ft_substr(print, a, i - a);
-		i += 1;
+		while(print[i] == ' ')
+			i += 1;
 		a = i;
 		status++;
 		numcom--;

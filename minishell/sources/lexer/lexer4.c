@@ -124,8 +124,10 @@ int	openfilesredirect(char *line, int i, int *fileout)
 
 int	helpecho(char *line, int i)
 {
-	while (line[i] != ' ' && line[i])
+	while (line[i])
 	{
+		if (line[i] == ' ')
+			break;
 		if (line[i] == '\'')
 			while (line[++i] != '\'')
 				;
