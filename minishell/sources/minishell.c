@@ -37,9 +37,9 @@ int	main(int argc, const char **argv, char **envp)
 		{
 			add_history(line); //GETS CMDS TO REGISTER INTO THE HISTORY
 			checkeverything(line, &minilst); //AFTER ALL THE FILTERS THE EXPANDER->LEXER->PARSERS->EXECTION IS MANEGED HERE.
+			freecmds(&minilst); //FINISHES THE EXECUTION AND FREEZES EVERYTHING
 			i++;
 		}
-		freecmds(&minilst); //FINISHES THE EXECUTION AND FREEZES EVERYTHING
 		free(line);
 		free(promt);
 	}
@@ -59,36 +59,32 @@ void	checkeverything(char *line, t_minib *minilst)
 		return ;
 	if (checkinout(minilst) == -1) //CHECKS IF EVERY FILE THAT WILL BE USED WITH THE CMDS IS RIGHT
 		return ;
-	if (minilst->cmds[0].cmd && ft_strlen(minilst->cmds[0].cmd) != 0) //PARSE CHECKS (REALLY NOT NECESARY ONLY FOR REDUNDANCE)
+	files[2] = dup(STDOUT_FILENO);
+	files[3] = files[2];
+	files[0] = dup(STDIN_FILENO);
+	files[1] = files[0];
+	while(++i < minilst->cmdnum) //EXECUTES ALL CMDS
 	{
-		files[2] = dup(STDOUT_FILENO);
-		files[3] = files[2];
-		files[0] = dup(STDIN_FILENO);
-		files[1] = files[0];
-		while(++i < minilst->cmdnum) //EXECUTES ALL CMDS
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		if (minilst->cmdnum > 1)
 		{
-			signal(SIGINT, SIG_IGN);
-			signal(SIGQUIT, SIG_IGN);
-			if (minilst->cmdnum > 1)
+			while (i < minilst->cmdnum)
 			{
-				while (i < minilst->cmdnum)
-				{
-					dup2(minilst->cmds[i].filein, STDIN_FILENO);
-					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
-						simba(minilst, i);					
-					i++;
-				}
-				i = -1;
-				while (++i < minilst->cmdnum)
-					wait(&(minilst->cmds[i].pid));
+				// dup2(minilst->cmds[i].filein, STDIN_FILENO);
+				// dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+				simba(minilst, i);
+				i++;
 			}
-			else
-			{
-				dup2(minilst->cmds[i].filein, STDIN_FILENO);
-				dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-				ejecucion(minilst, i, 1, 0);
-			}
+			i = -1;
+			while (++i < minilst->cmdnum)
+				wait(&(minilst->cmds[i].pid));
+		}
+		else
+		{
+			dup2(minilst->cmds[i].filein, STDIN_FILENO);
+			dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+			ejecucion(minilst, i, 1, 0);
 		}
 		dup2(files[0], STDIN_FILENO);
 		close(files[0]);
@@ -214,9 +210,7 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 		putinpos(&minilst->envp, k, aux);
 	}
 	else
-	{
 		putinpos(&minilst->envp, 0, aux);
-	}//UNTILL HERE
 	k = 0; //THIS [K] ALLOWS THE PROGRAM TO KNOW IF THE CMD IS BUITLIN OR NOT	
 	k += checkforexit(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);

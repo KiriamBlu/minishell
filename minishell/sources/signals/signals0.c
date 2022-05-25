@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 15:15:25 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 19:18:35 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/24 13:03:20 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	docontrolc(int signal)
 {
 	(void)signal;
-	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	printf("\n");
 	rl_redisplay();
 	return ;
 }

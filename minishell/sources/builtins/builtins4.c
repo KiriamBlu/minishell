@@ -43,6 +43,56 @@ int	returnstatusfree(char *print, int *status)
 	return (1);
 }
 
+int auxcount(char *print, int j, int *l)
+{
+	int	i;
+
+	i = j + 1;
+	if (print[i] == '-')
+		return (j - 1);
+	while (print[i])
+	{
+		if (print[i] == 'n')
+			i++;
+		else
+			break;
+	}
+	if (print[i] == ' ' || print[i] == '\0')
+	{
+		*l = 1;
+		j = i;
+	}
+	else
+		j--;
+	return (j);
+}
+
+int	start(char *print, int *l)
+{
+	int	j;
+	int	i;
+
+	j = 0;
+	while (print[j])
+	{
+		if (print[j] == '-')
+		{
+			i = auxcount(print, j, l);
+			if (print[i] != ' ' || i == j - 1)
+				return (j);
+			else 
+				j = i;
+			if (print[i] == '\0' || print[i] == '-')
+				return (j);
+		}
+		else if (print[j] == ' ')
+			j++;
+		else
+			break;
+	}
+	return (j);
+}
+
 int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 {
 	int		i;
@@ -51,22 +101,11 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 
 	if (ft_strcmp(cmd, "echo") != 0)
 		return (0);
-	print = comparse(arg);
-	j = -1;
+	print = ft_strdup(arg);
 	i = 0;
-	while (print[++j] == ' ')
-		;
+	j = start(print, &i);
 	while (print[j])
-	{
-		if (print[j] == '-' && print[j + 1] == 'n' && print[j + 2] == ' ')
-		{
-			j += 2;
-			while (print[j] == ' ')
-				j++;
-			i = 1;
-		}
 		j = printarg(print, j, fileout);
-	}
 	if (i != 1)
 		ft_putchar_fd('\n', fileout);
 	return (returnstatusfree(print, status));

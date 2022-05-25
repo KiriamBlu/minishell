@@ -38,7 +38,7 @@ LDFLAGS	:= -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/
 	$(GCC)  $(CFLAGS) -c $< -I $(INC_DIR) -o $@ 
 
 $(NAME): $(LIBFT_DIR)$(LIBFT_NAME) $(OBJS)
-	$(GCC) -lreadline  $(LDFLAGS) -o $(NAME)  $^ -I $(INC_DIR)
+	$(GCC) -lreadline $(CFLAGS) $(LDFLAGS) -o $(NAME)  $^ -I $(INC_DIR)
 
 $(LIBFT_DIR)$(LIBFT_NAME): $(LIBFT_DIR)
 	make -C $(LIBFT_DIR)

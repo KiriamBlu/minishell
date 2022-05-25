@@ -82,7 +82,7 @@ int isinexp(t_list *list, char *line)
 	i = 1;
 	while(i < j)
 	{
-		if(!strcmp(list->content, line))
+		if(!ft_strcmp(list->content, line))
 			return(-1);
 		list = list->next;
 		i++;

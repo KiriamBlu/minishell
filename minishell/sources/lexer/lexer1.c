@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 20:19:55 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:33:21 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,8 @@ char	*finished(char *line, char *longstr, int a)
 	char	*full;
 	char	*aux;
 
-	if (a == 2)
-		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
-	else if (ft_strlen(longstr) > ft_strlen(line))
-		full = ft_substr(line, a, (ft_strlen(longstr) - ft_strlen(line)));
-	else
-		full = ft_substr(line , a, (ft_strlen(line) - ft_strlen(longstr)));
+	full = ft_substr(line, a, (ft_strlen(line)));
 	aux = freezerjoin(longstr, full);
-	free(line);
 	return (aux);
 }
 

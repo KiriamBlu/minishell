@@ -82,6 +82,7 @@ int		openfilesindirect(char *line, int i, int *filein);
 int		openfilesheredoc(char *line, int i, int *filein);
 int		ft_getlen(int i, char *line, int *filein);
 char	*gettmp(int i, char *line);
+int		ft_comprobapipe(char *expanded);
 
 //SIGNALS
 
