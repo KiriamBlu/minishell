@@ -121,3 +121,18 @@ int	openfilesredirect(char *line, int i, int *fileout)
 		return (-1);
 	return (i);
 }
+
+int	helpecho(char *line, int i)
+{
+	while (line[i] != ' ' && line[i])
+	{
+		if (line[i] == '\'')
+			while (line[++i] != '\'')
+				;
+		if (line[i] == '"')
+			while (line[++i] != '"')
+				;
+		i++;
+	}
+	return (i);
+}
