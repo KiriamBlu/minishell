@@ -75,8 +75,7 @@ void	checkeverything(char *line, t_minib *minilst)
 				{
 					dup2(minilst->cmds[i].filein, STDIN_FILENO);
 					dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-					if (ft_strcmp(minilst->cmds[i].cmd, "exit") != 0)
-						simba(minilst, i);					
+					simba(minilst, i);					
 					i++;
 				}
 				i = -1;
@@ -179,9 +178,7 @@ int	prepline(char *line, t_minib *minilst)
 
 	i = 0;
 	a = 1;
-	expanded = ft_strdup(line);
-	while(countdollars(expanded) > 0) //CONFIRMAR LEGALIDAD DE ESTO
-		expanded = expander(expanded, minilst, i, a);
+	expanded = expander(line, minilst, i, a);
 	newline = lexer(expanded); //WITH THE EXPANDED LINE RETURNS A MATRIX WITH THE LINE "SPLITTED" BY PIPES
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline)); //PREP STRUCTURE
 	minilst->cmdnum = num_matrix(newline);
@@ -206,7 +203,8 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	int		k;
 	char	*aux;
 
-	aux = ft_strjoin("_=", minilst->cmds[i].cmd); //FROM HERE
+	if(minilst->cmds[i].cmd)
+		aux = ft_strjoin("_=", minilst->cmds[i].cmd); //FROM HERE
 	k = getposinlst(minilst->envp, "_");
 	if(k != -1)							//IT PUTS IN ENV THE LAST CMD
 	{

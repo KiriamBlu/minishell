@@ -81,6 +81,7 @@ void	executer(t_minib *minilst, int i, int num)
 	char		**envp;
 	char		*vars[3];
 
+	dprintf(2, "kkloko\n");
 	if (minilst->cmdnum == 1 || num == 1)
 		minilst->cmds[i].pid = fork();
 	else

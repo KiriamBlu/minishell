@@ -25,7 +25,7 @@ char	**lexer(char *expanded)
 	char	**comands;
 
 	numcom = countpipe(expanded);
-	comands = malloc(sizeof(char *) * numcom + 1);
+	comands =ft_calloc(sizeof(char *), numcom + 1);
 	i = 0;
 	a = 0;
 	status = 0;
@@ -38,7 +38,6 @@ char	**lexer(char *expanded)
 		status++;
 		numcom--;
 	}
-	comands[status] = 0;
 	return (comands);
 }
 
@@ -63,8 +62,8 @@ int	morfeo(t_cmds *com, char **line)
 				;
 			i[1] += ft_strlen(aux);
 			com[i[0]].args = ft_substr(tmp, i[1], ft_strlen(tmp));
+			free(aux);
 		}
-		free(aux);
 		free(tmp);
 		i[0]++;
 	}
