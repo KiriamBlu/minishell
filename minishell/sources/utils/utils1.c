@@ -63,17 +63,17 @@ t_list *createarraylst(char **array)
 	t_list *aux;
 
 	aux = NULL;
-	if(array[0])
+	if (array[0])
 		aux = ft_lstnew(ft_strdup(array[0]));
 	else
-		return(NULL);
+		return (NULL);
 	i = 1;
-	while(array[i])
+	while (array[i])
 	{
 		ft_lstadd_back(&aux, ft_lstnew(ft_strdup(array[i])));
 		i++;
 	}
-	return(aux);
+	return (aux);
 }
 
 char **createlstarray(t_list *lst, int index)
@@ -83,15 +83,15 @@ char **createlstarray(t_list *lst, int index)
 	char **aux;
 
 	j = index;
-	aux = malloc(sizeof(char *) * j + 1);
+	aux = ft_calloc(sizeof(char *), j + 1);
 	i = 0;
 	while (i < index)
 	{
+		aux[i] = NULL;
 		aux[i] = ft_strdup((char *)lst->content);
 		lst = lst->next;
 		i++;
 	}
-	aux[i] = 0;
 	return (aux);
 }
 
@@ -110,7 +110,7 @@ int getvariable(char *add, t_list *list)
 	kk = list;
 	aux = getnamevariable(add);
 	caux = getnamevariable(list->content);
-	while(strcmp(caux, aux) != 0 && i < listsize)
+	while(ft_strcmp(caux, aux) != 0 && i < listsize)
 	{
 		free(caux);
 		list = list->next;

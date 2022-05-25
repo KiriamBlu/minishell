@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/20 18:17:33 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/23 19:28:17 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_errorpipex(int index)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_IGN);
-		printf("zsh: command not found\n");
+		ft_putstr_fd("zsh: command not found\n", 2);
 		exit(1);
 	}
 }
@@ -81,12 +81,15 @@ void	executer(t_minib *minilst, int i, int num)
 	char		**envp;
 	char		*vars[3];
 
+	dprintf(2, "kkloko\n");
 	if (minilst->cmdnum == 1 || num == 1)
 		minilst->cmds[i].pid = fork();
 	else
 		minilst->cmds[i].pid = 0;
 	if (minilst->cmds[i].pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		envp = createlstarray(minilst->envp, ft_lstsize(minilst->envp));
 		vars[0] = ft_strjoin(minilst->cmds[i].cmd, " ");
 		vars[1] = comparse(minilst->cmds[i].args);

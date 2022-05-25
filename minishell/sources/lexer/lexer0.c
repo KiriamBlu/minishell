@@ -14,6 +14,7 @@
 
 int		countpipe(char *expanded);
 int		plus(char *expanded, int i);
+char	*ft_prepare(char *line);
 
 char	**lexer(char *expanded)
 {
@@ -24,7 +25,7 @@ char	**lexer(char *expanded)
 	char	**comands;
 
 	numcom = countpipe(expanded);
-	comands = malloc(sizeof(char *) * numcom + 1);
+	comands =ft_calloc(sizeof(char *), numcom + 1);
 	i = 0;
 	a = 0;
 	status = 0;
@@ -37,14 +38,13 @@ char	**lexer(char *expanded)
 		status++;
 		numcom--;
 	}
-	comands[status] = 0;
 	return (comands);
 }
 
 int	morfeo(t_cmds *com, char **line)
 {
 	int		i[2];
-	char	**aux;
+	char	*aux;
 	char	*tmp;
 
 	i[0] = 0;
@@ -54,15 +54,15 @@ int	morfeo(t_cmds *com, char **line)
 		tmp = checkredirect(line[i[0]], &com[i[0]].filein, &com[i[0]].fileout);
 		if (tmp == NULL)
 			return (-1);
-		aux = ft_split(tmp, ' ');
-		if (aux[0])
+		aux = ft_prepare(tmp);
+		if (aux)
 		{
-			com[i[0]].cmd = comparse(aux[0]);
+			com[i[0]].cmd = comparse(aux);
 			while (tmp[i[1]++] == ' ')
 				;
-			i[1] += ft_strlen(aux[0]);
-			freemat(aux);
+			i[1] += ft_strlen(aux);
 			com[i[0]].args = ft_substr(tmp, i[1], ft_strlen(tmp));
+			free(aux);
 		}
 		free(tmp);
 		i[0]++;
@@ -85,22 +85,28 @@ int	plus(char *expanded, int i)
 	return (i);
 }
 
-char	**ft_prepare(char *line)
+char	*ft_prepare(char *line)
 {
-	char	**cmd;
+	int	i;
+	int	j;
 
-	if (count_c(line, '|') > 0)
+	i = 0;
+	while (line[i] == ' ' && line[i])
+		i++;
+	if (i == (int)ft_strlen(line))
+		return (NULL);
+	j = i;
+	while (line[j] != ' ' && line[j])
 	{
-		cmd = ft_splitmod(line, '|');
-		return (cmd);
+		if (line[j] == '"')
+			while (line[++j] != '"' && line[j])
+				;
+		if (line[j] == '\'')
+			while (line[++j] != '\'' && line[j])
+				;
+		j++;
 	}
-	else
-	{
-		cmd = malloc(sizeof(char **) * 1);
-		cmd[0] = ft_strdup(line);
-	}
-	cmd[1] = NULL;
-	return (cmd);
+	return (ft_substr(line, i, j - i));
 }
 
 int	countpipe(char *expanded)

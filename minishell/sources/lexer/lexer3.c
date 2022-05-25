@@ -21,11 +21,9 @@ char	*auxred(char *tmp, int i, int *filein, int *fileout);
 char	*checkredirect(char *line, int *filein, int *fileout)
 {
 	int		i;
-	int		l;
 	char	*tmp;
 
 	i = 0;
-	l = 0;
 	if (!line || ft_strlen(line) == 0)
 		return (NULL);
 	tmp = ft_strdup(line);
