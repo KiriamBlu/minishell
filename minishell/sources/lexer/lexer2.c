@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>           +#+  +:+       +#+       */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/19 23:17:42 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/05/25 14:39:22 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_getlenname(char *line, int start)
 
 	i = start + 1;
 	while (ft_isalnum(line[i]) == 1 && line[i + 1] != ' '
-		&& line[i + 1] != '$' && line[i + 1] != '"' && line[i + 1] != '\'')
+		&& line[i + 1] != '$' && line[i + 1] != '"' && line[i + 1] != '\'' && line[i + 1] != '|')
 		i++;
 	return (i - start);
 }
