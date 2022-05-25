@@ -99,7 +99,7 @@ char	**exportarg(char *cmd)
 	char	**comands;
 
 	numcom = count_c(cmd, ' ');
-	comands = malloc(sizeof(char *) * numcom + 1);
+	comands = ft_calloc(sizeof(char *), numcom + 1);
 	i = 0;
 	a = 0;
 	status = 0;
@@ -129,7 +129,6 @@ char	**exportarg(char *cmd)
 		status++;
 		numcom--;
 	}
-	comands[status] = 0;
 	return (comands);
 }
 

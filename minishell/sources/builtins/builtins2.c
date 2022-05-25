@@ -63,7 +63,7 @@ char	**getdonexp(char **envp, int i)
 	int		k;
 	int		count;
 
-	aux = malloc(sizeof(char *) * i + 1);
+	aux = ft_calloc(sizeof(char *), i + 1);
 	k = -1;
 	while (envp[++k])
 	{
@@ -76,7 +76,6 @@ char	**getdonexp(char **envp, int i)
 		}
 		aux[count] = getaddedexp(envp[k]);
 	}
-	aux[i] = 0;
 	return (aux);
 }
 

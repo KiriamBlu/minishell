@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/25 19:08:21 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:20:54 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	executer(t_minib *minilst, int i, int num)
 	char		**envp;
 	char		*vars[3];
 
-	
 	if (minilst->cmdnum == 1 || num == 1)
 		minilst->cmds[i].pid = fork();
 	else

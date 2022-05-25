@@ -1,10 +1,8 @@
-total 162
-drwxr-xr-x  4 jporta  2019   4096 25 may 18:38 .
-drwxr-xr-x  4 jporta  2019   4096 25 may 14:24 ..
--rw-r--r--  1 jporta  2019   1358 25 may 18:42 Makefile
--rw-r--r--  1 jporta  2019      0 25 may 19:08 a
--rw-r--r--  1 jporta  2019      0 25 may 19:08 b
-drwxr-xr-x  2 jporta  2019   4096 25 may 18:43 libft
--rwxr-xr-x  1 jporta  2019  60728 25 may 19:08 minishell
--rw-r--r--  1 jporta  2019   3893 25 may 15:02 minishell.h
-drwxr-xr-x  7 jporta  2019   4096 25 may 19:08 sources
+Makefile
+a
+b
+bls
+libft
+minishell
+minishell.h
+sources

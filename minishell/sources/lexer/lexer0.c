@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/25 16:56:30 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:21:22 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**lexer(char *expanded)
 	char	**comands;
 
 	numcom = countpipe(expanded);
-	comands = malloc(sizeof(char *) * numcom + 1);
+	comands =ft_calloc(sizeof(char *), numcom + 1);
 	i = 0;
 	a = 0;
 	status = 0;
@@ -38,7 +38,6 @@ char	**lexer(char *expanded)
 		status++;
 		numcom--;
 	}
-	comands[status] = 0;
 	return (comands);
 }
 
@@ -64,8 +63,8 @@ int	morfeo(t_cmds *com, char **line)
 			i[1] += ft_strlen(aux);
 			com[i[0]].args = ft_substr(tmp, i[1], ft_strlen(tmp));
 			free(aux);
-			free(tmp);
 		}
+		free(tmp);
 		i[0]++;
 	}
 	return (0);
