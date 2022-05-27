@@ -12,21 +12,30 @@
 
 #include "../minishell.h"
 
-void	checkenvp(t_minib *minilst)
+char	*shlvlcreator(t_minib *minilst, int j)
 {
 	char	*tmp;
 	char	*aux;
 	char	*auxi;
+
+	aux = ft_strdup(getlineinenv(minilst->envp, j + 1));
+	auxi = getnamevariable(aux);
+	tmp = ft_substr(aux, ft_strlen(auxi) + 1, ft_strlen(aux));
+	free(aux);
+	free(auxi);
+	minilst->shlvl = ft_atoi(tmp) + 1;
+	free(tmp);
+	aux = ft_itoa(minilst->shlvl);
+	tmp = ft_strjoin("SHLVL=", aux);
+	free(aux);
+	return (tmp);
+}
+
+void	auxenvp(t_minib *minilst)
+{
+	char	*tmp;
 	int		j;
 
-	if (getposinlst(minilst->envp, "SHLVL") == -1)
-	{
-		tmp = ft_strjoin("SHLVL=", "1");
-		minilst->shlvl = 1;
-		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
-		minilst->shlvl = 1;
-		free(tmp);
-	}
 	if (getposinlst(minilst->envp, "PWD") == -1)
 	{
 		tmp = ft_strjoin("PWD=", minilst->pwd);
@@ -36,20 +45,26 @@ void	checkenvp(t_minib *minilst)
 	else
 	{
 		j = getposinlst(minilst->envp, "SHLVL");
-		aux = ft_strdup(getlineinenv(minilst->envp, j + 1));
-		auxi = getnamevariable(aux);
-		tmp = ft_substr(aux, ft_strlen(auxi) + 1, ft_strlen(aux));
-		free(aux);
-		free(auxi);
-		minilst->shlvl = ft_atoi(tmp) + 1;
-		free(tmp);
-		aux = ft_itoa(minilst->shlvl);
-		tmp = ft_strjoin("SHLVL=", aux);
+		tmp = shlvlcreator(minilst, j);
 		putinpos(&minilst->envp, j + 1, ft_strdup(tmp));
 		delpos(&minilst->envp, j);
-		free(aux);
 		free(tmp);
 	}
+}
+
+void	checkenvp(t_minib *minilst)
+{
+	char	*tmp;
+
+	if (getposinlst(minilst->envp, "SHLVL") == -1)
+	{
+		tmp = ft_strjoin("SHLVL=", "1");
+		minilst->shlvl = 1;
+		ft_lstadd_back(&minilst->envp, ft_lstnew(ft_strdup(tmp)));
+		minilst->shlvl = 1;
+		free(tmp);
+	}
+	auxenvp(minilst);
 	if (getposinlst(minilst->envp, "_") == -1)
 	{
 		tmp = ft_strjoin("_=", "/usr/bin/env");
@@ -109,4 +124,3 @@ int	prepline(char *line, t_minib *minilst)
 	free(expanded);
 	return (i);
 }
-

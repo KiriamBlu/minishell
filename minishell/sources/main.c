@@ -12,11 +12,11 @@
 
 #include "../minishell.h"
 
+void	programe_reading(t_minib *minilst, int i);
+
 int	main(int argc, const char **argv, char **envp)
 {
 	t_minib	minilst;
-	char	*line;
-	char	*promt;
 	int		i;
 
 	(void)argv;
@@ -26,27 +26,33 @@ int	main(int argc, const char **argv, char **envp)
 	prepbasics(&minilst, envp);
 	minilst.promt = dopromt(&minilst);
 	while (1)
-	{
-		inputsignal();
-		promt = ft_strdup(minilst.promt);
-		line = readline(promt);
-		if (!line)
-		{
-			printf("exit\n");
-			if (i > 0)
-				freecmds(&minilst);
-			exit(0);
-		}
-		if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
-		{
-			add_history(line);
-			checkeverything(line, &minilst);
-			freecmds(&minilst);
-			i++;
-		}
-		free(line);
-		free(promt);
-	}
+		programe_reading(&minilst, i);
 	free(minilst.promt);
 	return (0);
+}
+
+void	programe_reading(t_minib *minilst, int i)
+{
+	char	*line;
+	char	*promt;
+
+	inputsignal();
+	promt = ft_strdup(minilst->promt);
+	line = readline(promt);
+	if (!line)
+	{
+		printf("exit\n");
+		if (i > 0)
+			freecmds(minilst);
+		exit(0);
+	}
+	if (ft_strlen(line) != 0 && checkforspaces(line) != 0 && line)
+	{
+		add_history(line);
+		checkeverything(line, minilst);
+		freecmds(minilst);
+		i++;
+	}
+	free(line);
+	free(promt);
 }
