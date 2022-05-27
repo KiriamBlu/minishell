@@ -57,7 +57,7 @@ void	updateenv(t_minib *minilst)
 	{
 		delpos(&minilst->envp, i);
 		putinpos(&minilst->envp, i, ft_strjoin("OLDPWD=",
-			getlineinenv(minilst->envp, (j + 1)) + 4));
+				getlineinenv(minilst->envp, (j + 1)) + 4));
 	}
 	if (j != -1)
 	{
@@ -72,7 +72,7 @@ void	cd_update_env(t_minib *minilst)
 {
 	char	*tmp;
 	int		i;
-	int 	j;
+	int		j;
 
 	updateenv(minilst);
 	j = getposinlst(minilst->exp, "PWD");
@@ -81,7 +81,7 @@ void	cd_update_env(t_minib *minilst)
 	{
 		delpos(&minilst->exp, i);
 		putinpos(&minilst->exp, i, ft_strjoin("OLDPWD=",
-			getlineinenv(minilst->exp, j) + 4));
+				getlineinenv(minilst->exp, j) + 4));
 	}
 	if (j != -1)
 	{

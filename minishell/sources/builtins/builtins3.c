@@ -12,9 +12,10 @@
 
 #include "../../minishell.h"
 
+int	unsetter(char *tmp, t_minib *minilst, char **args);
+
 int	checkforunset(char *cmd, char *arg, t_minib *minilst)
 {
-	int		i;
 	int		j;
 	char	**args;
 	char	*tmp;
@@ -28,25 +29,8 @@ int	checkforunset(char *cmd, char *arg, t_minib *minilst)
 	while (args[++j])
 	{
 		tmp = comparse(args[j]);
-		if (checkadd(tmp) == -1)
-		{
-			printf("minishell: unset: %s: not a valid identifier\n", args[0]);
-			minilst->cmdstatus = 1;
-			freemat(args);
+		if (unsetter(tmp, minilst, args) == 1)
 			return (1);
-		}
-		i = getposinlst(minilst->envp, tmp);
-		if (i != -1)
-		{
-			minilst->envindex--;
-			delpos(&minilst->envp, i);
-		}
-		i = getposinlst(minilst->exp, tmp);
-		if (i != -1)
-		{
-			minilst->expindex--;
-			delpos(&minilst->exp, i);
-		}
 		free(tmp);
 	}
 	freemat(args);
@@ -54,18 +38,30 @@ int	checkforunset(char *cmd, char *arg, t_minib *minilst)
 	return (1);
 }
 
-int	checkarg(char *arg)
+int	unsetter(char *tmp, t_minib *minilst, char **args)
 {
 	int	i;
 
-	i = 0;
-	while (arg[i] == ' ' && arg[i])
-		i++;
-	if (arg[i] == '>' || arg[i] == '\0')
+	if (checkadd(tmp) == -1)
+	{
+		printf("minishell: unset: %s: not a valid identifier\n", args[0]);
+		minilst->cmdstatus = 1;
+		freemat(args);
 		return (1);
-	else
-		return (2);
-	return (1);
+	}
+	i = getposinlst(minilst->envp, tmp);
+	if (i != -1)
+	{
+		minilst->envindex--;
+		delpos(&minilst->envp, i);
+	}
+	i = getposinlst(minilst->exp, tmp);
+	if (i != -1)
+	{
+		minilst->expindex--;
+		delpos(&minilst->exp, i);
+	}
+	return (0);
 }
 
 int	checkadd(char *add)
@@ -107,22 +103,7 @@ char	**exportarg(char *cmd)
 		i++;
 	while (numcom > 0)
 	{
-		while (cmd[i] != ' ' && cmd[i])
-		{
-			if (cmd[i] == '\'')
-				while (cmd[++i] != '\'')
-					;
-			if (cmd[i] == '"')
-				while (cmd[++i] != '"')
-					;
-			if (cmd[i] == '<' || cmd[i] == '>')
-			{
-				comands[status] = ft_substr(cmd, a, i - a);
-				comands[status] = 0;
-				return (comands);
-			}
-			i++;
-		}
+		i = helpecho(cmd, i);
 		comands[status] = ft_substr(cmd, a, i - a);
 		i += 1;
 		a = i;
@@ -160,4 +141,3 @@ char	*do_real_arg(char *add)
 	free(final);
 	return (new);
 }
-

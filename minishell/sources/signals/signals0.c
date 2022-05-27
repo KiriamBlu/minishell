@@ -27,13 +27,3 @@ void	inputsignal(void)
 	signal(SIGINT, docontrolc);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-/*PARA LOS COMANDOS
-	PAPI CHULO:
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	HIJI:
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		SIGCHLD
-*/
