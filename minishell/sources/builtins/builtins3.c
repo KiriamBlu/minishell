@@ -20,7 +20,7 @@ int	checkforunset(char *cmd, char *arg, t_minib *minilst)
 	char	*tmp;
 
 	j = -1;
-	if (ft_strcmp(cmd, "unset") != 0)
+	if (!cmd || ft_strcmp(cmd, "unset") != 0)
 		return (0);
 	args = ft_split(arg, ' ');
 	if (!args[0])

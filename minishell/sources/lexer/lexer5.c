@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   lexer5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/16 13:25:54 by jsanfeli          #+#    #+#             */
-/*   Updated: 2021/09/27 12:32:06 by jsanfeli         ###   ########.fr       */
+/*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
+/*   Updated: 2022/05/25 15:01:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../minishell.h"
 
-void	*ft_calloc(size_t count, size_t size)
+int	helpecho(char *line, int i)
 {
-	void	*p;
-	size_t	space;
-
-	space = count * size;
-	p = malloc(space);
-	if (!p)
-		return (NULL);
-	ft_bzero(p, space);
-	return (p);
+	while (line[i])
+	{
+		if (line[i] == ' ')
+			break ;
+		if (line[i] == '\'')
+			while (line[++i] != '\'')
+				;
+		if (line[i] == '"')
+			while (line[++i] != '"')
+				;
+		i++;
+	}
+	return (i);
 }

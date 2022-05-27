@@ -25,7 +25,7 @@ char	**lexer(char *expanded)
 	char	**comands;
 
 	numcom = countpipe(expanded);
-	comands =ft_calloc(sizeof(char *), numcom + 1);
+	comands = ft_calloc(sizeof(char *), numcom + 1);
 	i = 0;
 	a = 0;
 	status = 0;

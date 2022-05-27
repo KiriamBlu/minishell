@@ -21,7 +21,7 @@ int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 {
 	char	**args;
 
-	if (ft_strcmp(cmd, "export") != 0)
+	if (!cmd || ft_strcmp(cmd, "export") != 0)
 		return (0);
 	if (checkarg(arg) == 1)
 	{

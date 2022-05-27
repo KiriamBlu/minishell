@@ -33,7 +33,6 @@ char	*expander(char *line, t_minib *minilst, int i, int a)
 		a = get_len(line, a);
 		aux = ft_substr(line, i, a - i);
 		tmp = ft_substr(line, a + 1, ft_getlenname(line, a));
-		printf("este: %s\n", tmp);
 		a += ft_strlen(tmp) + 1;
 		if (tmp[0] == '?' && tmp[1] != ' ' && tmp[1] != '\0')
 			a -= 1;

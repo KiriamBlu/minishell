@@ -96,7 +96,7 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 	char	*print;
 	char	**aux;
 
-	if (ft_strcmp(cmd, "echo") != 0)
+	if (!cmd || ft_strcmp(cmd, "echo") != 0)
 		return (0);
 	i = 0;
 	l = -1;
