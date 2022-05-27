@@ -6,22 +6,22 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 19:43:16 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/23 20:04:08 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 17:19:45 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void errorprintf(char *str, int *status)
+void	errorprintf(char *str, int *status)
 {
 	printf("%s", str);
 	*status = 1;
 }
 
-int lentmp(char *add)
+int	lentmp(char *add)
 {
-	int j;
-	int l;
+	int	j;
+	int	l;
 
 	j = 0;
 	l = 0;
