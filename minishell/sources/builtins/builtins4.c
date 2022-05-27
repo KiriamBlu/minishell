@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-int auxcount(char *print, int j, int *l)
+int	auxcount(char *print, int j, int *l)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ int auxcount(char *print, int j, int *l)
 		if (print[i] == 'n')
 			i++;
 		else
-			break;
+			break ;
 	}
 	if (print[i] == ' ' || print[i] == '\0')
 	{
@@ -49,7 +49,7 @@ int	start(char *print, int *l)
 			i = auxcount(print, j, l);
 			if (print[i] != ' ' || i == j - 1)
 				return (j);
-			else 
+			else
 				j = i;
 			if (print[i] == '\0' || print[i] == '-')
 				return (j);
@@ -57,7 +57,7 @@ int	start(char *print, int *l)
 		else if (print[j] == ' ')
 			j++;
 		else
-			break;
+			break ;
 	}
 	return (j);
 }
@@ -79,7 +79,7 @@ char	**argsprepecho(char *print)
 	{
 		i = helpecho(print, i);
 		aux[status] = ft_substr(print, a, i - a);
-		while(print[i] == ' ')
+		while (print[i] == ' ')
 			i += 1;
 		a = i;
 		status++;
@@ -107,7 +107,7 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 	while (aux[++l])
 	{
 		ft_putstr_fd(aux[l], fileout);
-		if(aux[l + 1] != (void *)0)
+		if (aux[l + 1] != (void *)0)
 			ft_putstr_fd(" ", fileout);
 	}
 	if (i != 1)

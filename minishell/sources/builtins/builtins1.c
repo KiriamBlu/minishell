@@ -24,49 +24,61 @@ int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
 	return (0);
 }
 
-int checkforexit(char *cmd, char *arg, t_minib *minilst)
+int	exitcheck(t_minib *minilst, char **aux, char *tmp)
+{
+	printf("exit\n");
+	if (!aux[0])
+	{
+		freemat(aux);
+		freeeverything(minilst);
+		free(minilst->promt);
+		free(tmp);
+		exit(0);
+	}
+	if (aux[1])
+	{
+		errorprintf("Escromito: exit: too many arguments\n",
+			&minilst->cmdstatus);
+		minilst->cmdstatus = 255;
+		freemat(aux);
+		return (1);
+	}
+	return (0);
+}
+
+void	freeexit(t_minib *minilst, char **aux, char *tmp)
+{
+	freeeverything(minilst);
+	free(minilst->promt);
+	freemat(aux);
+	exit(ft_atoi(tmp));
+}
+
+int	checkforexit(char *cmd, char *arg, t_minib *minilst)
 {
 	int		i;
 	char	**aux;
 	char	*tmp;
 
-	i = 0;
-	if (cmd && ft_strcmp(cmd, "exit") == 0)
+	if (!cmd || ft_strcmp(cmd, "exit") != 0)
+		return (0);
+	tmp = comparse(arg);
+	aux = ft_split(tmp, ' ');
+	if (exitcheck(minilst, aux, tmp) == 1)
+		return (1);
+	i = -1;
+	while (tmp[++i])
 	{
-		aux = ft_split(arg, ' ');
-		printf("exit\n");
-		if (!aux[0])
+		if (ft_isdigit(tmp[i]) != 1)
 		{
-			freemat(aux);
-			freeeverything(minilst);
-			free(minilst->promt);
-			exit(0);
-		}
-		tmp = comparse(aux[0]);
-		if (aux[1])
-		{
-			errorprintf("minishell: exit: too many arguments\n", &minilst->cmdstatus);
+			printf("Escromito: exit: %s: numeric argument required\n",
+				aux[0]);
 			minilst->cmdstatus = 255;
-			freemat(aux);
 			free(tmp);
-			return (1);
+			tmp = ft_strdup("255");
+			break ;
 		}
-		i = -1;
-		while (tmp[++i])
-		{
-			if (ft_isdigit(tmp[i]) != 1)
-			{
-				printf("minishell: exit: %s: numeric argument required\n", aux[0]);
-				minilst->cmdstatus = 255;
-				free(tmp);
-				tmp = ft_strdup("255");
-				break ;
-			}
-		}
-		freeeverything(minilst);
-		free(minilst->promt);
-		freemat(aux);
-		exit(ft_atoi(tmp));
 	}
+	freeexit(minilst, aux, tmp);
 	return (0);
 }

@@ -28,3 +28,17 @@ int	helpecho(char *line, int i)
 	}
 	return (i);
 }
+
+int	checkarg(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i] == ' ' && arg[i])
+		i++;
+	if (arg[i] == '>' || arg[i] == '\0')
+		return (1);
+	else
+		return (2);
+	return (1);
+}
