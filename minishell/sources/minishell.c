@@ -59,10 +59,10 @@ void	checkeverything(char *line, t_minib *minilst)
 		return ;
 	if (checkinout(minilst) == -1) //CHECKS IF EVERY FILE THAT WILL BE USED WITH THE CMDS IS RIGHT
 		return ;
-		files[2] = dup(STDOUT_FILENO);
-		files[3] = files[2];
-		files[0] = dup(STDIN_FILENO);
-		files[1] = files[0];
+	files[2] = dup(STDOUT_FILENO);
+	files[3] = files[2];
+	files[0] = dup(STDIN_FILENO);
+	files[1] = files[0];
 	while(++i < minilst->cmdnum) //EXECUTES ALL CMDS
 	{
 		signal(SIGINT, SIG_IGN);
