@@ -12,37 +12,6 @@
 
 #include "../../minishell.h"
 
-int	printarg(char *print, int j, int fileout)
-{
-	int	i;
-
-	i = j;
-	if (print[i] == '"' || print[i] == '\'')
-	{
-		if (print[i] == '"')
-		{
-			while (print[++i] != '"')
-				ft_putchar_fd(print[i], fileout);
-		}
-		else if (print[i] == '\'')
-		{
-			while (print[++i] != '\'')
-				ft_putchar_fd(print[i], fileout);
-		}
-	}
-	else
-		ft_putchar_fd(print[i], fileout);
-	i++;
-	return (i);
-}
-
-int	returnstatusfree(char *print, int *status)
-{
-	free(print);
-	*status = 0;
-	return (1);
-}
-
 int auxcount(char *print, int j, int *l)
 {
 	int	i;
@@ -93,20 +62,57 @@ int	start(char *print, int *l)
 	return (j);
 }
 
+char	**argsprepecho(char *print)
+{
+	int		i;
+	int		a;
+	int		status;	
+	int		numcom;
+	char	**aux;
+
+	aux = ft_calloc(sizeof(char *), count_c(print, ' ') + 1);
+	i = 0;
+	a = 0;
+	status = 0;
+	numcom = count_c(print, ' ');
+	while (numcom > 0)
+	{
+		i = helpecho(print, i);
+		aux[status] = ft_substr(print, a, i - a);
+		while(print[i] == ' ')
+			i += 1;
+		a = i;
+		status++;
+		numcom--;
+	}
+	return (aux);
+}
+
 int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 {
 	int		i;
 	int		j;
+	int		l;
 	char	*print;
+	char	**aux;
 
 	if (ft_strcmp(cmd, "echo") != 0)
 		return (0);
-	print = ft_strdup(arg);
 	i = 0;
-	j = start(print, &i);
-	while (print[j])
-		j = printarg(print, j, fileout);
+	l = -1;
+	j = start(arg, &i);
+	print = ft_substr(arg, j, ft_strlen(arg));
+	aux = argsprepecho(print);
+	free(print);
+	while (aux[++l])
+	{
+		ft_putstr_fd(aux[l], fileout);
+		if(aux[l + 1] != (void *)0)
+			ft_putstr_fd(" ", fileout);
+	}
 	if (i != 1)
 		ft_putchar_fd('\n', fileout);
-	return (returnstatusfree(print, status));
+	*status = 0;
+	freemat(aux);
+	return (1);
 }

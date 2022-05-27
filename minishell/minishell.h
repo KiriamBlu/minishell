@@ -117,6 +117,9 @@ char	*comparse(char *add);
 void	getaddexp(char *add, t_minib *minilst);
 int		checkforspaces(char *line);
 int		checkinout(t_minib *minilst);
+int		count_c(char *str, char c);
+int		helpecho(char *line, int i);
+
 
 //DEBUGGIN TOOLS
 
