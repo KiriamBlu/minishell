@@ -6,32 +6,22 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 22:12:21 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/19 21:37:36 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 16:56:05 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char *getlineinenv(t_list *list, int i)	
-{
-	int j;
-
-	j = 0;
-	while(++j < i)
-		list = list->next;
-	return(list->content);
-}
-
 void	printlist(t_list *list, int fileout)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = ft_lstsize(list);
-	if(j == 0)
+	if (j == 0)
 		return ;
-	while(i < j)
+	while (i < j)
 	{
 		ft_putstr_fd((char *)list->content, fileout);
 		ft_putchar_fd('\n', fileout);
@@ -42,12 +32,12 @@ void	printlist(t_list *list, int fileout)
 
 void	printlistexp(t_list *list, int fileout)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = ft_lstsize(list);
-	while(i < j)
+	while (i < j)
 	{
 		ft_putstr_fd("declare -x ", fileout);
 		ft_putstr_fd((char *)list->content, fileout);
@@ -57,10 +47,10 @@ void	printlistexp(t_list *list, int fileout)
 	}
 }
 
-t_list *createarraylst(char **array)
+t_list	*createarraylst(char **array)
 {
-	int i;
-	t_list *aux;
+	int		i;
+	t_list	*aux;
 
 	aux = NULL;
 	if (array[0])
@@ -76,11 +66,11 @@ t_list *createarraylst(char **array)
 	return (aux);
 }
 
-char **createlstarray(t_list *lst, int index)
+char	**createlstarray(t_list *lst, int index)
 {
-	int i;
-	int j;
-	char **aux;
+	int		i;
+	int		j;
+	char	**aux;
 
 	j = index;
 	aux = ft_calloc(sizeof(char *), j + 1);
@@ -95,22 +85,22 @@ char **createlstarray(t_list *lst, int index)
 	return (aux);
 }
 
-int getvariable(char *add, t_list *list)
+int	getvariable(char *add, t_list *list)
 {
-	char *aux;
-	char *caux;
-	void *kk;
-	int	listsize;
-	int i;
-	
+	char	*aux;
+	char	*caux;
+	void	*kk;
+	int		listsize;
+	int		i;
+
 	i = 1;
 	listsize = ft_lstsize(list);
-	if(!ft_strchr(add, '='))
-		return(listsize + 1);
+	if (!ft_strchr(add, '='))
+		return (listsize + 1);
 	kk = list;
 	aux = getnamevariable(add);
 	caux = getnamevariable(list->content);
-	while(ft_strcmp(caux, aux) != 0 && i < listsize)
+	while (ft_strcmp(caux, aux) != 0 && i < listsize)
 	{
 		free(caux);
 		list = list->next;
@@ -120,5 +110,5 @@ int getvariable(char *add, t_list *list)
 	free(caux);
 	free(aux);
 	list = kk;
-	return(i);
+	return (i);
 }
