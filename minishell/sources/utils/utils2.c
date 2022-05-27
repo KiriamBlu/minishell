@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:28:24 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 15:30:28 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 17:11:24 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*fuckeveryting(t_list *list)
 {
-	void *kk;
+	void	*kk;
 
 	kk = list->next;
 	list->next = NULL;
@@ -23,12 +23,12 @@ void	*fuckeveryting(t_list *list)
 	return (kk);
 }
 
-int getgoodpositionexp(t_list *list, char *add)
+int	getgoodpositionexp(t_list *list, char *add)
 {
-	int i;
-	int j;
-	char *aux;
-	char *tmp;
+	int		i;
+	int		j;
+	char	*aux;
+	char	*tmp;
 
 	j = 0;
 	i = ft_lstsize(list);
@@ -36,7 +36,7 @@ int getgoodpositionexp(t_list *list, char *add)
 	while (j < i)
 	{
 		tmp = getnamevariable(list->content);
-		if(ft_strcmp(aux, tmp) < 0)
+		if (ft_strcmp(aux, tmp) < 0)
 		{
 			free(aux);
 			free(tmp);
@@ -52,8 +52,8 @@ int getgoodpositionexp(t_list *list, char *add)
 
 char	*getnamevariable(char *add)
 {
-	int i;
-	char *kk;
+	int		i;
+	char	*kk;
 
 	i = 0;
 	while (add[i] && add[i] != '=')
@@ -62,45 +62,43 @@ char	*getnamevariable(char *add)
 	return (kk);
 }
 
-int		itsinenv(char *add, t_list *list)
+int	itsinenv(char *add, t_list *list)
 {
-	int i;
-	int j;
-	char *str;
-	char *tmp;
-	void *kk;
+	int		i;
+	int		j;
+	char	*str[2];
+	void	*kk;
 
-	j = 0;
+	j = -1;
 	kk = list;
 	i = ft_lstsize(list);
-	tmp = getnamevariable(add);
-	while(j < i)
+	str[1] = getnamevariable(add);
+	while (++j < i)
 	{
-		str = getnamevariable(list->content);
-		if(!ft_strcmp(str, tmp))
+		str[0] = getnamevariable(list->content);
+		if (!ft_strcmp(str[0], str[1]))
 		{
-			free(tmp);
-			free(str);
+			free(str[1]);
+			free(str[0]);
 			list = kk;
 			return (-1);
 		}
-		free(str);
+		free(str[0]);
 		list = list->next;
-		j++;
 	}
-	free(tmp);
+	free(str[1]);
 	list = kk;
 	return (1);
 }
 
 void	freecmds(t_minib *minilst)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(minilst->cmdnum != 0)
+	if (minilst->cmdnum != 0)
 	{
-		while(i < minilst->cmdnum)
+		while (i < minilst->cmdnum)
 		{
 			if (minilst->cmds[i].cmd)
 				free(minilst->cmds[i].cmd);
@@ -116,13 +114,4 @@ void	freecmds(t_minib *minilst)
 		unlink(".hide");
 		minilst->cmdnum = 0;
 	}
-}
-
-void	freeeverything(t_minib *minilst)
-{
-	
-	ft_lstclear(minilst->envp, free);
-	ft_lstclear(minilst->exp, free);
-	freecmds(minilst);
-	free(minilst->pwd);
 }

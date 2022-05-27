@@ -1,16 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils0.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 16:50:14 by jporta            #+#    #+#             */
+/*   Updated: 2022/05/27 16:51:48 by jporta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
-void	freemat(char **mat)
-{
-	int	i;
-
-	i = -1;
-	while (mat[++i])
-		free(mat[i]);
-	free(mat);
-}
-
-void checkfrontandback(t_list **list, int pos, void *newcontent)
+void	checkfrontandback(t_list **list, int pos, void *newcontent)
 {
 	void	*k;
 
@@ -24,7 +26,7 @@ void checkfrontandback(t_list **list, int pos, void *newcontent)
 	}
 }
 
-void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
+void	putinpos(t_list **list, int pos, void *newcontent)
 {
 	int		i;
 	t_list	*aux;
@@ -35,7 +37,7 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	if (pos == 0 || pos == i)
 	{
 		checkfrontandback(list, pos, newcontent);
-		return  ;
+		return ;
 	}
 	i = 0;
 	kk = *list;
@@ -48,11 +50,11 @@ void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 	*list = kk;
 }
 
-void delpos(t_list **list, int pos)
+void	delpos(t_list **list, int pos)
 {
-	int i;
-	t_list *aux;
-	void *kk;
+	int		i;
+	t_list	*aux;
+	void	*kk;
 
 	if (pos == -1)
 		return ;
@@ -73,10 +75,10 @@ void delpos(t_list **list, int pos)
 	*list = kk;
 }
 
-int isinexp(t_list *list, char *line)
+int	isinexp(t_list *list, char *line)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = ft_lstsize(list);
 	i = 1;
@@ -90,7 +92,7 @@ int isinexp(t_list *list, char *line)
 	return (0);
 }
 
-int	getposinlst(t_list *list, char *line)	
+int	getposinlst(t_list *list, char *line)
 {
 	int		i;
 	int		j;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils3.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 17:15:41 by jporta            #+#    #+#             */
+/*   Updated: 2022/05/27 17:17:56 by jporta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 int	count_c(char *str, char c)
@@ -24,7 +36,7 @@ int	count_c(char *str, char c)
 	return (count);
 }
 
-int num_matrix(char **matrix)
+int	num_matrix(char **matrix)
 {
 	int	i;
 
@@ -34,13 +46,13 @@ int num_matrix(char **matrix)
 	return (i);
 }
 
-char *getaddedexp(char *add)
+char	*getaddedexp(char *add)
 {
-	char *aux;
-	char *tmp;
-	char *ls;
-	char *kk;
-	char *name;
+	char	*aux;
+	char	*tmp;
+	char	*ls;
+	char	*kk;
+	char	*name;
 
 	name = getnamevariable(add);
 	kk = ft_strjoin(name, "=");
@@ -53,7 +65,7 @@ char *getaddedexp(char *add)
 	free(ls);
 	tmp = ft_strjoin(aux, "\"");
 	free(aux);
-	return(tmp);
+	return (tmp);
 }
 
 char	*freezerjoin(char *s1, char *s2)
@@ -67,13 +79,13 @@ char	*freezerjoin(char *s1, char *s2)
 	{
 		str = ft_strdup(s2);
 		free(s2);
-		return(str);
+		return (str);
 	}
 	if (!s2)
 	{
 		str = ft_strdup(s1);
 		free(s1);
-		return(str);
+		return (str);
 	}
 	i = 0;
 	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
@@ -95,11 +107,11 @@ char	*freezerjoin(char *s1, char *s2)
 	return (str);
 }
 
-char  *dopromt(t_minib *minilst)
+char	*dopromt(t_minib *minilst)
 {
-	char *aux;
-	char *aux2;
-	char *helps;
+	char	*aux;
+	char	*aux2;
+	char	*helps;
 	int		i;
 
 	i = minilst->shlvl;
@@ -108,7 +120,7 @@ char  *dopromt(t_minib *minilst)
 	free(aux);
 	aux = ft_strjoin(aux2, "Escromito_v0.");
 	free(aux2);
-	helps =  ft_itoa(i);
+	helps = ft_itoa(i);
 	aux2 = ft_strjoin(aux, helps);
 	free(aux);
 	free(helps);
@@ -116,16 +128,5 @@ char  *dopromt(t_minib *minilst)
 	free(aux2);
 	aux2 = ft_strjoin(aux, "-$>");
 	free(aux);
-	return(aux2);
+	return (aux2);
 }
-
-
-
-
-
-
-
-
-
-
-
