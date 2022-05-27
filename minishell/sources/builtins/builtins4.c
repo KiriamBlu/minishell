@@ -88,6 +88,17 @@ char	**argsprepecho(char *print)
 	return (aux);
 }
 
+void	printecho(char **aux, int fileout, int l)
+{
+	char	*str;
+
+	str = comparse(aux[l]);
+	ft_putstr_fd(str, fileout);
+	if (aux[l + 1] != (void *)0)
+			ft_putstr_fd(" ", fileout);
+	free(str);
+}
+
 int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 {
 	int		i;
@@ -105,11 +116,7 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 	aux = argsprepecho(print);
 	free(print);
 	while (aux[++l])
-	{
-		ft_putstr_fd(aux[l], fileout);
-		if (aux[l + 1] != (void *)0)
-			ft_putstr_fd(" ", fileout);
-	}
+		printecho(aux, fileout, l);
 	if (i != 1)
 		ft_putchar_fd('\n', fileout);
 	*status = 0;
