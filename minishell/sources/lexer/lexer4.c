@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/25 15:01:59 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:46:35 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,26 @@ int		openfilesappend(char *line, int i, int *fileout);
 int		openfilesindirect(char *line, int i, int *filein);
 int		openfilesheredoc(char *line, int i, int *filein);
 
+int	pipesin(char *expanded)
+{
+	int	i;
+
+	i = ft_strlen(expanded);
+	while (expanded[i] == ' ' && expanded[i])
+		i--;
+	if (expanded[i] == '|')
+		return (0);
+	else
+		return (1);
+}
+
 int	ft_comprobapipe(char *expanded)
 {
 	int	i;
 
 	i = 0;
+	if (pipesin(expanded) == 0)
+		return (1);
 	while (expanded[i])
 	{
 		if (expanded[i] == '|')

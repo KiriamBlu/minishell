@@ -34,7 +34,7 @@ EXE_DIR = ./
 
 CC := cc
 GCC := gcc
-CFLAGS := -Wall -Wextra -g -fsanitize=address -g3 #-Werror
+CFLAGS := -Wall -Wextra -g #-fsanitize=address -g3 #-Werror
 MV := mv -f
 RM := rm -f
 LDFLAGS	:= -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
