@@ -1,5 +1,17 @@
-#ifndef MINI_SHELL_H
-# define MINI_SHELL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 17:55:21 by jporta            #+#    #+#             */
+/*   Updated: 2022/05/27 18:21:11 by jporta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 //Header files
 # include <stdlib.h>
@@ -21,12 +33,12 @@
 # define UNSET "\033[0m"
 # define CYAN "\e[0;36m"
 
-typedef struct s_cmds 
+typedef struct s_cmds
 {
 	char	*cmd;
 	char	*args;
 	int		filein;
-	int 	fileout;
+	int		fileout;
 	int		pid;
 	int		fd[2];
 }	t_cmds;
@@ -38,7 +50,7 @@ typedef struct s_minib
 	t_list	*exp;
 	int		envindex;
 	int		expindex;
-	int 	cmdnum;
+	int		cmdnum;
 	int		shlvl;
 	char	*lastcmd;
 	int		cmdstatus;
@@ -46,20 +58,21 @@ typedef struct s_minib
 	char	*promt;
 }	t_minib;
 
-
 //MINISHELLSTRUCTURE
 
 char	**getdonexp(char **envp, int i);
 void	prepbasics(t_minib *minilst, char **envp);
+int		prepline(char *line, t_minib *minilst);
+void	checkeverything(char *line, t_minib *minilst);
 
 //BUILTINS
 
-int		checkforexit(char *cmd, char *arg, t_minib *minilst); //HECHA LA GESTION DE LAS REDIRECCIONES
-int		checkforenv(char *cmd,  t_list *envp, int fileout, int *status); //GESTIONADAS LAS REDIRECCIONES
-int		checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int		checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout); //GESTIONADAS LAS REDIRECCIONES
-int		checkforunset(char *cmd, char *arg, t_minib *minilst);//GESTIONADAS LAS REDIRECCIONES
-int 	checkforecho(char *cmd, char *arg, int fileout, int *status);//GESTIONADAS LAS REDIRECCIONES
+int		checkforexit(char *cmd, char *arg, t_minib *minilst);
+int		checkforenv(char *cmd, t_list *envp, int fileout, int *status);
+int		checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout);
+int		checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout);
+int		checkforunset(char *cmd, char *arg, t_minib *minilst);
+int		checkforecho(char *cmd, char *arg, int fileout, int *status);
 int		checkadd(char *add);
 int		checkarg(char *arg);
 char	**exportarg(char *cmd);
@@ -89,7 +102,7 @@ int		ft_comprobapipe(char *expanded);
 //SIGNALS
 
 void	inputsignal(void);
-void	rl_replace_line (const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 
 //UTILS
 
@@ -99,7 +112,7 @@ char	**createlstarray(t_list *lst, int index);
 void	freemat(char **mat);
 void	putinpos(t_list **list, int pos, void *newcontent);
 void	delpos(t_list **list, int pos);
-int 	isinexp(t_list *list, char *line);
+int		isinexp(t_list *list, char *line);
 char	*getlineinenv(t_list *list, int i);
 t_list	*createarraylst(char **array);
 void	*fuckeveryting(t_list *list);
@@ -121,7 +134,6 @@ int		checkforspaces(char *line);
 int		checkinout(t_minib *minilst);
 int		count_c(char *str, char c);
 int		helpecho(char *line, int i);
-
 
 //DEBUGGIN TOOLS
 

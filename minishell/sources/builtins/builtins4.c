@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 19:41:31 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 17:54:44 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	printecho(char **aux, int fileout, int l)
 	str = comparse(aux[l]);
 	ft_putstr_fd(str, fileout);
 	if (aux[l + 1] != (void *)0)
-			ft_putstr_fd(" ", fileout);
+		ft_putstr_fd(" ", fileout);
 	free(str);
 }
 

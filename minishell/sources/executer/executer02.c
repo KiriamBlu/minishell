@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 00:05:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 17:47:56 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 18:15:15 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	setout(t_minib *minilst, int i, int w)
 		dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
 		dup2(minilst->cmds[i].filein, STDIN_FILENO);
 	}
-	if (w == 1)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
 }
 
 void	simba(t_minib *minilst, int i)
@@ -35,11 +30,15 @@ void	simba(t_minib *minilst, int i)
 		ft_errorpipex(0);
 	if (minilst->cmds[i].pid == 0)
 	{
-		setout(minilst, i, 1);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (i == minilst->cmdnum - 1
 			|| minilst->cmds[i].fileout != STDOUT_FILENO
 			|| minilst->cmds[i].filein != STDIN_FILENO)
-			setout(minilst, i, 0);
+		{
+			dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+			dup2(minilst->cmds[i].filein, STDIN_FILENO);
+		}
 		else
 		{
 			close(minilst->cmds[i].fd[0]);

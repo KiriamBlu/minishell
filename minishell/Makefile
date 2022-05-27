@@ -2,6 +2,9 @@ NAME := minishell
 LIBFT_NAME = libft.a
 
 SRCS =  ./sources/minishell.c \
+		./sources/minishell1.c \
+		./sources/minishell2.c \
+		./sources/main.c \
 		./sources/utils/utils0.c \
 		./sources/builtins/builtins0.c \
 		./sources/lexer/lexer1.c  \
