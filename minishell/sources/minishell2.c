@@ -6,11 +6,30 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:18:54 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 18:19:56 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:23:25 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	process(t_minib *minilst, int i)
+{
+	if (minilst->cmdnum > 1)
+	{
+		while (i < minilst->cmdnum)
+			simba(minilst, i++);
+		i = -1;
+		while (++i < minilst->cmdnum)
+			wait(&(minilst->cmds[i].pid));
+	}
+	else
+	{
+		dup2(minilst->cmds[i].filein, STDIN_FILENO);
+		dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
+		ejecucion(minilst, i, 1, 0);
+	}
+	return (i);
+}
 
 void	checkeverything(char *line, t_minib *minilst)
 {
@@ -30,20 +49,7 @@ void	checkeverything(char *line, t_minib *minilst)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		if (minilst->cmdnum > 1)
-		{
-			while (i < minilst->cmdnum)
-				simba(minilst, i++);
-			i = -1;
-			while (++i < minilst->cmdnum)
-				wait(&(minilst->cmds[i].pid));
-		}
-		else
-		{
-			dup2(minilst->cmds[i].filein, STDIN_FILENO);
-			dup2(minilst->cmds[i].fileout, STDOUT_FILENO);
-			ejecucion(minilst, i, 1, 0);
-		}
+		i += process(minilst, i);
 		dup2(files[0], STDIN_FILENO);
 		close(files[0]);
 		dup2(files[2], STDOUT_FILENO);
