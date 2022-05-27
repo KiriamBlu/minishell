@@ -18,7 +18,8 @@ int	ft_getlenname(char *line, int start)
 
 	i = start + 1;
 	while (ft_isalnum(line[i]) == 1 && line[i + 1] != ' '
-		&& line[i + 1] != '$' && line[i + 1] != '"' && line[i + 1] != '\'' && line[i + 1] != '|')
+		&& line[i + 1] != '$' && line[i + 1] != '"' && line[i + 1] != '\''
+		&& line[i + 1] != '|')
 		i++;
 	return (i - start);
 }
