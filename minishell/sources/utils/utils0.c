@@ -12,10 +12,10 @@ void	freemat(char **mat)
 
 void checkfrontandback(t_list **list, int pos, void *newcontent)
 {
-	void *k;
+	void	*k;
 
 	k = *list;
-	if(pos == 0)
+	if (pos == 0)
 		ft_lstadd_front(list, ft_lstnew(newcontent));
 	else
 	{
@@ -26,20 +26,20 @@ void checkfrontandback(t_list **list, int pos, void *newcontent)
 
 void putinpos(t_list **list, int pos, void *newcontent) //IF LEAKS HERE IN TMP
 {
-	int i;
-	t_list *aux;
-	void *kk;
-	t_list *tmp;
+	int		i;
+	t_list	*aux;
+	void	*kk;
+	t_list	*tmp;
 
 	i = ft_lstsize(*list);
-	if(pos == 0 || pos == i)
+	if (pos == 0 || pos == i)
 	{
 		checkfrontandback(list, pos, newcontent);
 		return  ;
 	}
 	i = 0;
 	kk = *list;
-	while(++i < pos)
+	while (++i < pos)
 		*list = (*list)->next;
 	tmp = (*list)->next;
 	aux = ft_lstnew(newcontent);
@@ -54,16 +54,16 @@ void delpos(t_list **list, int pos)
 	t_list *aux;
 	void *kk;
 
-	if(pos == -1)
+	if (pos == -1)
 		return ;
-	if(pos == 0)
+	if (pos == 0)
 	{
 		*list = fuckeveryting(*list);
 		return ;
 	}
 	i = 0;
 	kk = *list;
-	while(++i < pos)
+	while (++i < pos)
 		*list = (*list)->next;
 	aux = (*list)->next;
 	(*list)->next = (*list)->next->next;
@@ -80,36 +80,35 @@ int isinexp(t_list *list, char *line)
 
 	j = ft_lstsize(list);
 	i = 1;
-	while(i < j)
+	while (i < j)
 	{
-		if(!ft_strcmp(list->content, line))
-			return(-1);
+		if (!ft_strcmp(list->content, line))
+			return (-1);
 		list = list->next;
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 int	getposinlst(t_list *list, char *line)	
 {
-	int i;
-	int j;
-	char *tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	j = ft_lstsize(list);
 	i = 0;
-	while(i < j)
+	while (i < j)
 	{
 		tmp = getnamevariable(list->content);
-		if(!ft_strcmp(tmp, line))
+		if (!ft_strcmp(tmp, line))
 		{
 			free(tmp);
-			return(i);
+			return (i);
 		}
 		list = list->next;
 		free(tmp);
 		i++;
 	}
-	return(-1);
+	return (-1);
 }
-
