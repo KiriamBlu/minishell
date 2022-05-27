@@ -74,23 +74,11 @@ char	*freezerjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	i = 0;
-	if (!s1)
-	{
-		str = ft_strdup(s2);
-		free(s2);
+	str = strchecker(s1, s2);
+	if (str)
 		return (str);
-	}
-	if (!s2)
-	{
-		str = ft_strdup(s1);
-		free(s1);
-		return (str);
-	}
 	i = 0;
 	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
-	if (!str)
-		return (NULL);
 	while (*(s1 + i) != '\0')
 	{
 		*(str + i) = *(s1 + i);

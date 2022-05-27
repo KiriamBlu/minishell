@@ -65,6 +65,7 @@ int		checkarg(char *arg);
 char	**exportarg(char *cmd);
 char	*do_real_arg(char *add);
 int		checkarg(char *arg);
+char	*strchecker(char *s1, char *s2);
 
 //LEXER
 

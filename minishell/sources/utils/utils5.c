@@ -34,9 +34,27 @@ char	*getlineinenv(t_list *list, int i)
 
 void	freeeverything(t_minib *minilst)
 {
-	
 	ft_lstclear(minilst->envp, free);
 	ft_lstclear(minilst->exp, free);
 	freecmds(minilst);
 	free(minilst->pwd);
+}
+
+char	*strchecker(char *s1, char *s2)
+{
+	char	*str;
+
+	if (!s1)
+	{
+		str = ft_strdup(s2);
+		free(s2);
+		return (str);
+	}
+	if (!s2)
+	{
+		str = ft_strdup(s1);
+		free(s1);
+		return (str);
+	}
+	return (NULL);
 }
