@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 19:43:16 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 17:19:45 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 17:38:50 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,81 +25,74 @@ int	lentmp(char *add)
 
 	j = 0;
 	l = 0;
-	while(add[j])
+	while (add[j])
 	{
-		if(add[j] == '"')
-			while(add[++j] != '"' && add[j])
+		if (add[j] == '"')
+			while (add[++j] != '"' && add[j])
 				l++;
-		else if(add[j] == '\'')
-			while(add[++j] != '\'' && add[j])
+		else if (add[j] == '\'')
+			while (add[++j] != '\'' && add[j])
 				l++;
 		else
 			l++;
 		j++;
 	}
-	return(l);
+	return (l);
 }
 
-char *comparse(char *add)
+char	*comparse(char *add)
 {
-	int j;
-	char *tmp;
-	int	l;
+	int		j;
+	char	*tmp;
+	int		l;
 
-	j = 0;
+	j = -1;
 	tmp = ft_calloc(sizeof(char), lentmp(add) + 1);
 	l = 0;
-	while(add[j])
+	while (add[++j])
 	{
-		if(add[j] == '"' || add[j] == '\'')
+		if (add[j] == '"')
 		{
-			if(add[j] == '"')
-			{
-				j++;
-				while(add[j] != '"' && add[j])
-					tmp[l++] = add[j++];
-			}
-			else if(add[j] == '\'')
-			{
-				j++;
-				while(add[j] != '\'' && add[j])
-					tmp[l++] = add[j++];
-			}
+			j++;
+			while (add[j] != '"' && add[j])
+				tmp[l++] = add[j++];
+		}
+		else if (add[j] == '\'')
+		{
+			j++;
+			while (add[j] != '\'' && add[j])
+				tmp[l++] = add[j++];
 		}
 		else
-		{
-			tmp[l] = add[j];
-			l++;
-		}
-		j++;
+			tmp[l++] = add[j];
 	}
-	return(tmp);
+	return (tmp);
 }
 
-int checkforspaces(char *line)
+int	checkforspaces(char *line)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while(line[++i])
-		if(line[i] != ' ')
-			return(1);
-	return(0);
+	while (line[++i])
+		if (line[i] != ' ')
+			return (1);
+	return (0);
 }
 
-int checkinout(t_minib *minilst)
+int	checkinout(t_minib *minilst)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(i < minilst->cmdnum)
+	while (i < minilst->cmdnum)
 	{
-		if(minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
+		if (minilst->cmds[i].filein == -1 || minilst->cmds[i].fileout == -1)
 		{
 			printf("Not valid file\n");
 			return (-1);
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }
