@@ -14,7 +14,8 @@
 
 int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
 {
-	if (ft_strcmp("env", cmd) == 0 || ft_strcmp("/usr/bin/env", cmd) == 0)
+	if ((cmd && ft_strcmp("env", cmd) == 0)
+		|| (cmd && ft_strcmp("/usr/bin/env", cmd) == 0))
 	{
 		printlist(envp, fileout);
 		*status = 0;
@@ -30,7 +31,7 @@ int checkforexit(char *cmd, char *arg, t_minib *minilst)
 	char	*tmp;
 
 	i = 0;
-	if (ft_strcmp(cmd, "exit") == 0)
+	if (cmd && ft_strcmp(cmd, "exit") == 0)
 	{
 		aux = ft_split(arg, ' ');
 		printf("exit\n");

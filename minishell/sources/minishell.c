@@ -216,7 +216,7 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	k += checkforcd(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd, minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
 	k += checkforecho(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst->cmds[i].fileout, &minilst->cmdstatus);
-	if (ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0 || ft_strcmp(minilst->cmds[i].cmd, "/bin/pwd") == 0)
+	if ((minilst->cmds[i].cmd && ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0 )|| (minilst->cmds[i].cmd && ft_strcmp(minilst->cmds[i].cmd, "/bin/pwd") == 0))
 	{
 		free(minilst->pwd);
 		minilst->pwd = getcwd(NULL, 0);
@@ -226,12 +226,12 @@ void ejecucion(t_minib *minilst, int i, int num, int flag)
 	}
 	k += checkforexport(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforunset(minilst->cmds[i].cmd, minilst->cmds[i].args, minilst);
-	if (ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0)
+	if ((minilst->cmds[i].cmd && ft_strcmp(minilst->cmds[i].cmd, "leaks") == 0))
 	{
 		k++;
 		system("leaks minishell");
 	}
-	if (k == 0)
+	if (minilst->cmds[i].cmd && k == 0)
 		executer(minilst, i, num); //EXECUTES THE NON BUILTINS
 	else if(flag == 1) //FILTERS BETWEEN LAST CMDS AN MID EXECUTION CMDS
 		exit(0);

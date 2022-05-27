@@ -21,7 +21,7 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	char	*str;
 	char	**args;
 
-	if (ft_strcmp("cd", cmd) != 0)
+	if (!cmd || ft_strcmp("cd", cmd) != 0)
 		return (0);
 	args = ft_split(arg, ' ');
 	str = c_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
