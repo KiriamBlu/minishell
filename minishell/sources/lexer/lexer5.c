@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   lexer5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/25 15:01:59 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:49:34 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	pipesin(char *expanded)
+{
+	int	i;
+
+	i = ft_strlen(expanded);
+	while (expanded[i] == ' ' && expanded[i])
+		i--;
+	if (expanded[i] == '|')
+		return (0);
+	else
+		return (1);
+}
 
 int	helpecho(char *line, int i)
 {

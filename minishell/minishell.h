@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 17:55:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 18:21:11 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:49:56 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int		openfilesheredoc(char *line, int i, int *filein);
 int		ft_getlen(int i, char *line, int *filein);
 char	*gettmp(int i, char *line);
 int		ft_comprobapipe(char *expanded);
+int		pipesin(char *expanded);
 
 //SIGNALS
 
