@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-char	*check_pwd(char *str, int home, t_minib *minilst, int fileout);
+char	*c_pwd(char *str, int home, t_minib *minilst, int fileout);
 void	updateenv(t_minib *minilst);
 void	cd_update_env(t_minib *minilst);
 
@@ -22,9 +22,9 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 	char	**args;
 
 	if (ft_strcmp("cd", cmd) != 0)
-		return	(0);
+		return (0);
 	args = ft_split(arg, ' ');
-	str = check_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
+	str = c_pwd(args[0], getposinlst(minilst->envp, "HOME"), minilst, fileout);
 	if (chdir(str) == -1)
 	{
 		if (!minilst->pwd)
@@ -89,10 +89,10 @@ void	cd_update_env(t_minib *minilst)
 		delpos(&minilst->exp, j);
 		putinpos(&minilst->exp, j, ft_strjoin("PWD=", tmp));
 		free(tmp);
-	}	
+	}
 }
 
-char	*check_pwd(char *str, int home, t_minib *minilst, int fileout)
+char	*c_pwd(char *str, int home, t_minib *minilst, int fileout)
 {
 	char	*s;
 	int		i;

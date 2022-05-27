@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lexer4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
 /*   Updated: 2022/05/25 15:01:59 by jporta           ###   ########.fr       */
@@ -19,7 +19,7 @@ int		openfilesheredoc(char *line, int i, int *filein);
 
 int	ft_comprobapipe(char *expanded)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (expanded[i])
@@ -30,16 +30,18 @@ int	ft_comprobapipe(char *expanded)
 			if (expanded[i] == '|')
 				return (0);
 			else
+			{
 				while (ft_isalnum(expanded[i]) == 0)
 				{
 					if (expanded[i] == '|')
 						return (0);
 					i++;
 				}
+			}
 		}
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
 int	openfilesheredoc(char *line, int i, int	*filein)
@@ -119,22 +121,5 @@ int	openfilesredirect(char *line, int i, int *fileout)
 	free(aux);
 	if (*fileout == -1)
 		return (-1);
-	return (i);
-}
-
-int	helpecho(char *line, int i)
-{
-	while (line[i])
-	{
-		if (line[i] == ' ')
-			break;
-		if (line[i] == '\'')
-			while (line[++i] != '\'')
-				;
-		if (line[i] == '"')
-			while (line[++i] != '"')
-				;
-		i++;
-	}
 	return (i);
 }

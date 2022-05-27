@@ -27,13 +27,13 @@ char	*checkredirect(char *line, int *filein, int *fileout)
 	if (!line || ft_strlen(line) == 0)
 		return (NULL);
 	tmp = ft_strdup(line);
-	while (tmp[i])
+	while ((int)ft_strlen(tmp) > i && tmp[i])
 	{
 		if (tmp[i] == '"')
-			while (tmp[++i] != '"')
+			while (tmp[++i] != '"' && tmp[i])
 				;
 		if (tmp[i] == '\'')
-			while (tmp[++i] != '\'')
+			while (tmp[++i] != '\'' && tmp[i])
 				;
 		if (tmp[i] == '<' || tmp[i] == '>')
 			tmp = auxred(tmp, i, filein, fileout);
@@ -46,9 +46,11 @@ char	*checkredirect(char *line, int *filein, int *fileout)
 
 char	*auxred(char *tmp, int i, int *filein, int *fileout)
 {
-	char	*aux;
+	char	*auxi;
+	char	*help;
 	int		l;
 
+	auxi = NULL;
 	if (tmp[i] == '>')
 		l = openfilesredirect(tmp, i, fileout);
 	if (tmp[i] == '<')
@@ -59,12 +61,11 @@ char	*auxred(char *tmp, int i, int *filein, int *fileout)
 		printf("Error unespected token\n");
 		return (NULL);
 	}
-	aux = ft_strdup(tmp);
+	auxi = ft_substr(tmp, 0, i);
+	help = ft_substr(tmp, l, ft_strlen(tmp));
+	auxi = freezerjoin(auxi, help);
 	free(tmp);
-	tmp = ft_substr(aux, 0, i);
-	tmp = freezerjoin(tmp, ft_substr(aux, l, ft_strlen(aux)));
-	free(aux);
-	return (tmp);
+	return (auxi);
 }
 
 char	*gettmp(int i, char *line)
@@ -75,7 +76,7 @@ char	*gettmp(int i, char *line)
 	char	*aux;
 
 	a = i + 1;
-	while (line[a] == ' ')
+	while (line[a] == ' ' && line[a])
 		a++;
 	if (line[a] == '>' || line[a] == '<' || !line[a])
 		return (NULL);
