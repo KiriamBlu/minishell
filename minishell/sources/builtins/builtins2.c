@@ -38,19 +38,22 @@ int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 void	getexported(char **args, t_minib *minilst)
 {
 	int		i;
+	int		u;
 	char	*tmp;
 
 	i = -1;
 	while (args[++i])
 	{
+		u = 0;
 		tmp = comparse(args[i]);
 		if (checkadd(tmp) == -1)
 		{
 			printf("minishell: export: %s: not a valid identifier\n", tmp);
 			minilst->cmdstatus = 1;
-			return ;
+			u = 1;
 		}
-		getaddexp(tmp, minilst);
+		if (u == 0)
+			getaddexp(tmp, minilst);
 		free(tmp);
 	}
 	minilst->cmdstatus = 0;

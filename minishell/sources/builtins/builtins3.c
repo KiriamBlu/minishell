@@ -29,8 +29,7 @@ int	checkforunset(char *cmd, char *arg, t_minib *minilst)
 	while (args[++j])
 	{
 		tmp = comparse(args[j]);
-		if (unsetter(tmp, minilst, args) == 1)
-			return (1);
+		unsetter(tmp, minilst, args);
 		free(tmp);
 	}
 	freemat(args);
@@ -45,9 +44,7 @@ int	unsetter(char *tmp, t_minib *minilst, char **args)
 	if (checkadd(tmp) == -1)
 	{
 		printf("minishell: unset: %s: not a valid identifier\n", args[0]);
-		minilst->cmdstatus = 1;
-		freemat(args);
-		return (1);
+		return (0);
 	}
 	i = getposinlst(minilst->envp, tmp);
 	if (i != -1)
