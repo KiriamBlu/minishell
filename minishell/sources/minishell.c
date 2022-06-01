@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:00:23 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 18:20:16 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/30 17:47:32 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,7 @@ int	prepline(char *line, t_minib *minilst)
 
 	i = 0;
 	a = 1;
-	expanded = ft_strdup(line);
-	while (countdollars(expanded) > 0)
-		expanded = expander(expanded, minilst, i, a);
+	expanded = expander(line, minilst, i, a);
 	newline = lexer(expanded);
 	minilst->cmds = malloc(sizeof(t_cmds) * num_matrix(newline));
 	minilst->cmdnum = num_matrix(newline);

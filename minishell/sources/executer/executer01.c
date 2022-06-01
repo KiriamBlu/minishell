@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:10 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/25 19:08:21 by jporta           ###   ########.fr       */
+/*   Updated: 2022/05/30 17:45:54 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*path(char *cmd, char **envp)
 	while (envp[i] != NULL && ft_strnstr(envp[i], "PATH", 4) == 0)
 		i++;
 	if (envp[i] == NULL)
-		printf("mal");
+		return (NULL);	
 	paths = ft_split(envp[i] + 5, ':');
 	i = 0;
 	while (paths[i])
@@ -74,7 +74,9 @@ void	executioner(char **pths2, char *cmd, char **vars, char **envp)
 	else
 	{
 		vars[2] = path(cmd, envp);
-		if (execve(vars[2], pths2, envp) == -1)
+		if (vars[2] == NULL)
+			ft_errorpipex(0);
+		else if (execve(vars[2], pths2, envp) == -1)
 			ft_errorpipex(0);
 		free(vars[2]);
 	}
