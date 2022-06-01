@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins1.c                                        :+:      :+:    :+:   */
+/*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/04/29 00:02:07 by jsanfeli         ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout)
 	if (checkarg(arg) == 1)
 	{
 		printlistexp(minilst->exp, fileout);
-		minilst->cmdstatus = 0;
+		g_cmd_status = 0;
 		return (1);
 	}
 	args = exportarg(arg);
@@ -49,14 +49,14 @@ void	getexported(char **args, t_minib *minilst)
 		if (checkadd(tmp) == -1)
 		{
 			printf("minishell: export: %s: not a valid identifier\n", tmp);
-			minilst->cmdstatus = 1;
+			g_cmd_status = 1;
 			u = 1;
 		}
 		if (u == 0)
 			getaddexp(tmp, minilst);
 		free(tmp);
 	}
-	minilst->cmdstatus = 0;
+	g_cmd_status = 0;
 }
 
 char	**getdonexp(char **envp, int i)

@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/27 17:54:44 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	printecho(char **aux, int fileout, int l)
 	free(str);
 }
 
-int	checkforecho(char *cmd, char *arg, int fileout, int *status)
+int	checkforecho(char *cmd, char *arg, int fileout)
 {
 	int		i;
 	int		j;
@@ -119,7 +119,7 @@ int	checkforecho(char *cmd, char *arg, int fileout, int *status)
 		printecho(aux, fileout, l);
 	if (i != 1)
 		ft_putchar_fd('\n', fileout);
-	*status = 0;
+	g_cmd_status = 0;
 	freemat(aux);
 	return (1);
 }

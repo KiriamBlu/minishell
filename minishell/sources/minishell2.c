@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:18:54 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 21:23:25 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:33:15 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 int	process(t_minib *minilst, int i)
 {
+	int	status;
+
 	if (minilst->cmdnum > 1)
 	{
 		while (i < minilst->cmdnum)
 			simba(minilst, i++);
 		i = -1;
 		while (++i < minilst->cmdnum)
-			wait(&(minilst->cmds[i].pid));
+		{
+			waitpid(minilst->cmds[i].pid, &status, 0);
+			statuschecker(status);
+		}
 	}
 	else
 	{

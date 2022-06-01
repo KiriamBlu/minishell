@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsanfeli <jsanfeli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 00:21:27 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/25 14:39:22 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expanddollar(char *name, t_minib *minilst)
 	int		check;
 
 	if (name[0] == '?')
-		return (ft_itoa(minilst->cmdstatus));
+		return (ft_itoa(g_cmd_status));
 	check = getposinlst(minilst->envp, name) + 1;
 	if (check == 0)
 	{

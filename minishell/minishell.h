@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 17:55:21 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 21:49:56 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:40:13 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define UNSET "\033[0m"
 # define CYAN "\e[0;36m"
 
+int	g_cmd_status;
+
 typedef struct s_cmds
 {
 	char	*cmd;
@@ -53,9 +55,9 @@ typedef struct s_minib
 	int		cmdnum;
 	int		shlvl;
 	char	*lastcmd;
-	int		cmdstatus;
 	char	*pwd;
 	char	*promt;
+	char	**pths2;
 }	t_minib;
 
 //MINISHELLSTRUCTURE
@@ -68,11 +70,11 @@ void	checkeverything(char *line, t_minib *minilst);
 //BUILTINS
 
 int		checkforexit(char *cmd, char *arg, t_minib *minilst);
-int		checkforenv(char *cmd, t_list *envp, int fileout, int *status);
+int		checkforenv(char *cmd, t_list *envp, int fileout);
 int		checkforexport(char *cmd, char *arg, t_minib *minilst, int fileout);
 int		checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout);
 int		checkforunset(char *cmd, char *arg, t_minib *minilst);
-int		checkforecho(char *cmd, char *arg, int fileout, int *status);
+int		checkforecho(char *cmd, char *arg, int fileout);
 int		checkadd(char *add);
 int		checkarg(char *arg);
 char	**exportarg(char *cmd);
@@ -140,7 +142,7 @@ int		helpecho(char *line, int i);
 
 void	printlist(t_list *list, int fileout);
 void	printlistexp(t_list *list, int fileout);
-void	errorprintf(char *str, int *status);
+void	errorprintf(char *str);
 
 //EXECUTER
 
@@ -150,5 +152,6 @@ void	ft_errorpipex(int index);
 void	simba(t_minib *minilst, int i );
 void	ejecucion(t_minib *minilst, int i, int num, int flag);
 void	first_child(t_minib *minilst, int i);
+void	statuschecker(int tmp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:18:50 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/27 21:15:53 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 21:42:11 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int	builtins(t_minib *minilst, int k, int i)
 	k += checkforcd(minilst->cmds[i].cmd,
 			minilst->cmds[i].args, minilst, minilst->cmds[i].fileout);
 	k += checkforenv(minilst->cmds[i].cmd,
-			minilst->envp, minilst->cmds[i].fileout, &minilst->cmdstatus);
+			minilst->envp, minilst->cmds[i].fileout);
 	k += checkforecho(minilst->cmds[i].cmd,
-			minilst->cmds[i].args, minilst->cmds[i].fileout,
-			&minilst->cmdstatus);
+			minilst->cmds[i].args, minilst->cmds[i].fileout);
 	if ((minilst->cmds[i].cmd && ft_strcmp(minilst->cmds[i].cmd, "pwd") == 0)
 		|| (minilst->cmds[i].cmd
 			&& ft_strcmp(minilst->cmds[i].cmd, "/bin/pwd") == 0))

@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 19:38:25 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ int	checkforcd(char *cmd, char *arg, t_minib *minilst, int fileout)
 			minilst->pwd = getcwd(NULL, 0);
 		if (str)
 		{
-			minilst->cmdstatus = 1;
+			g_cmd_status = 1;
 			printf("minishell: cd: %s: No such file or directory\n", str);
 		}
 	}
 	else
 	{
 		cd_update_env(minilst);
-		minilst->cmdstatus = 0;
+		g_cmd_status = 0;
 	}
 	freemat(args);
 	free(str);
@@ -103,7 +103,7 @@ char	*c_pwd(char *str, int home, t_minib *minilst, int fileout)
 		if (home != -1)
 			s = ft_strdup(getlineinenv(minilst->envp, home + 1) + 5);
 		else
-			errorprintf("minishell: cd: HOME not set\n", &minilst->cmdstatus);
+			errorprintf("minishell: cd: HOME not set\n");
 	}
 	else if (!strcmp(str, "-"))
 	{
@@ -114,7 +114,7 @@ char	*c_pwd(char *str, int home, t_minib *minilst, int fileout)
 			ft_putstr_fd(s, fileout);
 		}
 		else
-			errorprintf("minishell: cd: OLDPWD not set\n", &minilst->cmdstatus);
+			errorprintf("minishell: cd: OLDPWD not set\n");
 	}
 	else
 		s = comparse(str);

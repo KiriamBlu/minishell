@@ -6,19 +6,19 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 05:19:23 by jsanfeli          #+#    #+#             */
-/*   Updated: 2022/05/23 19:37:32 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	checkforenv(char *cmd, t_list *envp, int fileout, int *status)
+int	checkforenv(char *cmd, t_list *envp, int fileout)
 {
 	if ((cmd && ft_strcmp("env", cmd) == 0)
 		|| (cmd && ft_strcmp("/usr/bin/env", cmd) == 0))
 	{
 		printlist(envp, fileout);
-		*status = 0;
+		g_cmd_status = 0;
 		return (1);
 	}
 	return (0);
@@ -37,9 +37,8 @@ int	exitcheck(t_minib *minilst, char **aux, char *tmp)
 	}
 	if (aux[1])
 	{
-		errorprintf("Escromito: exit: too many arguments\n",
-			&minilst->cmdstatus);
-		minilst->cmdstatus = 255;
+		errorprintf("Escromito: exit: too many arguments\n");
+		g_cmd_status = 255;
 		freemat(aux);
 		return (1);
 	}
@@ -73,7 +72,7 @@ int	checkforexit(char *cmd, char *arg, t_minib *minilst)
 		{
 			printf("Escromito: exit: %s: numeric argument required\n",
 				aux[0]);
-			minilst->cmdstatus = 255;
+			g_cmd_status = 255;
 			free(tmp);
 			tmp = ft_strdup("255");
 			break ;

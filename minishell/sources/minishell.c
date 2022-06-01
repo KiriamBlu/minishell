@@ -6,7 +6,7 @@
 /*   By: jporta <jporta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 18:00:23 by jporta            #+#    #+#             */
-/*   Updated: 2022/05/30 17:47:32 by jporta           ###   ########.fr       */
+/*   Updated: 2022/06/01 22:39:59 by jporta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	prepbasics(t_minib *minilst, char **envp)
 	if (getposinlst(minilst->envp, "OLDPWD") == -1)
 		putinpos(&minilst->exp,
 			getgoodpositionexp(minilst->exp, "OLDPWD"), getaddedexp("OLDPWD"));
-	minilst->cmdstatus = 0;
+	g_cmd_status = 0;
 	freemat(aux);
 }
 
